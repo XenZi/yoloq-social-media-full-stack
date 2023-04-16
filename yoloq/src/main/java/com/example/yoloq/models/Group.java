@@ -40,7 +40,7 @@ public class Group {
     private Set<GroupRequest> requests = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "id")
-    private Set<Post> containsPosts = new HashSet<>();
+    private Set<Post> groupPosts = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "id")
     private Set<GroupAdmin> admins = new HashSet<>();

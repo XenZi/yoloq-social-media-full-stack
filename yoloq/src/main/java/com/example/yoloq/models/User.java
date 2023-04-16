@@ -101,7 +101,7 @@ public class User {
         reaction.setReactedBy(this);
     }
 
-    public void removeAction(Reaction reaction) {
+    public void removeReaction(Reaction reaction) {
         reactions.remove(reaction);
         reaction.setReactedBy(null);
     }

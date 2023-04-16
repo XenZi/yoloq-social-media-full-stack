@@ -5,4 +5,3 @@ insert into user (username, password, email, first_name, last_name, profile_imag
 
 
 -- posts
-insert into post (content, creation_date, is_deleted, user_id) values ('test123', '2023-04-06', false, 1);
