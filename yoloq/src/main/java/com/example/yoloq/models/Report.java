@@ -27,4 +27,12 @@ public class Report {
 
     @Column(nullable = false)
     private boolean isDeleted;
+
+    @ManyToOne
+    private Comment reportedComment;
+
+    @ManyToOne
+    private Post reportedPost;
+
+
 }

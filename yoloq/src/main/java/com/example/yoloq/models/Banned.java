@@ -21,4 +21,14 @@ public class Banned {
 
     @Column(nullable = false)
     private LocalDateTime timestamp;
+
+    @ManyToOne
+    private GroupAdmin bannedBy;
+
+    @ManyToOne
+    private User user;
+
+    @ManyToOne
+    private Group bannedFor;
+
 }

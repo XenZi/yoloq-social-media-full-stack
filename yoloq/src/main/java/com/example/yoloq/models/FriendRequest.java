@@ -30,4 +30,10 @@ public class FriendRequest {
 
     @Column(nullable = false)
     private boolean isDeleted;
+
+    @ManyToOne
+    private User userFrom;
+
+    @ManyToOne
+    private User userTo;
 }

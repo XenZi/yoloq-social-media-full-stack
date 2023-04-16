@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class GroupRequest {
 
     @Id
@@ -29,4 +28,10 @@ public class GroupRequest {
 
     @Column
     private LocalDateTime at;
+
+    @ManyToOne
+    private User requestFrom;
+
+    @ManyToOne
+    private Group forGroup;
 }

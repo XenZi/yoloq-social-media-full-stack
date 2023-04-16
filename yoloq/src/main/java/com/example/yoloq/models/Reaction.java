@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table
@@ -28,5 +30,14 @@ public class Reaction {
 
     @Column(nullable = false)
     private boolean isDeleted;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Comment reactedTo;
+
+    @ManyToOne
+    private Post postReactedTo;
+
+    @ManyToOne
+    private User reactedBy;
 
 }
