@@ -1,6 +1,7 @@
 package com.example.yoloq.models;
 
 
+import com.example.yoloq.enums.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,9 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Column
+    private Role role;
+    
     @Column
     private LocalDateTime lastLogin;
 
