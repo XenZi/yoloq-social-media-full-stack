@@ -1,8 +1,7 @@
-package com.example.yoloq.service;
+package com.example.yoloq.service.impl;
 
-import com.example.yoloq.contracts.service.UserService;
-import com.example.yoloq.exception.ResourceNotFoundException;
 import com.example.yoloq.models.User;
+import com.example.yoloq.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,7 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 @Service

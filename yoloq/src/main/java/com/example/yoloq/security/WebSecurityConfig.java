@@ -1,7 +1,7 @@
 package com.example.yoloq.security;
 
 
-import com.example.yoloq.service.UserDetailsServiceImpl;
+import com.example.yoloq.service.impl.UserDetailsServiceImpl;
 import com.example.yoloq.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

@@ -1,13 +1,13 @@
 package com.example.yoloq.models.dto;
 
+import com.example.yoloq.enums.Role;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@RequiredArgsConstructor
-public class UserDTO {
-
+public record UserDTO(
+        Integer id,
+        String username,
+        String email,
+        String firstName,
+        String lastName,
+        Role role
+) {
 }

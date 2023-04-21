@@ -1,6 +1,7 @@
 package com.example.yoloq.utils;
 
 
+import com.example.yoloq.models.dto.UserDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -68,6 +69,15 @@ public class TokenUtils {
         claims.put("sub", userDetails.getUsername());
         claims.put("role", userDetails.getAuthorities().toArray()[0]);
         claims.put("created", new Date(System.currentTimeMillis()));
+        return Jwts.builder().setClaims(claims).setExpiration(new Date(System.currentTimeMillis() + expiration * 1000)).signWith(SignatureAlgorithm.HS256, secret).compact();
+    }
+
+    public String generateToken(UserDetails userDetails, UserDTO userDTO) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("sub", userDetails.getUsername());
+        claims.put("role", userDetails.getAuthorities().toArray()[0]);
+        claims.put("created", new Date(System.currentTimeMillis()));
+        claims.put("details", userDTO);
         return Jwts.builder().setClaims(claims).setExpiration(new Date(System.currentTimeMillis() + expiration * 1000)).signWith(SignatureAlgorithm.HS256, secret).compact();
     }
 }

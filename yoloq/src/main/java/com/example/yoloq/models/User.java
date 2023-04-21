@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -34,7 +35,7 @@ public class User {
 
     @Column
     private Role role;
-    
+
     @Column
     private LocalDateTime lastLogin;
 
@@ -47,6 +48,7 @@ public class User {
     @Column(nullable = false)
     private String profileImagePath;
 
+    @ColumnDefault("false")
     @Column(nullable = false)
     private boolean isDeleted;
 
