@@ -1,9 +1,6 @@
 package com.example.yoloq.controller;
 import com.example.yoloq.exception.ResourceNotFoundException;
-import com.example.yoloq.models.User;
 import com.example.yoloq.models.dto.UserDTO;
-import com.example.yoloq.models.dto.UserLoginDTO;
-import com.example.yoloq.models.dto.UserRegisterDTO;
 import com.example.yoloq.service.UserService;
 import com.example.yoloq.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +48,5 @@ public class UserController {
         } catch (UsernameNotFoundException e) {
             throw new ResourceNotFoundException("Username that you've entered is not found");
         }
-
     }
 }

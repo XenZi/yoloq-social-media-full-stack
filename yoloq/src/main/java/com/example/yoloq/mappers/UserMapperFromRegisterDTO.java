@@ -2,8 +2,6 @@ package com.example.yoloq.mappers;
 
 import com.example.yoloq.enums.Role;
 import com.example.yoloq.models.User;
-import com.example.yoloq.models.dto.UserDTO;
-import com.example.yoloq.models.dto.UserRegisterDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Function;
