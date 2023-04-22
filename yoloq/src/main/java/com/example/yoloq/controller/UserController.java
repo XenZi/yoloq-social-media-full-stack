@@ -1,6 +1,8 @@
 package com.example.yoloq.controller;
 import com.example.yoloq.exception.ResourceNotFoundException;
 import com.example.yoloq.models.dto.UserDTO;
+import com.example.yoloq.models.dto.requests.LoginRequestDTO;
+import com.example.yoloq.models.dto.requests.RegisterRequestDTO;
 import com.example.yoloq.service.UserService;
 import com.example.yoloq.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,18 +34,18 @@ public class UserController {
     @Autowired
     private UserDetailsService userDetailsService;
     @PostMapping
-    private ResponseEntity<UserDTO> create(@RequestBody @Validated UserRegisterDTO newUser) {
+    private ResponseEntity<UserDTO> create(@RequestBody @Validated RegisterRequestDTO newUser) {
         return new ResponseEntity<UserDTO>(this.service.save(newUser), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    private ResponseEntity<String> login(@RequestBody @Validated UserLoginDTO loginDTO) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDTO.username(), loginDTO.password());
+    private ResponseEntity<String> login(@RequestBody @Validated LoginRequestDTO loginDTO) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         try {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(loginDTO.username());
-            UserDTO userDTO = service.login(loginDTO.username());
+            UserDetails userDetails = userDetailsService.loadUserByUsername(loginDTO.getUsername());
+            UserDTO userDTO = service.login(loginDTO.getPassword());
             return new ResponseEntity<>(tokenUtils.generateToken(userDetails, userDTO), HttpStatus.OK);
         } catch (UsernameNotFoundException e) {
             throw new ResourceNotFoundException("Username that you've entered is not found");

@@ -34,7 +34,7 @@ public class User {
     private String email;
 
     @Column
-    private Role role;
+    private Role role = Role.USER;
 
     @Column
     private LocalDateTime lastLogin;

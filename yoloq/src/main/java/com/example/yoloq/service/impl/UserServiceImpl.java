@@ -1,12 +1,13 @@
 package com.example.yoloq.service.impl;
 
+import com.example.yoloq.enums.Role;
 import com.example.yoloq.exception.ResourceNotFoundException;
-import com.example.yoloq.mappers.UserDTOMapper;
-import com.example.yoloq.mappers.UserMapperFromRegisterDTO;
 import com.example.yoloq.models.User;
 import com.example.yoloq.models.dto.UserDTO;
+import com.example.yoloq.models.dto.requests.RegisterRequestDTO;
 import com.example.yoloq.repository.UserRepository;
 import com.example.yoloq.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,23 +19,21 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final UserDTOMapper mapper;
-    private final UserMapperFromRegisterDTO userMapperFromRegisterDTO;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserDTOMapper mapper, UserMapperFromRegisterDTO userMapperFromRegisterDTO, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.mapper = mapper;
-        this.userMapperFromRegisterDTO = userMapperFromRegisterDTO;
         this.passwordEncoder = passwordEncoder;
+        this.modelMapper = new ModelMapper();
     }
     @Override
-    public UserDTO save(UserRegisterDTO newUser) {
-        User user = userMapperFromRegisterDTO.apply(newUser);
+    public UserDTO save(RegisterRequestDTO newUser) {
+        User user = modelMapper.map(newUser, User.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setProfileImagePath("");
         User registeredUser = userRepository.save(user);
-
-        return mapper.apply(registeredUser);
+        return modelMapper.map(registeredUser, UserDTO.class);
     }
 
     @Override
@@ -48,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO login(String username) {
-        return mapper.apply(this.findByUsername(username));
+        return modelMapper.map(this.findByUsername(username), UserDTO.class);
     }
 
 }
