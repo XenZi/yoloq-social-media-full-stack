@@ -80,4 +80,8 @@ public class TokenUtils {
         claims.put("details", userDTO);
         return Jwts.builder().setClaims(claims).setExpiration(new Date(System.currentTimeMillis() + expiration * 1000)).signWith(SignatureAlgorithm.HS256, secret).compact();
     }
+
+    public int getExpiredIn() {
+        return expiration.intValue();
+    }
 }
