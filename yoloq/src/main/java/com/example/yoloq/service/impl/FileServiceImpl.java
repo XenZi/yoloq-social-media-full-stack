@@ -46,7 +46,7 @@ public class FileServiceImpl implements FileService {
             Path saveTo = Paths.get("uploads/" + randomGeneratedName);
             Image image = new Image();
             image.setName(randomGeneratedName);
-            imageRepository.save(image);
+            imageRepository.save(image);     
             Files.copy(file.getInputStream(), saveTo);
         } catch (IOException e) {
             throw new RuntimeException("Error while saving an image");
