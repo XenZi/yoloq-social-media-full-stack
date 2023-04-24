@@ -15,14 +15,24 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
+    @NotNull
     private Integer id;
+
     @NotNull
     private String username;
+
     @NotNull
     private String email;
+
     @NotNull
     private String firstName;
+
     @NotNull
     private String lastName;
+
+    @NotNull
     private Role role;
+
+    @NotNull
+    private String userProfile;
 }

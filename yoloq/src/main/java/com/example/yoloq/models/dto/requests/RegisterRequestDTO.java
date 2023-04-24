@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -33,4 +34,6 @@ public class RegisterRequestDTO {
     @NotNull(message = "You must enter password at least 5 characters length")
     @Size(min = 5)
     private String password;
+
+    private MultipartFile profilePicture;
 }

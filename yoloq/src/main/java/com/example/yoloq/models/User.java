@@ -45,8 +45,9 @@ public class User {
     @Column(nullable = false)
     private String lastName;
 
-    @Column(nullable = false)
-    private String profileImagePath;
+
+    @Column
+    private String profileImage;
 
     @ColumnDefault("false")
     @Column(nullable = false)

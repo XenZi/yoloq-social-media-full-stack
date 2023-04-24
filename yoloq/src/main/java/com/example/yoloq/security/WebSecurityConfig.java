@@ -62,6 +62,11 @@ public class WebSecurityConfig {
                 .antMatchers(HttpMethod.POST, "/api/users/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/users").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/users").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/file").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/file").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/file/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/file/**").permitAll()
+
                 .anyRequest().authenticated().and().cors();
         http.csrf().disable();
         return http.build();

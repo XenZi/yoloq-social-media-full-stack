@@ -8,6 +8,7 @@ import com.example.yoloq.service.UserService;
 import com.example.yoloq.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,8 +40,8 @@ public class UserController {
         this.tokenUtils = tokenUtils;
         this.userDetailsService = userDetailsService;
     }
-    @PostMapping
-    private ResponseEntity<UserDTO> create(@RequestBody @Validated RegisterRequestDTO newUser) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    private ResponseEntity<UserDTO> create(RegisterRequestDTO newUser) {
         return new ResponseEntity<>(this.service.save(newUser), HttpStatus.CREATED);
     }
 
