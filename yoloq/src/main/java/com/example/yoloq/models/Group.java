@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table
+@Table(name = "\"group\"")
 @Getter
 @Setter
 @RequiredArgsConstructor
@@ -34,7 +34,7 @@ public class Group {
     private boolean isSuspended;
 
     @Column
-    private boolean suspendedReason;
+    private String suspendedReason;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "id")
     private Set<GroupRequest> requests = new HashSet<>();
