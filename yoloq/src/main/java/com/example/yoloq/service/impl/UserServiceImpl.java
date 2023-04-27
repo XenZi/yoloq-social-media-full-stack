@@ -6,15 +6,19 @@ import com.example.yoloq.models.Image;
 import com.example.yoloq.models.User;
 import com.example.yoloq.models.dto.UserDTO;
 import com.example.yoloq.models.dto.requests.RegisterRequestDTO;
+import com.example.yoloq.models.dto.requests.UpdatePasswordDTO;
 import com.example.yoloq.repository.ImageRepository;
 import com.example.yoloq.repository.UserRepository;
 import com.example.yoloq.service.FileService;
 import com.example.yoloq.service.UserService;
+import com.example.yoloq.utils.TokenUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.message.AuthException;
 import java.util.Optional;
 
 
@@ -25,16 +29,21 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
     private final FileService fileService;
+    private final TokenUtils tokenUtils;
     @Autowired
     public UserServiceImpl(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
-            FileService fileService) {
+            FileService fileService,
+            TokenUtils tokenUtils) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = new ModelMapper();
         this.fileService = fileService;
+        this.tokenUtils = tokenUtils;
     }
+
+
     @Override
     public UserDTO save(RegisterRequestDTO newUser) {
         User user = modelMapper.map(newUser, User.class);
@@ -60,6 +69,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO login(String username) {
         return modelMapper.map(this.findByUsername(username), UserDTO.class);
+    }
+
+    @Override
+    public boolean isTheSamePassword(String enteredPassword, String userPassword) {
+        return passwordEncoder.matches(enteredPassword, userPassword);
+    }
+
+    @Override
+    public String updatePassword(UpdatePasswordDTO updatePasswordDTO, String token) {
+        if (!updatePasswordDTO.getNewPassword().equals(updatePasswordDTO.getRepeatedNewPassword())) {
+            throw new BadCredentialsException("New password and repeated password aren't the same");
+        }
+        String username = tokenUtils.getUsernameFromToken(token);
+        Optional<User> userDetails = userRepository.findFirstByUsername(username);
+        if (userDetails.isEmpty()) {
+            throw new RuntimeException("You are not logged in");
+        }
+        String password = userDetails.get().getPassword();
+        if (!isTheSamePassword(updatePasswordDTO.getOldPassword(), password)) {
+            throw new RuntimeException("Old password is wrong");
+        }
+        userDetails.get().setPassword(passwordEncoder.encode(updatePasswordDTO.getNewPassword()));
+        this.userRepository.save(userDetails.get());
+        return "You have successfully updated your password";
     }
 
 }

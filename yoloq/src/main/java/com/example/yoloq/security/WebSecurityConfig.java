@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -61,14 +62,11 @@ public class WebSecurityConfig {
         http.authorizeRequests().antMatchers("/auth/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/users/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/users").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/users").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/file").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/file").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/file/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/file/**").permitAll()
-
-                .anyRequest().authenticated().and().cors();
+                .anyRequest().authenticated().and().cors()
+                .and().addFilterBefore(new AuthenticationTokenFilter(userDetailsService(), tokenUtils), BasicAuthenticationFilter.class);
         http.csrf().disable();
+        http.authenticationProvider(authenticationProvider());
         return http.build();
     }
     @Bean

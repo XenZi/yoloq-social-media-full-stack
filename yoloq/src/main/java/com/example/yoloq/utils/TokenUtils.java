@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,6 +44,17 @@ public class TokenUtils {
         return username;
     }
 
+    public UserDTO getUserDetailsFromToken(String token) {
+        UserDTO userDTO;
+        try {
+            Map<String, Object> claims  = this.getClaimsFromToken(token);
+            userDTO = ((UserDTO) claims.get("details"));
+            System.out.print(userDTO);
+        } catch (Exception e) {
+            userDTO = null;
+        }
+        return userDTO;
+    }
     public Date getExpirationDateFromToken(String token) {
         Date expirationDate;
         try {
@@ -81,6 +93,17 @@ public class TokenUtils {
         return Jwts.builder().setClaims(claims).setExpiration(new Date(System.currentTimeMillis() + expiration * 1000)).signWith(SignatureAlgorithm.HS256, secret).compact();
     }
 
+    public String getToken(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if (token != null) {
+            if (token.startsWith("Bearer ")) {
+                token = token.substring(7);
+            }
+        } else {
+            return null;
+        }
+        return token;
+    }
     public int getExpiredIn() {
         return expiration.intValue();
     }
