@@ -7,7 +7,6 @@ import com.example.yoloq.models.User;
 import com.example.yoloq.models.dto.UserDTO;
 import com.example.yoloq.models.dto.requests.RegisterRequestDTO;
 import com.example.yoloq.models.dto.requests.UpdatePasswordDTO;
-import com.example.yoloq.repository.ImageRepository;
 import com.example.yoloq.repository.UserRepository;
 import com.example.yoloq.service.FileService;
 import com.example.yoloq.service.UserService;
@@ -15,10 +14,12 @@ import com.example.yoloq.utils.TokenUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.security.auth.message.AuthException;
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 
@@ -49,8 +50,8 @@ public class UserServiceImpl implements UserService {
         User user = modelMapper.map(newUser, User.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         String name = "";
-        if (newUser.getProfilePicture() != null) {
-            name = fileService.uploadImage(newUser.getProfilePicture());
+        if (newUser.getProfileImage() != null) {
+            name = fileService.uploadImage(newUser.getProfileImage());
         }
         user.setProfileImage(name);
         User registeredUser = userRepository.save(user);
@@ -67,8 +68,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO login(String username) {
-        return modelMapper.map(this.findByUsername(username), UserDTO.class);
+    public User findByEmail(String email) {
+        Optional<User> user = userRepository.findFirstByEmail(email);
+        if (user.isEmpty()) {
+            throw new ResourceNotFoundException("Searching user is not found");
+        }
+        return user.get();
+    }
+
+    @Override
+    public User findLoggedUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        return this.findByEmail(email);
+    }
+
+    @Override
+    public UserDTO login(String email) {
+        return modelMapper.map(this.findByEmail(email), UserDTO.class);
     }
 
     @Override
@@ -94,5 +111,4 @@ public class UserServiceImpl implements UserService {
         this.userRepository.save(userDetails.get());
         return "You have successfully updated your password";
     }
-
 }

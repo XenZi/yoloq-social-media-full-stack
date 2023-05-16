@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Email;
@@ -35,5 +36,6 @@ public class RegisterRequestDTO {
     @Size(min = 5)
     private String password;
 
-    private MultipartFile profilePicture;
+    @Nullable
+    private MultipartFile profileImage;
 }

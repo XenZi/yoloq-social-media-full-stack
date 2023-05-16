@@ -1,0 +1,32 @@
+.register {
+  background-color: #fff;
+  height: 100vh;
+  width: 100vw;
+}
+
+.register__container {
+  height: 100%;
+  width: 100%;
+}
+
+.register__left {
+  width: 60%;
+  height: 100%;
+  background: #e8f0fa;
+}
+
+.register__right {
+  height: 100%;
+  width: 100%;
+  padding: 10px 20px;
+}
+
+.register__title {
+  margin-bottom: 20px;
+}
+
+.register__image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}

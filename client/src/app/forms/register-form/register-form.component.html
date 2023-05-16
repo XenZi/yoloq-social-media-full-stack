@@ -1,0 +1,58 @@
+<form
+  [formGroup]="registerForm"
+  (ngSubmit)="onSubmit()"
+  class="form flex-col form__register"
+>
+  <div class="form__group">
+    <input
+      type="text"
+      class="form__input"
+      formControlName="email"
+      placeholder="Your Email Address"
+    />
+  </div>
+  <div class="form__group">
+    <input
+      type="text"
+      class="form__input"
+      formControlName="username"
+      placeholder="Your Username"
+    />
+  </div>
+  <div class="form__group">
+    <input
+      type="password"
+      class="form__input"
+      formControlName="password"
+      placeholder="Your Password"
+    />
+  </div>
+  <div class="form__group">
+    <input
+      type="text"
+      class="form__input"
+      formControlName="firstName"
+      placeholder="Your First Name"
+    />
+  </div>
+  <div class="form__group">
+    <input
+      type="text"
+      class="form__input"
+      formControlName="lastName"
+      placeholder="Your Last Name"
+    />
+  </div>
+  <div
+    class="form__group flex-col border--light-gray border--radius-7 form__padding"
+  >
+    <label for="" class="form__label">Avatar (optional)</label>
+    <input type="file" (change)="onFileSelected($event)" />
+  </div>
+  <app-button
+    size="md"
+    color="blue"
+    text="Register now"
+    class="login__button"
+  ></app-button>
+</form>

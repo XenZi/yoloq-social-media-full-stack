@@ -1,0 +1,28 @@
+<form
+  [formGroup]="loginForm"
+  (ngSubmit)="onSubmit()"
+  class="form flex-col form__login"
+>
+  <div class="form__group">
+    <input
+      type="text"
+      class="form__input"
+      formControlName="email"
+      placeholder="Your Email Address"
+    />
+  </div>
+  <div class="form__group">
+    <input
+      type="password"
+      class="form__input"
+      placeholder="Your Password"
+      formControlName="password"
+    />
+  </div>
+  <app-button
+    size="md"
+    color="blue"
+    text="Login"
+    class="login__button"
+  ></app-button>
+</form>

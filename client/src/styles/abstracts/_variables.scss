@@ -1,0 +1,80 @@
+/*
+    SIZES:
+*/
+$font-size-xs: 14px;
+$font-size-sm: 16px;
+$font-size-md: 18px;
+$font-size-lg: 20px;
+$font-size-xl: 24px;
+$font-size-xxl: 36px;
+/*
+    PADDINGS:
+*/
+$padding-xs: 4px;
+$padding-sm: 8px;
+$padding-md: 16px;
+$padding-lg: 24px;
+$padding-xl: 32px;
+$padding-xxl: 48px;
+/*
+    MARGINS:
+*/
+$margin-xs: 4px;
+$margin-sm: 8px;
+$margin-md: 16px;
+$margin-lg: 24px;
+$margin-xl: 32px;
+$margin-xxl: 48px;
+/*
+    LAYOUT
+*/
+$columns: 12;
+$gutter: 20px;
+/*
+    FLEX
+*/
+$flex-directions: (
+  row: row,
+  row-reverse: row-reverse,
+  col: column,
+  col-reverse: column-reverse,
+);
+$justify-content: (
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  between: space-between,
+  around: space-around,
+);
+$align-items: (
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  stretch: stretch,
+  baseline: baseline,
+);
+/*
+    COLORS
+*/
+$alabaster: #f2f3f5;
+$white: #fff;
+$emerald-green: #10d876;
+$royal-blue: #2754e6;
+$dodger-blue: #1e74fd;
+$jet: #343a40;
+$battleship-grey: #afb7bf;
+$eerie-black: #212529;
+$flame-orange: #ec5c27;
+$blue-crayola: #1e84ff;
+$error: #ff5e5e;
+
+:root {
+  --white: #fff;
+  --green: #10d876;
+  --blue: #2754e6;
+  --dark-gray: #343a40;
+  --light-gray: #afb7bf;
+  --error: #ff5e5e;
+  --orange: #ec5c27;
+  --black: #212529;
+}

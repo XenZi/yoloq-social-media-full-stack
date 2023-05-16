@@ -1,0 +1,70 @@
+.btn {
+  text-align: center;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.btn--success {
+  background-color: var(--green);
+  color: var(--white);
+}
+
+.btn--error {
+  background-color: var(--error);
+  color: var(--white);
+}
+
+.btn--white {
+  background: var(--white);
+  color: var(--dark-gray);
+}
+
+.btn--black {
+  background: var(--black);
+  color: var(--white);
+}
+
+.btn--blue {
+  background: var(--blue);
+  color: var(--white);
+
+  &:hover {
+    background: lighten($color: #2754e6, $amount: 5);
+  }
+}
+.btn--dark-gray {
+  background: var(--dark-gray);
+  color: var(--white);
+}
+
+.btn--light-gray {
+  background: var(--light-gray);
+  color: var(--white);
+}
+
+.btn--orange {
+  background: var(--orange);
+  color: var(--white);
+}
+
+.btn--xs {
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
+/* Small button */
+.btn--sm {
+  padding: 8px 12px;
+}
+
+/* Medium button */
+.btn--md {
+  padding: 10px 22px;
+}
+
+/* Large button */
+.btn--lg {
+  padding: 16px 32px;
+}

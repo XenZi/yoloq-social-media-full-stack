@@ -50,12 +50,12 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> login(@RequestBody @Validated LoginRequestDTO loginDTO) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword());
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         try {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(loginDTO.getUsername());
-            UserDTO userDTO = service.login(loginDTO.getUsername());
+            UserDetails userDetails = userDetailsService.loadUserByUsername(loginDTO.getEmail());
+            UserDTO userDTO = service.login(loginDTO.getEmail());
             return new ResponseEntity<>(new TokenResponse(tokenUtils.generateToken(userDetails, userDTO), (long) tokenUtils.getExpiredIn()), HttpStatus.OK);
         } catch (UsernameNotFoundException e) {
             throw new ResourceNotFoundException("Username that you've entered is not found");

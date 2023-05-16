@@ -1,0 +1,20 @@
+html {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+a,
+a:visited,
+a:hover {
+  text-decoration: none;
+}
+
+body {
+  background: $alabaster;
+}

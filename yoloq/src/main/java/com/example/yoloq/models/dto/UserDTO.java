@@ -22,17 +22,11 @@ public class UserDTO {
     private String username;
 
     @NotNull
-    private String email;
-
-    @NotNull
     private String firstName;
 
     @NotNull
     private String lastName;
 
     @NotNull
-    private Role role;
-
-    @NotNull
-    private String userProfile;
+    private String profileImage;
 }

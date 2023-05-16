@@ -31,7 +31,7 @@ public class Post {
     @ElementCollection
     @CollectionTable(name="PostImages", joinColumns = @JoinColumn(name="post_id", referencedColumnName = "id"))
     @Column
-    private Set<String> imagePaths;
+    private Set<String> imagePaths = new HashSet<>();
 
     @Column(nullable = false)
     private boolean isDeleted;

@@ -1,0 +1,56 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 100%;
+}
+
+.row {
+  @include row();
+}
+
+.col {
+  @include col($columns);
+
+  @for $i from 2 through $columns {
+    &.col#{$i} {
+      @include col($i);
+    }
+  }
+
+  @media (min-width: 768px) {
+    @include col($columns, 768px);
+
+    @for $i from 2 through $columns {
+      &.col#{$i}-sm {
+        @include col($i, 768px);
+      }
+    }
+  }
+
+  @media (min-width: 992px) {
+    @include col($columns, 992px);
+
+    @for $i from 2 through $columns {
+      &.col#{$i}-md {
+        @include col($i, 992px);
+      }
+    }
+  }
+
+  @media (min-width: 1200px) {
+    @include col($columns, 1200px);
+
+    @for $i from 2 through $columns {
+      &.col#{$i}-lg {
+        @include col($i, 1200px);
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+.login {
+  background: #fff;
+  height: 100vh;
+  width: 100vw;
+}
+
+.login__container {
+  height: 100%;
+  width: 100%;
+}
+
+.login__left {
+  width: 60%;
+  height: 100%;
+  background: #e8f0fa;
+}
+
+.login__right {
+  height: 100%;
+  width: 100%;
+  padding: 10px 20px;
+}
+
+.login__image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.login__title {
+  margin-bottom: 20px;
+}

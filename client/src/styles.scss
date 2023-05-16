@@ -1,1 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
+// @import "./styles/index.scss";
+
+// @import "/abstracts/mixins";
+// @import "./abstracts/variables";
+
+// @import "./base/reset";
+// @import "./base/config";
+// @import "./base/typography";
+
+// @import "./layout/grid";
+// @import "./layout/flex";
+
+// @import "./components/form";
+
+@import "./styles/abstracts/mixins";
+@import "./styles/abstracts/variables";
+
+@import "./styles/base/reset";
+@import "./styles/base/config";
+@import "./styles/base/typography";
+@import "./styles/layout/grid";
+@import "./styles/layout/flex";
+@import "./styles/components/form";
+@import "./styles/layout/borders";
+@import "./styles/components/icon";

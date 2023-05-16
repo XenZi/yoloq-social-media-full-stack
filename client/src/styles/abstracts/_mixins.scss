@@ -1,0 +1,44 @@
+@mixin breakpoint($value) {
+  @if $value == "phone" {
+    @media only screen and (min-width: 120px) and (max-width: 767px) {
+      @content;
+    }
+  } @else if $value == "tablet" {
+    @media only screen and (min-width: 768px) and (max-width: 1024px) {
+      @content;
+    }
+  } @else if $value == "touch" {
+    @media only screen and (min-width: 120px) and (max-width: 1024px) {
+      @content;
+    }
+  } @else if $value == "desktop" {
+    @media only screen and (min-width: 1025px) {
+      @content;
+    }
+  } @else {
+    @media only screen and (max-width: $value) {
+      @content;
+    }
+  }
+}
+
+@mixin row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -(calc($gutter / 2));
+  margin-right: -(calc($gutter / 2));
+}
+
+@mixin col($columns, $breakpoint: null) {
+  @if $breakpoint {
+    @media (min-width: $breakpoint) {
+      width: calc(100% / ($columns / 2));
+      flex-basis: calc(100% / ($columns / 2));
+    }
+  } @else {
+    width: calc(100% / ($columns / 2));
+    flex-basis: calc(100% / ($columns / 2));
+  }
+  padding-left: calc($gutter / 2);
+  padding-right: calc($gutter / 2);
+}

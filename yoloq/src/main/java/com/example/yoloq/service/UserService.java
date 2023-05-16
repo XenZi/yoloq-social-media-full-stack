@@ -11,5 +11,7 @@ public interface UserService {
     UserDTO login(String username);
     boolean isTheSamePassword(String enteredPassword, String userPassword);
     String updatePassword(UpdatePasswordDTO updatePasswordDTO, String token);
+    User findByEmail(String email);
+    User findLoggedUser();
 
 }

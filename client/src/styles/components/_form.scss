@@ -1,0 +1,36 @@
+.form__group {
+  width: 100%;
+  margin: 5px 0;
+}
+
+.form__input {
+  border: 2px solid #eee;
+  border-radius: 7px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.form__input::placeholder {
+  color: $jet;
+  font-size: 12px;
+}
+
+.form__input:focus {
+  border: 2px solid $royal-blue;
+}
+
+.form__label {
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.form__textarea {
+  border: 2px solid #eee;
+  border-radius: 7px;
+  padding: 10px;
+  position: relative;
+  width: 100%;
+  resize: none;
+  height: 100px;
+}
