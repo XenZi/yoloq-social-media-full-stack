@@ -1,0 +1,24 @@
+<div class="update-post">
+  <div class="update-post__container flex-column">
+    <div class="flex-row justify-center align-center">
+      <i class="fa-solid fa-pen icon--blue icon--sm"></i>
+      <h4 class="update-post__title text--light-gray">Update post</h4>
+    </div>
+    <form class="form" [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+      <textarea
+        class="form__textarea update-post__textarea"
+        placeholder="What's on your mind?"
+        formControlName="content"
+      ></textarea>
+      <div class="flex-row justify-between items-center">
+        <input type="file" />
+        <app-button
+          size="sm"
+          color="blue"
+          text="Update post"
+          class=""
+        ></app-button>
+      </div>
+    </form>
+  </div>
+</div>
