@@ -1,6 +1,6 @@
 <button
   [ngClass]="['btn', 'btn--' + size, 'btn--' + color, class]"
-  (click)="onClick()"
+  (click)="onClick.emit()"
 >
   {{ text }}
 </button>

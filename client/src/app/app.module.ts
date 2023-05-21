@@ -14,6 +14,11 @@ import { HomeComponent } from './pages/home/home.component';
 import { VerticalNavComponent } from './components/vertical-nav/vertical-nav.component';
 import { CreatePostComponent } from './components/create-post/create-post.component';
 import { FriendRequestsListComponent } from './components/friend-requests-list/friend-requests-list.component';
+import { PostComponent } from './components/post/post.component';
+import { PostListComponent } from './components/post-list/post-list.component';
+import { ModalComponent } from './components/modal/modal.component';
+import { UpdatePostFormComponent } from './forms/update-post-form/update-post-form.component';
+import { DeletePostDialogComponent } from './dialogs/delete-post-dialog/delete-post-dialog.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +32,11 @@ import { FriendRequestsListComponent } from './components/friend-requests-list/f
     VerticalNavComponent,
     CreatePostComponent,
     FriendRequestsListComponent,
+    PostComponent,
+    PostListComponent,
+    ModalComponent,
+    UpdatePostFormComponent,
+    DeletePostDialogComponent,
   ],
   imports: [
     BrowserModule,

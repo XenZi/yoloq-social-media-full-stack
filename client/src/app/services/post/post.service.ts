@@ -1,6 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from '../localstorage/local-storage.service';
+import { Observable } from 'rxjs';
+import { Post } from 'src/app/models/entity/Post';
 
 @Injectable({
   providedIn: 'root',
@@ -39,6 +41,54 @@ export class PostService {
         },
         error: (error) => {
           console.error(error);
+        },
+      });
+  }
+
+  public getAll(): Observable<Post[]> {
+    return this.http.get<Post[]>(this.baseURL, {
+      headers: {
+        Authorization: `Bearer ${this.localStorageService.getItem('token')}`,
+      },
+    });
+  }
+
+  public updatePost(id: number, content: string) {
+    this.http
+      .put<any>(
+        `${this.baseURL}/${id}`,
+        { id, content },
+        {
+          headers: {
+            Authorization: `Bearer ${this.localStorageService.getItem(
+              'token'
+            )}`,
+          },
+        }
+      )
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+  }
+
+  public deletePost(id: number): void {
+    this.http
+      .delete<any>(`${this.baseURL}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${this.localStorageService.getItem('token')}`,
+        },
+      })
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+        },
+        error: (error) => {
+          console.log(error);
         },
       });
   }

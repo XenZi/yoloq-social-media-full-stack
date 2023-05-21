@@ -1,0 +1,75 @@
+<div class="post">
+  <div class="post__container flex-col">
+    <div class="flex flex-row justify-between items-center">
+      <div class="flex flex-row">
+        <img
+          src="http://uitheme.net/sociala/images/user-7.png"
+          class="post__profile-image"
+          alt=""
+        />
+        <div class="flex flex-col justify-center">
+          <h4 class="post__profile-name">
+            {{ post.postedBy.firstName + " " + post.postedBy.lastName }}
+          </h4>
+          <p class="post__date">{{ post.creationDate.split("T")[0] }}</p>
+        </div>
+      </div>
+      <div class="flex post__options">
+        <button class="post__more" (click)="showOptionsList()">
+          <i class="fa-solid fa-ellipsis-vertical icon--lg"></i>
+        </button>
+        <ul
+          class="post__options-list"
+          [ngClass]="{ 'post__options-list--active': optionsListVisible }"
+        >
+          <li class="post__option" (click)="openUpdateModalForm()">
+            <i class="fa-solid fa-pen post__option-icon"></i>
+            <span class="post__option-title">Update post</span>
+          </li>
+          <li class="post__option" (click)="openModalDialogForDelete()">
+            <i class="fa-solid fa-trash post__option-icon"></i>
+            <span class="post__option-title">Delete post</span>
+          </li>
+          <li class="post__option">
+            <i class="fa-solid fa-triangle-exclamation post__option-icon"></i>
+            <span class="post__option-title">Report post</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="post__details">
+      <p class="post__content">
+        {{ post.content }}
+      </p>
+    </div>
+    <div class="flex flex-row justify-between items-center">
+      <div class="flex-row">
+        <div class="post__reactions">
+          <button class="post__reaction post__like">
+            <i class="fa-regular fa-thumbs-up"></i>
+          </button>
+          <button class="post__reaction post__dislike">
+            <i class="fa-regular fa-thumbs-down"></i>
+          </button>
+          <button class="post__reaction post__heart">
+            <i class="fa-regular fa-heart"></i>
+          </button>
+          <span class="post__reactions-counter"> 3.4K Reactions </span>
+        </div>
+        <button class="post__comments-button">
+          <i class="fa-regular fa-comment icon--md"></i>
+          300 Commennts
+        </button>
+      </div>
+    </div>
+  </div>
+  <app-modal *ngIf="clickedInputNumber == 1">
+    <app-update-post-form [post]="post"></app-update-post-form>
+  </app-modal>
+  <app-modal *ngIf="clickedInputNumber !== 1">
+    <app-delete-post-dialog
+      text="Do you want to proceed with deleting this post?"
+      [postID]="post.id"
+    ></app-delete-post-dialog>
+  </app-modal>
+</div>
