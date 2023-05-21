@@ -15,7 +15,7 @@ import java.util.Set;
 public class PostDTO {
     private Integer id;
     private String content;
-    private LocalDateTime creationDate;
+    private String creationDate;
     private Set<String> imagePaths;
     private UserDTO postedBy;
     private Set<Comment> comments;
