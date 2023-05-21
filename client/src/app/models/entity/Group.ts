@@ -1,5 +1,5 @@
 export default interface Group {
-  id: number | undefined;
+  id: number;
   name: string;
   description: string;
   creationDate: string | undefined;

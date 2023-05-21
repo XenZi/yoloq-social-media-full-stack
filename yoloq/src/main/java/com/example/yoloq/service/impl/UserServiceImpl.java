@@ -94,21 +94,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String updatePassword(UpdatePasswordDTO updatePasswordDTO, String token) {
+    public String updatePassword(UpdatePasswordDTO updatePasswordDTO) {
         if (!updatePasswordDTO.getNewPassword().equals(updatePasswordDTO.getRepeatedNewPassword())) {
             throw new BadCredentialsException("New password and repeated password aren't the same");
         }
-        String username = tokenUtils.getUsernameFromToken(token);
-        Optional<User> userDetails = userRepository.findFirstByUsername(username);
-        if (userDetails.isEmpty()) {
-            throw new RuntimeException("You are not logged in");
-        }
-        String password = userDetails.get().getPassword();
-        if (!isTheSamePassword(updatePasswordDTO.getOldPassword(), password)) {
+        User user = this.findLoggedUser();
+        if (!isTheSamePassword(updatePasswordDTO.getOldPassword(), user.getPassword())) {
             throw new RuntimeException("Old password is wrong");
         }
-        userDetails.get().setPassword(passwordEncoder.encode(updatePasswordDTO.getNewPassword()));
-        this.userRepository.save(userDetails.get());
+        user.setPassword(passwordEncoder.encode(updatePasswordDTO.getNewPassword()));
+        this.userRepository.save(user);
         return "You have successfully updated your password";
     }
 }

@@ -20,6 +20,9 @@ import { ModalComponent } from './components/modal/modal.component';
 import { UpdatePostFormComponent } from './forms/update-post-form/update-post-form.component';
 import { DeletePostDialogComponent } from './dialogs/delete-post-dialog/delete-post-dialog.component';
 import { CreateGroupFormComponent } from './forms/create-group-form/create-group-form.component';
+import { GroupVerticalNavItemComponent } from './components/group-vertical-nav-item/group-vertical-nav-item.component';
+import { UpdateGroupFormComponent } from './forms/update-group-form/update-group-form.component';
+import { ChangePasswordFormComponent } from './forms/change-password-form/change-password-form.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +42,9 @@ import { CreateGroupFormComponent } from './forms/create-group-form/create-group
     UpdatePostFormComponent,
     DeletePostDialogComponent,
     CreateGroupFormComponent,
+    GroupVerticalNavItemComponent,
+    UpdateGroupFormComponent,
+    ChangePasswordFormComponent,
   ],
   imports: [
     BrowserModule,

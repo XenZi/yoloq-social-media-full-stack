@@ -1,0 +1,20 @@
+<li class="vertical-nav__item flex-row justify-between">
+  <div class="flex-row items-center">
+    <i class="fa-solid fa-user-group"></i>
+    <a href="#" class="vertical-nav__item-title"> {{ group.name }} </a>
+  </div>
+  <button class="vertical-nav__options-button">
+    <i class="fa-solid fa-ellipsis-vertical icon--lg"></i>
+  </button>
+  <ul class="vertical-nav__options-list vertical-nav__options-list--active">
+    <li class="vertical-nav__option" (click)="openModalForUpdate()">
+      <span class="post__option-title">Update group</span>
+    </li>
+    <li class="vertical-nav__option" (click)="deleteGroup()">
+      <span class="post__option-title">Delete group</span>
+    </li>
+  </ul>
+</li>
+<app-modal *ngIf="clickedInputNumber == 5">
+  <app-update-group-form [group]="group"></app-update-group-form>
+</app-modal>

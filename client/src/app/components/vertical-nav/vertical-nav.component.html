@@ -1,24 +1,28 @@
 <div class="vertical-nav">
   <div class="vertical-nav__container flex-col">
+    <button (click)="openModalForChangePassword()">Change Password</button>
     <h3 class="vertical-nav__title">Groups</h3>
     <ul class="vertical-nav__list">
-      <li class="vertical-nav__item vertical-nav__item--hoverable">
+      <li
+        class="vertical-nav__item vertical-nav__item--hoverable"
+        (click)="openModalForCreatingGroup()"
+      >
         <i class="fa-solid fa-user-group"></i>
         <span class="vertical-nav__item-title"> Create new group </span>
       </li>
       <hr class="vertical-nav__separator" />
-      <li class="vertical-nav__item flex-row justify-between">
-        <div class="flex-row items-center">
-          <i class="fa-solid fa-user-group"></i>
-          <span class="vertical-nav__item-title"> Group name </span>
-        </div>
-        <button class="vertical-nav__options-button">
-          <i class="fa-solid fa-ellipsis-vertical icon--lg"></i>
-        </button>
+      <li *ngFor="let group of groups | async">
+        <app-group-vertical-nav-item [group]="group" />
       </li>
     </ul>
   </div>
 </div>
-<app-modal>
+<app-modal *ngIf="clickedInputNumber == 3">
   <app-create-group-form></app-create-group-form>
+</app-modal>
+<app-modal *ngIf="clickedInputNumber == 4">
+  <app-create-group-form></app-create-group-form>
+</app-modal>
+<app-modal *ngIf="clickedInputNumber == 6">
+  <app-change-password-form></app-change-password-form>
 </app-modal>

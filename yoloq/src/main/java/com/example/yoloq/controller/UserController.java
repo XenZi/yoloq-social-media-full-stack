@@ -64,8 +64,8 @@ public class UserController {
 
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PutMapping("/change-password")
-    public ResponseEntity<?> updatePassword(@RequestBody @Validated UpdatePasswordDTO updatePasswordDTO, HttpServletRequest request) {
-        String token = tokenUtils.getToken(request);
-        return new ResponseEntity<>(new GenericResponse(HttpStatus.OK, LocalDateTime.now(), this.service.updatePassword(updatePasswordDTO, token)), HttpStatus.OK);
+    public ResponseEntity<?> updatePassword(@RequestBody UpdatePasswordDTO updatePasswordDTO) {
+
+        return new ResponseEntity<>(new GenericResponse(HttpStatus.OK, LocalDateTime.now(), this.service.updatePassword(updatePasswordDTO)), HttpStatus.OK);
     }
 }

@@ -83,4 +83,36 @@ export class AuthService {
     formData.append('lastName', lastName);
     return formData;
   }
+
+  public changePassword(
+    oldPassword: string,
+    newPassword: string,
+    repeatedNewPassword: string
+  ) {
+    this.http
+      .put<any>(
+        `${this.baseURL}/change-password`,
+        {
+          oldPassword,
+          newPassword,
+          repeatedNewPassword,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.localStorageService.getItem(
+              'token'
+            )}`,
+          },
+        }
+      )
+      .subscribe({
+        next: (res) => {
+          this.localStorageService.removeItem('token');
+          this.router.navigate(['']);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
 }

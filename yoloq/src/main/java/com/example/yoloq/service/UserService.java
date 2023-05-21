@@ -10,7 +10,7 @@ public interface UserService {
     User findByUsername(String username);
     UserDTO login(String username);
     boolean isTheSamePassword(String enteredPassword, String userPassword);
-    String updatePassword(UpdatePasswordDTO updatePasswordDTO, String token);
+    String updatePassword(UpdatePasswordDTO updatePasswordDTO);
     User findByEmail(String email);
     User findLoggedUser();
 

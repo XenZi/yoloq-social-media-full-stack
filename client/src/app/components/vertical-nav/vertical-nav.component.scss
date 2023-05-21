@@ -12,35 +12,16 @@
   color: var(--dark-gray);
 }
 
-.vertical-nav__item {
-  padding: 15px 0;
-  transition: all 0.2s ease-in-out;
-}
-.vertical-nav__item i {
-  color: var(--dark-gray);
-  margin: 0px 5px;
-}
-
-.vertical-nav__item-title {
-  color: var(--dark-gray);
-}
-
-.vertical-nav__separator {
-  height: 2px;
-  border: 1px solid var(--light-gray);
-}
-
-.vertical-nav__options-button {
-  background-color: transparent;
-  border: none;
-  padding: 5px;
-  cursor: pointer;
-}
-
 .vertical-nav__item--hoverable {
   cursor: pointer;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
   }
+}
+
+.vertical-nav__item {
+  padding: 15px 0;
+  transition: all 0.2s ease-in-out;
+  position: relative;
 }

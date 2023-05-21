@@ -1,4 +1,4 @@
-<form action="" [formGroup]="createGroupForm" (ngSubmit)="onSubmit()">
+<form action="" [formGroup]="updateFormGroup" (ngSubmit)="onSubmit()">
   <div class="form__group">
     <input
       type="text"
@@ -15,5 +15,5 @@
       placeholder="Group description..."
     />
   </div>
-  <app-button size="md" color="blue" text="Create group" class=""></app-button>
+  <app-button size="md" color="blue" text="Update group" class=""></app-button>
 </form>

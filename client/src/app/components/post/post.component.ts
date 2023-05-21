@@ -19,7 +19,7 @@ export class PostComponent {
   }
 
   openModalDialogForDelete() {
-    this.clickedInputNumber = -1;
+    this.clickedInputNumber = 2;
     this.modalService.openModal();
   }
 

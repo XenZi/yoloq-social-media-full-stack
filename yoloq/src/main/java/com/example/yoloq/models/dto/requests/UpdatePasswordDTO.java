@@ -13,10 +13,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdatePasswordDTO {
-    @NotNull
     private String oldPassword;
-    @NotNull
     private String newPassword;
-    @NotNull
     private String repeatedNewPassword;
 }
