@@ -19,6 +19,7 @@ import { PostListComponent } from './components/post-list/post-list.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { UpdatePostFormComponent } from './forms/update-post-form/update-post-form.component';
 import { DeletePostDialogComponent } from './dialogs/delete-post-dialog/delete-post-dialog.component';
+import { CreateGroupFormComponent } from './forms/create-group-form/create-group-form.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { DeletePostDialogComponent } from './dialogs/delete-post-dialog/delete-p
     ModalComponent,
     UpdatePostFormComponent,
     DeletePostDialogComponent,
+    CreateGroupFormComponent,
   ],
   imports: [
     BrowserModule,

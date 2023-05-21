@@ -1,1 +1,24 @@
-<p>vertical-nav works!</p>
+<div class="vertical-nav">
+  <div class="vertical-nav__container flex-col">
+    <h3 class="vertical-nav__title">Groups</h3>
+    <ul class="vertical-nav__list">
+      <li class="vertical-nav__item vertical-nav__item--hoverable">
+        <i class="fa-solid fa-user-group"></i>
+        <span class="vertical-nav__item-title"> Create new group </span>
+      </li>
+      <hr class="vertical-nav__separator" />
+      <li class="vertical-nav__item flex-row justify-between">
+        <div class="flex-row items-center">
+          <i class="fa-solid fa-user-group"></i>
+          <span class="vertical-nav__item-title"> Group name </span>
+        </div>
+        <button class="vertical-nav__options-button">
+          <i class="fa-solid fa-ellipsis-vertical icon--lg"></i>
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
+<app-modal>
+  <app-create-group-form></app-create-group-form>
+</app-modal>

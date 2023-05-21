@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,13 +29,16 @@ public class Group {
     private String description;
 
     @Column(nullable = false)
-    private String creationDate;
+    private LocalDateTime creationDate;
 
     @Column(nullable = false)
     private boolean isSuspended;
 
     @Column
     private String suspendedReason;
+
+    @Column
+    private boolean isDeleted;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "id")
     private Set<GroupRequest> requests = new HashSet<>();
