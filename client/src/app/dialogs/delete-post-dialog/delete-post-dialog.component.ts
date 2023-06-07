@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { ModalService } from 'src/app/services/modal/modal.service';
 import { PostService } from 'src/app/services/post/post.service';
 
 @Component({
@@ -11,17 +10,9 @@ export class DeletePostDialogComponent {
   @Input() text!: string;
   @Input() postID!: number;
 
-  constructor(
-    private modalService: ModalService,
-    private postService: PostService
-  ) {}
+  constructor(private postService: PostService) {}
 
   confirmDelete() {
-    this.modalService.closeModal();
     this.postService.deletePost(this.postID);
-  }
-
-  rejectDelete() {
-    this.modalService.closeModal();
   }
 }

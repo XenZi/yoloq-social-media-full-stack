@@ -16,13 +16,16 @@ import { CreatePostComponent } from './components/create-post/create-post.compon
 import { FriendRequestsListComponent } from './components/friend-requests-list/friend-requests-list.component';
 import { PostComponent } from './components/post/post.component';
 import { PostListComponent } from './components/post-list/post-list.component';
-import { ModalComponent } from './components/modal/modal.component';
 import { UpdatePostFormComponent } from './forms/update-post-form/update-post-form.component';
 import { DeletePostDialogComponent } from './dialogs/delete-post-dialog/delete-post-dialog.component';
 import { CreateGroupFormComponent } from './forms/create-group-form/create-group-form.component';
 import { GroupVerticalNavItemComponent } from './components/group-vertical-nav-item/group-vertical-nav-item.component';
 import { UpdateGroupFormComponent } from './forms/update-group-form/update-group-form.component';
 import { ChangePasswordFormComponent } from './forms/change-password-form/change-password-form.component';
+import { ModalComponent } from './components/modal/modal.component';
+import { ModalService } from './services/modal/modal.service';
+import { ModalWrapperComponent } from './components/modal-wrapper/modal-wrapper.component';
+import { DynamicHostDirective } from './directives/dynamic-host-directive/dynamic-host.directive';
 
 @NgModule({
   declarations: [
@@ -38,13 +41,15 @@ import { ChangePasswordFormComponent } from './forms/change-password-form/change
     FriendRequestsListComponent,
     PostComponent,
     PostListComponent,
-    ModalComponent,
     UpdatePostFormComponent,
     DeletePostDialogComponent,
     CreateGroupFormComponent,
     GroupVerticalNavItemComponent,
     UpdateGroupFormComponent,
     ChangePasswordFormComponent,
+    ModalComponent,
+    ModalWrapperComponent,
+    DynamicHostDirective,
   ],
   imports: [
     BrowserModule,
@@ -53,7 +58,7 @@ import { ChangePasswordFormComponent } from './forms/change-password-form/change
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [ModalService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

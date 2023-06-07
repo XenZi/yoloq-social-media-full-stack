@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Post } from 'src/app/models/entity/Post';
-import { ModalService } from 'src/app/services/modal/modal.service';
 import { PostService } from 'src/app/services/post/post.service';
 
 @Component({
@@ -15,8 +14,7 @@ export class UpdatePostFormComponent {
   updateForm: FormGroup;
   constructor(
     private formBuilder: FormBuilder,
-    private postService: PostService,
-    private modalService: ModalService
+    private postService: PostService
   ) {
     this.updateForm = this.formBuilder.group({
       content: ['', [Validators.required]],
@@ -34,6 +32,5 @@ export class UpdatePostFormComponent {
       this.post.id,
       this.updateForm.get('content')?.value
     );
-    this.modalService.closeModal();
   }
 }
