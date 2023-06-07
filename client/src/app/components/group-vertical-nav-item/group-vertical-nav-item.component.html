@@ -7,7 +7,7 @@
     <i class="fa-solid fa-ellipsis-vertical icon--lg"></i>
   </button>
   <ul class="vertical-nav__options-list vertical-nav__options-list--active">
-    <li class="vertical-nav__option" (click)="openModalForUpdate()">
+    <li class="vertical-nav__option">
       <span class="post__option-title">Update group</span>
     </li>
     <li class="vertical-nav__option" (click)="deleteGroup()">
@@ -15,6 +15,3 @@
     </li>
   </ul>
 </li>
-<app-modal *ngIf="clickedInputNumber == 5">
-  <app-update-group-form [group]="group"></app-update-group-form>
-</app-modal>

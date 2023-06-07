@@ -1,8 +1,3 @@
-<div class="modal" *ngIf="isOpen">
-  <div class="modal__container">
-    <button class="modal__close" (click)="closeModal()">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
-    <ng-content></ng-content>
-  </div>
+<div class="modal">
+  <ng-container #container></ng-container>
 </div>
