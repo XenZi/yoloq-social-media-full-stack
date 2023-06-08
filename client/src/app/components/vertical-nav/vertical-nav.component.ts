@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import Group from 'src/app/models/entity/Group';
+import Group from 'src/app/domains/entity/Group';
 import { GroupService } from 'src/app/services/group/group.service';
 
 @Component({

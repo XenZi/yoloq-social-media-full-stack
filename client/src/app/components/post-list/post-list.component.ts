@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Post } from 'src/app/models/entity/Post';
+import { Post } from 'src/app/domains/entity/Post';
 import { PostService } from 'src/app/services/post/post.service';
 
 @Component({
