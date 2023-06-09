@@ -27,12 +27,6 @@ public class Post {
     @Column(nullable = false)
     private LocalDateTime creationDate;
 
-    // ovo je upitno
-    @ElementCollection
-    @CollectionTable(name="PostImages", joinColumns = @JoinColumn(name="post_id", referencedColumnName = "id"))
-    @Column
-    private Set<String> imagePaths = new HashSet<>();
-
     @Column(nullable = false)
     private boolean isDeleted;
 
@@ -49,8 +43,12 @@ public class Post {
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "id")
     private Set<Report> reports = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.LAZY)
+    private Set<Image> images = new HashSet<>();
+
     @ManyToOne
     private Group postedInGroup;
+
     public void addReport(Report report) {
         reports.add(report);
         report.setReportedPost(this);

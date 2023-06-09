@@ -1,5 +1,6 @@
 package com.example.yoloq.controller;
 import com.example.yoloq.exception.ResourceNotFoundException;
+import com.example.yoloq.models.dto.PostDTO;
 import com.example.yoloq.models.dto.UserDTO;
 import com.example.yoloq.models.dto.requests.LoginRequestDTO;
 import com.example.yoloq.models.dto.requests.RegisterRequestDTO;
@@ -22,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -44,8 +46,8 @@ public class UserController {
         this.userDetailsService = userDetailsService;
     }
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<UserDTO> create(RegisterRequestDTO newUser) {
-        return new ResponseEntity<>(this.service.save(newUser), HttpStatus.CREATED);
+    public ResponseEntity<UserDTO> create(@ModelAttribute RegisterRequestDTO newUser, @RequestParam MultipartFile profileImage) {
+        return new ResponseEntity<>(this.service.save(newUser, profileImage), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")

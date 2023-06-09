@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,11 +22,12 @@ public class FileController {
         this.service = service;
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<FileResponse> fileUpload(
-            @RequestParam("image")MultipartFile image
+            @RequestBody MultipartFile image
             ) {
-        return new ResponseEntity<>(new FileResponse(this.service.uploadImage(image), "Created successfully"), HttpStatus.OK);
+        return new ResponseEntity<>(new FileResponse(this.service.uploadImage(image).getName(), "Created successfully"), HttpStatus.OK);
     }
 
     @GetMapping("{id}")

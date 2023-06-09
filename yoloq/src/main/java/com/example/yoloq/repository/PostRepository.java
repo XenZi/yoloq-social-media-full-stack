@@ -11,9 +11,8 @@ import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
-    @Query("SELECT DISTINCT p FROM Post p LEFT JOIN FETCH p.comments LEFT JOIN FETCH p.imagePaths WHERE p.isDeleted = false\n")
+    @Query("SELECT DISTINCT p FROM Post p LEFT JOIN FETCH p.comments LEFT JOIN FETCH p.images WHERE p.isDeleted = false\n")
     List<Post> findAllWithComments();
-    Optional<Post> findFirstById(int id);
-    @Query("SELECT DISTINCT p FROM Post p LEFT JOIN FETCH p.comments LEFT JOIN FETCH p.imagePaths LEFT JOIN FETCH p.reactions WHERE p.id = ?1")
+    @Query("SELECT DISTINCT p FROM Post p LEFT JOIN FETCH p.comments LEFT JOIN FETCH p.images WHERE p.isDeleted = false AND p.id = ?1")
     Optional<Post> findFirstByIdWithCollections(int id);
 }

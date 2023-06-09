@@ -1,6 +1,4 @@
 package com.example.yoloq.service.impl;
-
-import com.example.yoloq.enums.Role;
 import com.example.yoloq.exception.ResourceNotFoundException;
 import com.example.yoloq.models.Image;
 import com.example.yoloq.models.User;
@@ -9,17 +7,17 @@ import com.example.yoloq.models.dto.requests.RegisterRequestDTO;
 import com.example.yoloq.models.dto.requests.UpdatePasswordDTO;
 import com.example.yoloq.repository.UserRepository;
 import com.example.yoloq.service.FileService;
+import com.example.yoloq.service.ImageService;
+import com.example.yoloq.service.PasswordService;
 import com.example.yoloq.service.UserService;
-import com.example.yoloq.utils.TokenUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 
@@ -27,53 +25,53 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
     private final FileService fileService;
-    private final TokenUtils tokenUtils;
+    private final PasswordService passwordService;
+    private final ImageService imageService;
     @Autowired
     public UserServiceImpl(
             UserRepository userRepository,
-            PasswordEncoder passwordEncoder,
             FileService fileService,
-            TokenUtils tokenUtils) {
+            ImageService imageService,
+            PasswordService passwordService) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
         this.modelMapper = new ModelMapper();
         this.fileService = fileService;
-        this.tokenUtils = tokenUtils;
+        this.imageService = imageService;
+        this.passwordService = passwordService;
     }
 
 
     @Override
-    public UserDTO save(RegisterRequestDTO newUser) {
+    public UserDTO save(RegisterRequestDTO newUser, MultipartFile profileImage) {
         User user = modelMapper.map(newUser, User.class);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        String name = "";
-        if (newUser.getProfileImage() != null) {
-            name = fileService.uploadImage(newUser.getProfileImage());
+        user.setPassword(passwordService.encodePassword(newUser.getPassword()));
+        Image image = null;
+        if (profileImage != null) {
+            image = fileService.uploadImage(profileImage);
         }
-        user.setProfileImage(name);
+        user.setProfileImage(image);
         User registeredUser = userRepository.save(user);
-        return modelMapper.map(registeredUser, UserDTO.class);
+        UserDTO userDTO = modelMapper.map(registeredUser, UserDTO.class);
+        if (image != null) {
+            image.setProfileImageOf(user);
+            imageService.update(image);
+            userDTO.setProfileImage(image.getName());
+        }
+        return userDTO;
     }
 
     @Override
     public User findByUsername(String username) {
         Optional<User> user = userRepository.findFirstByUsername(username);
-        if (user.isEmpty()) {
-            throw new ResourceNotFoundException("Searching user is not found");
-        }
-        return user.get();
+        return user.orElseThrow(() -> new ResourceNotFoundException("Searching user is not found"));
     }
 
     @Override
     public User findByEmail(String email) {
         Optional<User> user = userRepository.findFirstByEmail(email);
-        if (user.isEmpty()) {
-            throw new ResourceNotFoundException("Searching user is not found");
-        }
-        return user.get();
+        return user.orElseThrow(() -> new ResourceNotFoundException("Searching user is not found"));
     }
 
     @Override
@@ -88,9 +86,8 @@ public class UserServiceImpl implements UserService {
         return modelMapper.map(this.findByEmail(email), UserDTO.class);
     }
 
-    @Override
-    public boolean isTheSamePassword(String enteredPassword, String userPassword) {
-        return passwordEncoder.matches(enteredPassword, userPassword);
+    private boolean isTheSamePassword(String enteredPassword, String userPassword) {
+        return passwordService.checkPassword(enteredPassword, userPassword);
     }
 
     @Override
@@ -102,7 +99,7 @@ public class UserServiceImpl implements UserService {
         if (!isTheSamePassword(updatePasswordDTO.getOldPassword(), user.getPassword())) {
             throw new RuntimeException("Old password is wrong");
         }
-        user.setPassword(passwordEncoder.encode(updatePasswordDTO.getNewPassword()));
+        user.setPassword(passwordService.encodePassword(updatePasswordDTO.getNewPassword()));
         this.userRepository.save(user);
         return "You have successfully updated your password";
     }

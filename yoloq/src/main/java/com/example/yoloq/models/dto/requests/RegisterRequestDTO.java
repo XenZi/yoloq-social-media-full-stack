@@ -35,7 +35,4 @@ public class RegisterRequestDTO {
     @NotNull(message = "You must enter password at least 5 characters length")
     @Size(min = 5)
     private String password;
-
-    @Nullable
-    private MultipartFile profileImage;
 }

@@ -24,4 +24,12 @@ public class Image {
     @Column
     private String name;
 
+    @OneToOne
+    private User profileImageOf;
+
+    @ManyToOne
+    private Post postedIn;
+
+
+
 }

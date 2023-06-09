@@ -2,17 +2,18 @@ package com.example.yoloq.service.impl;
 
 
 import com.example.yoloq.exception.ResourceNotFoundException;
+import com.example.yoloq.models.Image;
 import com.example.yoloq.models.Post;
 import com.example.yoloq.models.User;
 import com.example.yoloq.models.dto.PostDTO;
 import com.example.yoloq.models.dto.UserDTO;
 import com.example.yoloq.repository.PostRepository;
 import com.example.yoloq.service.FileService;
+import com.example.yoloq.service.ImageService;
 import com.example.yoloq.service.PostService;
 import com.example.yoloq.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,25 +29,29 @@ public class PostServiceImpl implements PostService {
     private final ModelMapper modelMapper;
     private final UserService userService;
     private final FileService fileService;
+    private final ImageService imageService;
 
     @Autowired
     public PostServiceImpl(PostRepository postRepository,
                            ModelMapper modelMapper,
                            UserService userService,
-                           FileService fileService) {
+                           FileService fileService,
+                           ImageService imageService) {
         this.postRepository = postRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
         this.fileService = fileService;
+        this.imageService = imageService;
     }
 
-    public PostDTO save(PostDTO newPost) {
-        Post post = modelMapper.map(newPost, Post.class);
+    @Override
+    public PostDTO save(PostDTO newPost, MultipartFile[] images) {
+        Post post =  mapPostDTOToEntity(newPost);
         User user = userService.findLoggedUser();
-        if (newPost.getImages() != null) {
+        if (images != null) {
             for (MultipartFile file:
-                    newPost.getImages()) {
-                post.getImagePaths().add(fileService.uploadImage(file));
+                    images) {
+                post.getImages().add(fileService.uploadImage(file));
             }
         }
         post.setPostedBy(user);
@@ -54,6 +59,13 @@ public class PostServiceImpl implements PostService {
         post = postRepository.save(post);
         UserDTO userDTO = modelMapper.map(user, UserDTO.class);
         PostDTO postDTO = modelMapper.map(post, PostDTO.class);
+
+        for (Image image :
+                post.getImages()) {
+            image.setPostedIn(post);
+            postDTO.getImagePaths().add(image.getName());
+            imageService.update(image);
+        }
         postDTO.setPostedBy(userDTO);
         return postDTO;
     }
@@ -65,6 +77,7 @@ public class PostServiceImpl implements PostService {
         for (Post post:
              posts) {
             PostDTO postDTO = modelMapper.map(post, PostDTO.class);
+            postDTO.setImagePaths(imageService.findAllPathsForPost(post));
             postDTO.setPostedBy(modelMapper.map(post.getPostedBy(), UserDTO.class));
             postDTOs.add(postDTO);
         }
@@ -75,9 +88,8 @@ public class PostServiceImpl implements PostService {
     public PostDTO update(PostDTO updateDTO) {
         Post post = this.findOneById(updateDTO.getId());
         post.setContent(updateDTO.getContent());
-        System.out.println(updateDTO.getContent());
         this.postRepository.save(post);
-        return modelMapper.map(post, PostDTO.class);
+        return mapEntityToPostDTO(post);
     }
 
     private Post findOneById(int id) {
@@ -94,8 +106,9 @@ public class PostServiceImpl implements PostService {
             throw new ResourceNotFoundException("Entity not found");
         }
         PostDTO postDTO = modelMapper.map(foundPost.get(), PostDTO.class);
+        postDTO.setImagePaths(imageService.findAllPathsForPost(foundPost.get()));
         postDTO.setComments(postDTO.getComments());
-        return modelMapper.map(foundPost.get(), PostDTO.class);
+        return postDTO;
     }
 
     @Override
@@ -103,6 +116,14 @@ public class PostServiceImpl implements PostService {
         Post post = this.findOneById(id);
         post.setDeleted(true);
         postRepository.save(post);
+        return mapEntityToPostDTO(post);
+    }
+
+    private Post mapPostDTOToEntity(PostDTO postDTO) {
+        return modelMapper.map(postDTO, Post.class);
+    }
+
+    private PostDTO mapEntityToPostDTO(Post post) {
         return modelMapper.map(post, PostDTO.class);
     }
 }

@@ -45,9 +45,6 @@ public class User {
     @Column(nullable = false)
     private String lastName;
 
-    @Column
-    private String profileImage;
-
     @ColumnDefault("false")
     @Column(nullable = false)
     private boolean isDeleted;
@@ -82,35 +79,6 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "id")
     private Set<Banned> bans = new HashSet<>();
 
-    public void addComment(Comment comment) {
-        comments.add(comment);
-        comment.setUser(this);
-    }
-
-    public void removeComment(Comment comment) {
-        comments.remove(comment);
-        comment.setUser(null);
-    }
-
-    public void addPost(Post post) {
-        posts.add(post);
-        post.setPostedBy(this);
-    }
-
-    public void removePost(Post post) {
-        posts.remove(post);
-        post.setPostedBy(null);
-    }
-
-    public void addReaction(Reaction reaction) {
-        reactions.add(reaction);
-        reaction.setReactedBy(this);
-    }
-
-    public void removeReaction(Reaction reaction) {
-        reactions.remove(reaction);
-        reaction.setReactedBy(null);
-    }
-
-
+    @OneToOne
+    private Image profileImage;
 }

@@ -2,6 +2,8 @@ package com.example.yoloq.service.impl;
 
 
 import com.example.yoloq.models.Image;
+import com.example.yoloq.models.Post;
+import com.example.yoloq.models.User;
 import com.example.yoloq.repository.ImageRepository;
 import com.example.yoloq.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,25 +36,29 @@ public class FileServiceImpl implements FileService {
         try {
             Files.createDirectories(root);
         } catch (IOException e) {
-            return;
+            throw new RuntimeException("Error while creating the root directory of the file system");
         }
     }
 
     @Override
-    public String uploadImage(MultipartFile file) {
-        final String originalFileName = file.getOriginalFilename();
+    public Image uploadImage(MultipartFile file) {
+        return uploadImageInternal(file);
+    }
+
+    private Image uploadImageInternal(MultipartFile file) {
         final String randomGeneratedName = UUID.randomUUID().toString();
+        Image image = new Image();
+        image.setName(randomGeneratedName);
         try {
             Path saveTo = Paths.get("uploads/" + randomGeneratedName);
-            Image image = new Image();
-            image.setName(randomGeneratedName);
-            imageRepository.save(image);
+            image = imageRepository.save(image);
             Files.copy(file.getInputStream(), saveTo);
         } catch (IOException e) {
             throw new RuntimeException("Error while saving an image");
         }
-        return randomGeneratedName;
+        return image;
     }
+
 
     @Override
     public Resource getImage(String fileName)  {
