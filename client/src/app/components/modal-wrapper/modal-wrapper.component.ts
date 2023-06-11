@@ -41,6 +41,8 @@ export class ModalWrapperComponent {
   public onDocumentClick(event: MouseEvent): void {
     const clickedInside = this._elementRef.nativeElement.contains(event.target);
     if (!clickedInside && this.modalService.isOpen() && this.counter > 0) {
+      console.log('KLIKNUTO VAN');
+
       this.modalService.close();
       this.counter = 0;
       return;

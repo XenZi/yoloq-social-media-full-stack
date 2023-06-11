@@ -1,5 +1,6 @@
 package com.example.yoloq.service.impl;
 
+import com.example.yoloq.exception.ResourceNotFoundException;
 import com.example.yoloq.models.Image;
 import com.example.yoloq.models.Post;
 import com.example.yoloq.repository.ImageRepository;
@@ -29,5 +30,10 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public Set<String> findAllPathsForPost(Post post) {
         return post.getImages().stream().map(Image::getName).collect(Collectors.toSet());
+    }
+
+    @Override
+    public Image findByName(String name) {
+        return imageRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException("Image not found"));
     }
 }

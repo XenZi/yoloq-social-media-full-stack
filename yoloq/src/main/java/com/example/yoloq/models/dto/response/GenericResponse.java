@@ -14,6 +14,6 @@ import java.time.LocalDateTime;
 @Setter
 public class GenericResponse {
     private HttpStatus status;
-    private LocalDateTime dateTime;
+    private String dateTime;
     private String message;
 }

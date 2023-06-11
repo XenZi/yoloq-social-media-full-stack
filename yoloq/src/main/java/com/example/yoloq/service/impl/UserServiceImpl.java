@@ -82,6 +82,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDTO findLoggedUserForDTOResponse() {
+        return this.modelMapper.map(this.findLoggedUser(), UserDTO.class);
+    }
+
+    @Override
     public UserDTO login(String email) {
         return modelMapper.map(this.findByEmail(email), UserDTO.class);
     }

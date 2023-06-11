@@ -10,8 +10,30 @@
         placeholder="What's on your mind?"
         formControlName="content"
       ></textarea>
-      <div class="flex-row justify-between items-center">
-        <input type="file" />
+      <div class="flex-col justify-between items-center">
+        <input
+          type="file"
+          class="update-form__file-input"
+          (change)="onFileChange($event)"
+          multiple
+        />
+        <div class="flex-row update-post__existing-images">
+          <div
+            class="update-post__box"
+            *ngFor="let image of updatedPost?.imagePaths"
+          >
+            <button
+              class="update-post__image-close"
+              (click)="removeSpecifiedPicture($event, image)"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+            <img
+              class="update-post__image"
+              [src]="'http://localhost:8080/api/file/' + image"
+            />
+          </div>
+        </div>
         <app-button
           size="sm"
           color="blue"

@@ -11,7 +11,7 @@
         formControlName="content"
       ></textarea>
       <div class="flex-row justify-between items-center">
-        <input type="file" />
+        <input type="file" (change)="onFileChange($event)" multiple />
         <app-button
           size="sm"
           color="blue"

@@ -1,0 +1,16 @@
+<div class="options" *ngIf="isVisible">
+  <div class="options__container">
+    <ul class="options__list">
+      <li
+        *ngFor="let item of optionItems"
+        class="options__item"
+        (click)="clickedOnItem(item)"
+      >
+        <i class="{{ item.icon }} options__icon"></i>
+        <span class="option__text">
+          {{ item.text }}
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>

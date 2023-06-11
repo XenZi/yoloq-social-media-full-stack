@@ -2,7 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from '../localstorage/local-storage.service';
 import { Observable } from 'rxjs';
-import { Post } from 'src/app/models/entity/Post';
+import { Post } from 'src/app/domains/entity/Post';
+import { FormArray } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
@@ -22,17 +23,32 @@ export class PostService {
     });
   }
 
-  private formateFormData(content: string): FormData {
+  private formateFormData(content: string, files: FormArray): FormData {
     let formData: FormData = new FormData();
     formData.append('content', content);
+
+    if (Array.from(files as unknown as Array<any>).length !== 0) {
+      Array.from(files as unknown as Array<any>).forEach((file) => {
+        formData.append('images', file);
+      });
+    }
     return formData;
   }
 
-  public createPost(content: string): void {
-    console.log(content);
-
+  private formateFormDataFromPostEntity(post: Post, files: FormArray) {
+    let formData: FormData = new FormData();
+    formData.append('content', post.content);
+    post.imagePaths.forEach((path) => formData.append('imagePaths', path));
+    if (Array.from(files as unknown as Array<any>).length !== 0) {
+      Array.from(files as unknown as Array<any>).forEach((file) => {
+        formData.append('images', file);
+      });
+    }
+    return formData;
+  }
+  public createPost(content: string, files: FormArray): void {
     this.http
-      .post<any>(`${this.baseURL}`, this.formateFormData(content), {
+      .post<any>(`${this.baseURL}`, this.formateFormData(content, files), {
         headers: this.constructHttpHeaders(),
       })
       .subscribe({
@@ -53,11 +69,11 @@ export class PostService {
     });
   }
 
-  public updatePost(id: number, content: string) {
+  public updatePost(post: Post, files: FormArray) {
     this.http
       .put<any>(
-        `${this.baseURL}/${id}`,
-        { id, content },
+        `${this.baseURL}/${post.id}`,
+        this.formateFormDataFromPostEntity(post, files),
         {
           headers: {
             Authorization: `Bearer ${this.localStorageService.getItem(

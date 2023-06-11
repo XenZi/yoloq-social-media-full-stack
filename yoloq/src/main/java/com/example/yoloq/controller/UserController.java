@@ -68,6 +68,12 @@ public class UserController {
     @PutMapping("/change-password")
     public ResponseEntity<?> updatePassword(@RequestBody UpdatePasswordDTO updatePasswordDTO) {
 
-        return new ResponseEntity<>(new GenericResponse(HttpStatus.OK, LocalDateTime.now(), this.service.updatePassword(updatePasswordDTO)), HttpStatus.OK);
+        return new ResponseEntity<>(new GenericResponse(HttpStatus.OK, LocalDateTime.now().toString(), this.service.updatePassword(updatePasswordDTO)), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @GetMapping("/whoami")
+    public ResponseEntity<UserDTO> whoAmI() {
+        return new ResponseEntity<>(this.service.findLoggedUserForDTOResponse(), HttpStatus.OK);
     }
 }

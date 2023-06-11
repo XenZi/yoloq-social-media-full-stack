@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { LocalStorageService } from '../localstorage/local-storage.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import Group from 'src/app/models/entity/Group';
+import Group from 'src/app/domains/entity/Group';
 
 @Injectable({
   providedIn: 'root',

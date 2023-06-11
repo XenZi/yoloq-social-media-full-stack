@@ -13,5 +13,6 @@ public interface UserService {
     String updatePassword(UpdatePasswordDTO updatePasswordDTO);
     User findByEmail(String email);
     User findLoggedUser();
-
+    UserDTO findLoggedUserForDTOResponse();
 }
+

@@ -3,6 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { tap, catchError, throwError, Observable, last } from 'rxjs';
 import { LocalStorageService } from '../localstorage/local-storage.service';
 import { Router } from '@angular/router';
+import { ToastService } from '../toast/toast.service';
+import { ToastNotificationType } from 'src/app/domains/enums/ToastNotificationType';
+import { UserService } from '../user/user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +18,9 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private localStorageService: LocalStorageService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService,
+    private userService: UserService
   ) {}
 
   public login(email: string, password: string): void {
@@ -28,10 +33,23 @@ export class AuthService {
       .subscribe({
         next: (response) => {
           this.localStorageService.setItem('token', response.token);
-          this.router.navigate(['/home']);
+          this.toastService.showToast(
+            'Login info',
+            'You successfuly logged in',
+            ToastNotificationType.Success
+          );
+          this.userService.fetchUserDetailsAfterLogin();
+          setTimeout(() => {
+            this.router.navigate(['/home']);
+          }, 3000);
         },
         error: (error) => {
           console.error(error);
+          this.toastService.showToast(
+            'Login info',
+            error.error.message,
+            ToastNotificationType.Error
+          );
         },
       });
   }

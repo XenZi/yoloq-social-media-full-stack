@@ -9,7 +9,7 @@ import java.util.List;
 public interface PostService {
     PostDTO save(PostDTO newPost, MultipartFile[] images);
     List<PostDTO> getAll();
-    PostDTO update(PostDTO updateDTO);
+    PostDTO update(PostDTO updateDTO, MultipartFile[] images);
     PostDTO findOne(int id);
     PostDTO delete(int id);
 }

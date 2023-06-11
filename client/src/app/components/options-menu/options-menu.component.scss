@@ -1,0 +1,28 @@
+.options__list {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  visibility: visible;
+  opacity: 1;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  background-color: #fff;
+  border-radius: 7px;
+  min-width: 200px;
+  z-index: 15;
+}
+
+.options__item {
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--light-gray);
+  }
+}
+
+.options__icon {
+  margin-right: 15px;
+  color: var(--blue);
+}

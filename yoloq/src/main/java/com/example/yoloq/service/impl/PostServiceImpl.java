@@ -1,7 +1,9 @@
 package com.example.yoloq.service.impl;
 
 
+import com.example.yoloq.exception.IncompleteRequestException;
 import com.example.yoloq.exception.ResourceNotFoundException;
+import com.example.yoloq.exception.UnauthorizedAccessException;
 import com.example.yoloq.models.Image;
 import com.example.yoloq.models.Post;
 import com.example.yoloq.models.User;
@@ -14,11 +16,13 @@ import com.example.yoloq.service.PostService;
 import com.example.yoloq.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -85,10 +89,34 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDTO update(PostDTO updateDTO) {
+    public PostDTO update(PostDTO updateDTO, MultipartFile[] images) {
         Post post = this.findOneById(updateDTO.getId());
+
+        if (!isTheSameUserLoggedIn(post.getPostedBy())) {
+            throw new UnauthorizedAccessException("You are not authorized");
+        }
+
+        if (updateDTO.getContent().equals("") && updateDTO.getContent().length() < 5) {
+            throw new IncompleteRequestException("Content must be more than 5 characters and can't be empty!");
+        }
+
+        post.setImages(new HashSet<>());
+        if (images != null) {
+            for (MultipartFile file:
+                    images) {
+                Image image = fileService.uploadImage(file);
+                post.getImages().add(image);
+                image.setPostedIn(post);
+            }
+        }
+        Post finalPost = post;
+        updateDTO.getImagePaths().forEach(path -> {
+            Image image = imageService.findByName(path);
+            image.setPostedIn(finalPost);
+            finalPost.getImages().add(image);
+        });
         post.setContent(updateDTO.getContent());
-        this.postRepository.save(post);
+        post = this.postRepository.save(post);
         return mapEntityToPostDTO(post);
     }
 
@@ -114,6 +142,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDTO delete(int id) {
         Post post = this.findOneById(id);
+
+        if (!isTheSameUserLoggedIn(post.getPostedBy())) {
+            throw new UnauthorizedAccessException("You are not authorized");
+        }
+
         post.setDeleted(true);
         postRepository.save(post);
         return mapEntityToPostDTO(post);
@@ -125,5 +158,10 @@ public class PostServiceImpl implements PostService {
 
     private PostDTO mapEntityToPostDTO(Post post) {
         return modelMapper.map(post, PostDTO.class);
+    }
+
+    private boolean isTheSameUserLoggedIn(User userFromUpdate) {
+        User user = userService.findLoggedUser();
+        return user.getId() == userFromUpdate.getId();
     }
 }

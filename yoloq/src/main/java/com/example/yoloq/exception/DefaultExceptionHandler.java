@@ -20,7 +20,7 @@ public class DefaultExceptionHandler {
                 request.getRequestURI(),
                 e.getMessage(),
                 HttpStatus.NOT_FOUND.value(),
-                LocalDateTime.now()
+                LocalDateTime.now().toString()
         );
 
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
@@ -32,7 +32,7 @@ public class DefaultExceptionHandler {
                 request.getRequestURI(),
                 e.getMessage(),
                 HttpStatus.FORBIDDEN.value(),
-                LocalDateTime.now()
+                LocalDateTime.now().toString()
         );
 
         return new ResponseEntity<>(apiError, HttpStatus.FORBIDDEN);
@@ -45,12 +45,36 @@ public class DefaultExceptionHandler {
                 request.getRequestURI(),
                 e.getMessage(),
                 HttpStatus.UNAUTHORIZED.value(),
-                LocalDateTime.now()
+                LocalDateTime.now().toString()
         );
 
         return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
     }
 
+
+    @ExceptionHandler(IncompleteRequestException.class)
+    public ResponseEntity<ApiError> handleException(IncompleteRequestException e, HttpServletRequest request) {
+        ApiError apiError = new ApiError(
+                request.getRequestURI(),
+                e.getMessage(),
+                HttpStatus.BAD_REQUEST.value(),
+                LocalDateTime.now().toString()
+        );
+
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UnauthorizedAccessException.class)
+    public ResponseEntity<ApiError> handleException(UnauthorizedAccessException e, HttpServletRequest request) {
+        ApiError apiError = new ApiError(
+                request.getRequestURI(),
+                e.getMessage(),
+                HttpStatus.UNAUTHORIZED.value(),
+                LocalDateTime.now().toString()
+        );
+
+        return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
+    }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleException(Exception e,
                                                     HttpServletRequest request) {
@@ -58,7 +82,7 @@ public class DefaultExceptionHandler {
                 request.getRequestURI(),
                 e.getMessage(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                LocalDateTime.now()
+                LocalDateTime.now().toString()
         );
 
         return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);

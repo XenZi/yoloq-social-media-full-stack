@@ -15,32 +15,26 @@
         </div>
       </div>
       <div class="flex post__options">
-        <button class="post__more" (click)="showOptionsList()">
+        <button class="post__more" (click)="toggleOptionsList()">
           <i class="fa-solid fa-ellipsis-vertical icon--lg"></i>
         </button>
-        <ul
-          class="post__options-list"
-          [ngClass]="{ 'post__options-list--active': optionsListVisible }"
-        >
-          <li class="post__option" (click)="openUpdatePostForm()">
-            <i class="fa-solid fa-pen post__option-icon"></i>
-            <span class="post__option-title">Update post</span>
-          </li>
-          <li class="post__option" (click)="openDialogForPostDelete()">
-            <i class="fa-solid fa-trash post__option-icon"></i>
-            <span class="post__option-title">Delete post</span>
-          </li>
-          <li class="post__option">
-            <i class="fa-solid fa-triangle-exclamation post__option-icon"></i>
-            <span class="post__option-title">Report post</span>
-          </li>
-        </ul>
+        <app-options-menu
+          [optionItems]="options"
+          [isVisible]="optionsListVisible"
+        ></app-options-menu>
       </div>
     </div>
     <div class="post__details">
-      <p class="post__content">
-        {{ post.content }}
-      </p>
+      <div class="post__details">
+        <p class="post__content">{{ post.content }}</p>
+        <div class="post__images">
+          <img
+            class="post__small-image"
+            *ngFor="let image of post.imagePaths"
+            [src]="'http://localhost:8080/api/file/' + image"
+          />
+        </div>
+      </div>
     </div>
     <div class="flex flex-row justify-between items-center">
       <div class="flex-row">

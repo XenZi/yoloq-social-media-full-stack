@@ -26,7 +26,9 @@ import { ModalComponent } from './components/modal/modal.component';
 import { ModalService } from './services/modal/modal.service';
 import { ModalWrapperComponent } from './components/modal-wrapper/modal-wrapper.component';
 import { DynamicHostDirective } from './directives/dynamic-host-directive/dynamic-host.directive';
-
+import { OptionsMenuComponent } from './components/options-menu/options-menu.component';
+import { ToastNotificationComponent } from './components/toast-notification/toast-notification.component';
+import { ToastContainerComponent } from './components/toast-container/toast-container.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,6 +52,9 @@ import { DynamicHostDirective } from './directives/dynamic-host-directive/dynami
     ModalComponent,
     ModalWrapperComponent,
     DynamicHostDirective,
+    OptionsMenuComponent,
+    ToastNotificationComponent,
+    ToastContainerComponent,
   ],
   imports: [
     BrowserModule,

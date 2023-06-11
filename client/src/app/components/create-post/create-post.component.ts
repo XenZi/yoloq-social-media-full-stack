@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PostService } from 'src/app/services/post/post.service';
 
 @Component({
@@ -16,11 +16,25 @@ export class CreatePostComponent {
   ) {
     this.createPostForm = this.formBuilder.group({
       content: ['', [Validators.required]],
+      pictures: this.formBuilder.array([]),
     });
+  }
+
+  onFileChange(event: any) {
+    const files = event.target.files;
+    const fileArray = this.createPostForm.get('pictures') as FormArray;
+    fileArray.clear();
+
+    // Add each file to the form array
+    for (let i = 0; i < files.length; i++) {
+      const fileControl = this.formBuilder.control(files[i]);
+      fileArray.push(fileControl);
+    }
   }
 
   onSubmit() {
     const content = this.createPostForm.get('content');
-    this.postService.createPost(content?.value);
+    const files = this.createPostForm.get('pictures');
+    this.postService.createPost(content?.value, files?.value);
   }
 }

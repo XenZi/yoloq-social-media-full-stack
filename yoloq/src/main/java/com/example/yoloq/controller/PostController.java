@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -24,7 +25,7 @@ public class PostController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<PostDTO> save(@ModelAttribute PostDTO postDTO, @RequestParam MultipartFile[] images) {
+    public ResponseEntity<PostDTO> save(@ModelAttribute PostDTO postDTO, @RequestParam(required = false) MultipartFile[] images) {
         return new ResponseEntity<>(this.postService.save(postDTO, images), HttpStatus.OK);
     }
 
@@ -38,9 +39,9 @@ public class PostController {
         return new ResponseEntity<>(this.postService.findOne(id), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<PostDTO> update(@RequestBody PostDTO postDTO) {
-        return new ResponseEntity<>(this.postService.update(postDTO), HttpStatus.OK);
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<PostDTO> update(@ModelAttribute PostDTO postDTO, @RequestParam(required = false) MultipartFile[] images) {
+        return new ResponseEntity<>(this.postService.update(postDTO, images), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
