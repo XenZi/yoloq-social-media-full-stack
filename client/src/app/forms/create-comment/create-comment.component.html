@@ -1,0 +1,23 @@
+<form
+  action="#"
+  class="form create-comment__form"
+  [formGroup]="createCommentForm"
+>
+  <div class="create-comment__container flex-row">
+    <img
+      src="http://uitheme.net/sociala/images/user-7.png"
+      alt=""
+      class="create-comment__user-avatar"
+    />
+    <div class="create-comment__box flex-col">
+      <textarea
+        class="form__textarea"
+        placeholder="Write your comment..."
+        formControlName="text"
+      ></textarea>
+      <button class="create-comment__button" (click)="onSubmit()">
+        <i class="fa-regular fa-comment"></i>
+      </button>
+    </div>
+  </div>
+</form>

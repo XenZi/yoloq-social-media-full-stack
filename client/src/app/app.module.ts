@@ -7,7 +7,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { LoginFormComponent } from './forms/login-form/login-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonComponent } from './components/button/button.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { RegisterComponent } from './pages/register/register.component';
 import { RegisterFormComponent } from './forms/register-form/register-form.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -29,6 +29,11 @@ import { DynamicHostDirective } from './directives/dynamic-host-directive/dynami
 import { OptionsMenuComponent } from './components/options-menu/options-menu.component';
 import { ToastNotificationComponent } from './components/toast-notification/toast-notification.component';
 import { ToastContainerComponent } from './components/toast-container/toast-container.component';
+import { CreateCommentComponent } from './forms/create-comment/create-comment.component';
+import { TokenInterceptor } from './interceptors/token/token.interceptor';
+import { ShowPostWithCommentsComponent } from './components/show-post-with-comments/show-post-with-comments.component';
+import { CommentComponent } from './components/comment/comment.component';
+import { ReactionsComponent } from './components/reactions/reactions.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,6 +60,10 @@ import { ToastContainerComponent } from './components/toast-container/toast-cont
     OptionsMenuComponent,
     ToastNotificationComponent,
     ToastContainerComponent,
+    CreateCommentComponent,
+    ShowPostWithCommentsComponent,
+    CommentComponent,
+    ReactionsComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,7 +72,14 @@ import { ToastContainerComponent } from './components/toast-container/toast-cont
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [ModalService],
+  providers: [
+    ModalService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

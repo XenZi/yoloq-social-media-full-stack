@@ -50,11 +50,13 @@
           </button>
           <span class="post__reactions-counter"> 3.4K Reactions </span>
         </div>
-        <button class="post__comments-button">
-          <i class="fa-regular fa-comment icon--md"></i>
-          300 Commennts
+        <button class="post__comments-button" (click)="openModalWithComments()">
+          <i class="fa-regular fa-comment icon--md post__comments--icon"></i>
+          {{ post.totalComments }}
         </button>
       </div>
     </div>
+    <app-create-comment [postID]="post.id"></app-create-comment>
+    <app-comment></app-comment>
   </div>
 </div>

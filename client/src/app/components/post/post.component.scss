@@ -72,6 +72,10 @@
   color: #fff;
 }
 
+.post__reactions {
+  padding: 5px 0;
+}
+
 .post__reactions-counter {
   color: var(--dark-gray);
   font-size: 14px;
@@ -89,6 +93,9 @@
   margin: 0 5px;
   text-align: center;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .post__more {
@@ -120,4 +127,8 @@
   &:hover {
     filter: none;
   }
+}
+
+.post__comments--icon {
+  margin-right: 3px;
 }

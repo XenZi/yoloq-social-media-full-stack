@@ -7,6 +7,7 @@ import OptionsItem from 'src/app/domains/model/OptionsItem';
 import { UserService } from 'src/app/services/user/user.service';
 import User from 'src/app/domains/entity/User';
 import { Observable } from 'rxjs';
+import { ShowPostWithCommentsComponent } from '../show-post-with-comments/show-post-with-comments.component';
 
 @Component({
   selector: 'app-post',
@@ -87,5 +88,11 @@ export class PostComponent {
 
   closeOptionsMenu() {
     this.toggleOptionsList();
+  }
+
+  openModalWithComments() {
+    this.modalService.open(ShowPostWithCommentsComponent, {
+      post: this.post,
+    });
   }
 }
