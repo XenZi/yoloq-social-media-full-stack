@@ -52,11 +52,10 @@
         </div>
         <button class="post__comments-button" (click)="openModalWithComments()">
           <i class="fa-regular fa-comment icon--md post__comments--icon"></i>
-          {{ post.totalComments }}
+          {{ totalComments }}
         </button>
       </div>
     </div>
     <app-create-comment [postID]="post.id"></app-create-comment>
-    <app-comment></app-comment>
   </div>
 </div>

@@ -1,0 +1,18 @@
+<div class="update-comment">
+  <div class="update-comment__container flex-column">
+    <div class="flex-row justify-center align-center">
+      <i class="fa-solid fa-pen icon--blue icon--sm"></i>
+      <h4 class="update-comment__title text--light-gray">Update comment</h4>
+    </div>
+    <form [formGroup]="updateForm">
+      <textarea class="form__textarea" formControlName="text"></textarea>
+      <app-button
+        size="md"
+        color="blue"
+        class=""
+        text="Update"
+        (onClick)="submitUpdate()"
+      />
+    </form>
+  </div>
+</div>

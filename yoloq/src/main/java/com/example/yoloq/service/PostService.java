@@ -11,5 +11,9 @@ public interface PostService {
     List<PostDTO> getAll();
     PostDTO update(PostDTO updateDTO, MultipartFile[] images);
     PostDTO findOne(int id);
+    Post findOnePost(int id);
     PostDTO delete(int id);
+    Post mapPostDTOToEntity(PostDTO postDTO);
+    PostDTO mapEntityToPostDTO(Post post);
+
 }

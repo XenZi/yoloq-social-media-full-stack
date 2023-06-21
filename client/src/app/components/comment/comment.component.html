@@ -5,17 +5,14 @@
       alt=""
       class="comment__avatar"
     />
-    <div class="flex-col">
+    <div class="flex-col comment__data">
       <div class="flex-col comment__content">
         <div class="comment__details flex-col">
-          <h6 class="comment__user">user user</h6>
-          <p class="comment__date">2023-05-21</p>
+          <h6 class="comment__user">{{ comment.postedBy.username }}</h6>
+          <p class="comment__date">{{ comment.createdAt.split("T")[0] }}</p>
         </div>
         <p class="comment__text">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Explicabo
-          consequatur aut quibusdam, eaque assumenda voluptates ullam nostrum
-          reiciendis aspernatur dolores consectetur suscipit odio a beatae quas
-          modi sit officiis minima?
+          {{ comment.text }}
         </p>
         <button class="comment__options" (click)="toggleOptionsList()">
           <i class="fa-solid fa-ellipsis-vertical icon--lg"></i>
@@ -27,7 +24,19 @@
       </div>
       <div class="flex-row comment__reactions">
         <app-reactions></app-reactions>
-        <p class="comment__reply">Reply</p>
+        <p class="comment__reply" (click)="replyOnPost()">Reply</p>
+      </div>
+      <div
+        class="flex-row comment__reply-wrapper"
+        [ngClass]="isReplyVisible ? 'comment__reply-wrapper--active' : ''"
+      >
+        <app-reply [comment]="comment" class="w-100 h-100"></app-reply>
+      </div>
+      <div class="flex-col comment__replies">
+        <app-comment
+          *ngFor="let comm of comment.commentReplies"
+          [comment]="comm"
+        ></app-comment>
       </div>
     </div>
   </div>

@@ -21,6 +21,5 @@ public class PostDTO {
     private String creationDate;
     private Set<String> imagePaths = new HashSet<>();
     private UserDTO postedBy;
-    private Set<Comment> comments;
     private Group postedInGroup;
 }

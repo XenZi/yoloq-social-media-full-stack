@@ -1,5 +1,11 @@
 <div class="post-show">
   <div class="post-show__container">
     <app-post [post]="post"></app-post>
+    <div class="post-show__comments">
+      <app-comment
+        *ngFor="let comm of comments | async"
+        [comment]="comm"
+      ></app-comment>
+    </div>
   </div>
 </div>

@@ -10,21 +10,15 @@ import com.example.yoloq.models.User;
 import com.example.yoloq.models.dto.PostDTO;
 import com.example.yoloq.models.dto.UserDTO;
 import com.example.yoloq.repository.PostRepository;
-import com.example.yoloq.service.FileService;
-import com.example.yoloq.service.ImageService;
-import com.example.yoloq.service.PostService;
-import com.example.yoloq.service.UserService;
+import com.example.yoloq.service.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -34,7 +28,6 @@ public class PostServiceImpl implements PostService {
     private final UserService userService;
     private final FileService fileService;
     private final ImageService imageService;
-
     @Autowired
     public PostServiceImpl(PostRepository postRepository,
                            ModelMapper modelMapper,
@@ -135,8 +128,12 @@ public class PostServiceImpl implements PostService {
         }
         PostDTO postDTO = modelMapper.map(foundPost.get(), PostDTO.class);
         postDTO.setImagePaths(imageService.findAllPathsForPost(foundPost.get()));
-        postDTO.setComments(postDTO.getComments());
         return postDTO;
+    }
+
+    @Override
+    public Post findOnePost(int id) {
+        return postRepository.findFirstByIdWithCollections(id).orElseThrow(() -> new EntityNotFoundException("Post not found"));
     }
 
     @Override
@@ -152,11 +149,13 @@ public class PostServiceImpl implements PostService {
         return mapEntityToPostDTO(post);
     }
 
-    private Post mapPostDTOToEntity(PostDTO postDTO) {
+    @Override
+    public Post mapPostDTOToEntity(PostDTO postDTO) {
         return modelMapper.map(postDTO, Post.class);
     }
 
-    private PostDTO mapEntityToPostDTO(Post post) {
+    @Override
+    public PostDTO mapEntityToPostDTO(Post post) {
         return modelMapper.map(post, PostDTO.class);
     }
 

@@ -132,3 +132,13 @@
 .post__comments--icon {
   margin-right: 3px;
 }
+
+.post__view-more {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 16px;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}

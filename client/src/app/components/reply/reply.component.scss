@@ -1,0 +1,28 @@
+.reply {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.reply__avatar {
+  max-width: 30px;
+  max-height: 30px;
+  margin-right: 10px;
+}
+
+.reply__container {
+  width: 100%;
+  position: relative;
+}
+
+.reply__button {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.reply__form {
+  width: 100%;
+}

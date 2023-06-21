@@ -8,6 +8,8 @@ import { UserService } from 'src/app/services/user/user.service';
 import User from 'src/app/domains/entity/User';
 import { Observable } from 'rxjs';
 import { ShowPostWithCommentsComponent } from '../show-post-with-comments/show-post-with-comments.component';
+import Comment from 'src/app/domains/entity/Comment';
+import { CommentService } from 'src/app/services/comment/comment.service';
 
 @Component({
   selector: 'app-post',
@@ -18,15 +20,25 @@ export class PostComponent {
   @Input() post!: Post;
   optionsListVisible = false;
   clickedInputNumber: number = -1;
+  comments: Observable<Comment[]> | undefined;
   options: OptionsItem[] = [];
-
+  totalComments: number | undefined;
   constructor(
     private modalService: ModalService,
-    private userService: UserService
+    private userService: UserService,
+    private commentService: CommentService
   ) {}
 
   ngOnInit() {
     this.initializeOptionList();
+    this.comments = this.commentService.getAllCommentsForPost(this.post.id);
+    if (this.comments === undefined) {
+      this.totalComments = 0;
+      return;
+    }
+    this.comments.subscribe((data) => {
+      this.totalComments = data.length;
+    });
   }
 
   toggleOptionsList() {
@@ -93,6 +105,7 @@ export class PostComponent {
   openModalWithComments() {
     this.modalService.open(ShowPostWithCommentsComponent, {
       post: this.post,
+      comments: this.comments,
     });
   }
 }

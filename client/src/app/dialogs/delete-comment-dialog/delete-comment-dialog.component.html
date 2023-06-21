@@ -1,0 +1,15 @@
+<div class="dialog">
+  <div class="dialog__container">
+    <p class="dialog__message">{{ text }}</p>
+    <div class="flex-row dialog__buttons">
+      <app-button
+        size="md"
+        class="dialog__button"
+        color="success"
+        text="Yes"
+        (click)="confirmDelete()"
+      />
+      <app-button size="md" class="dialog__button" color="error" text="No" />
+    </div>
+  </div>
+</div>

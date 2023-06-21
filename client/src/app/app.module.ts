@@ -34,6 +34,9 @@ import { TokenInterceptor } from './interceptors/token/token.interceptor';
 import { ShowPostWithCommentsComponent } from './components/show-post-with-comments/show-post-with-comments.component';
 import { CommentComponent } from './components/comment/comment.component';
 import { ReactionsComponent } from './components/reactions/reactions.component';
+import { UpdateCommentFormComponent } from './forms/update-comment-form/update-comment-form.component';
+import { DeleteCommentDialogComponent } from './dialogs/delete-comment-dialog/delete-comment-dialog.component';
+import { ReplyComponent } from './components/reply/reply.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -64,6 +67,9 @@ import { ReactionsComponent } from './components/reactions/reactions.component';
     ShowPostWithCommentsComponent,
     CommentComponent,
     ReactionsComponent,
+    UpdateCommentFormComponent,
+    DeleteCommentDialogComponent,
+    ReplyComponent,
   ],
   imports: [
     BrowserModule,

@@ -25,25 +25,25 @@ public class Comment {
     private String text;
 
     @Column(nullable = false)
-    private LocalDateTime timeStamp;
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
     private boolean isDeleted;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id", referencedColumnName = "id")
+    @ManyToOne
     private User user;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private Set<Reaction> reactions = new HashSet<>();
 
     @ManyToOne
+    @JoinColumn(name = "post_id")
     private Post post;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Comment parentComment;
+    @ManyToOne
+    private Comment parent;
 
-    @OneToMany(mappedBy = "parentComment")
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> replies = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "id")
@@ -58,14 +58,15 @@ public class Comment {
         reports.remove(report);
         report.setReportedComment(null);
     }
+
     public void addReply(Comment reply) {
         replies.add(reply);
-        reply.setParentComment(this);
+        reply.setParent(this);
     }
 
     public void removeReply(Comment reply) {
         replies.remove(reply);
-        reply.setParentComment(null);
+        reply.setParent(null);
     }
 
 }

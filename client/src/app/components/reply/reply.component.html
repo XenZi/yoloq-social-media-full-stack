@@ -1,0 +1,19 @@
+<div class="reply">
+  <div class="reply__container flex-row">
+    <img
+      src="http://uitheme.net/sociala/images/user-7.png"
+      alt=""
+      class="reply__avatar"
+    />
+    <form action="" class="reply__form" [formGroup]="createReply">
+      <textarea
+        class="form__textarea form__textarea--smaller"
+        placeholder="Reply on comment..."
+        formControlName="text"
+      ></textarea>
+      <button class="reply__button" (click)="createComment()">
+        <i class="fa-regular fa-comment"></i>
+      </button>
+    </form>
+  </div>
+</div>
