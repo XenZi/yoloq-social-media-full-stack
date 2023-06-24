@@ -91,6 +91,11 @@ public class CommentServiceImpl implements CommentService {
         return modelMapper.map(comment, CommentDTO.class);
     }
 
+    @Override
+    public Comment findOneEntity(Integer id) {
+        return this.commentRepository.findByIdWithCollections(id).orElseThrow(() -> new EntityNotFoundException("Comment not found"));
+    }
+
     private void setAdditionalAttributes(Comment comment, CommentDTO newComment) {
         comment.setUser(userService.findLoggedUser());
         comment.setCreatedAt(LocalDateTime.now());

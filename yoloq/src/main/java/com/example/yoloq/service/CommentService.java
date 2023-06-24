@@ -12,4 +12,5 @@ public interface CommentService {
     Set<CommentDTO> listAllForPost(Integer postID);
     CommentDTO update(CommentDTO updatedComment);
     CommentDTO delete(Integer id);
+    Comment findOneEntity(Integer id);
 }
