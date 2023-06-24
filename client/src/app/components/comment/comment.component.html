@@ -23,7 +23,10 @@
         </button>
       </div>
       <div class="flex-row comment__reactions">
-        <app-reactions></app-reactions>
+        <app-reactions
+          [reactions]="totalReactions"
+          [commentID]="comment.id"
+        ></app-reactions>
         <p class="comment__reply" (click)="replyOnPost()">Reply</p>
       </div>
       <div

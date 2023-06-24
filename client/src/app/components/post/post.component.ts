@@ -10,6 +10,8 @@ import { Observable } from 'rxjs';
 import { ShowPostWithCommentsComponent } from '../show-post-with-comments/show-post-with-comments.component';
 import Comment from 'src/app/domains/entity/Comment';
 import { CommentService } from 'src/app/services/comment/comment.service';
+import Reaction from 'src/app/domains/entity/Reaction';
+import { ReactionService } from 'src/app/services/reaction/reaction.service';
 
 @Component({
   selector: 'app-post',
@@ -23,15 +25,20 @@ export class PostComponent {
   comments: Observable<Comment[]> | undefined;
   options: OptionsItem[] = [];
   totalComments: number | undefined;
+  totalReactions!: Observable<Reaction[]>;
   constructor(
     private modalService: ModalService,
     private userService: UserService,
-    private commentService: CommentService
+    private commentService: CommentService,
+    private reactionService: ReactionService
   ) {}
 
   ngOnInit() {
     this.initializeOptionList();
     this.comments = this.commentService.getAllCommentsForPost(this.post.id);
+    this.totalReactions = this.reactionService.getAllReactionsForPost(
+      this.post.id
+    );
     if (this.comments === undefined) {
       this.totalComments = 0;
       return;

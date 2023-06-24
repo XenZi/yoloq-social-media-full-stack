@@ -38,18 +38,10 @@
     </div>
     <div class="flex flex-row justify-between items-center">
       <div class="flex-row">
-        <div class="post__reactions">
-          <button class="post__reaction post__like">
-            <i class="fa-regular fa-thumbs-up"></i>
-          </button>
-          <button class="post__reaction post__dislike">
-            <i class="fa-regular fa-thumbs-down"></i>
-          </button>
-          <button class="post__reaction post__heart">
-            <i class="fa-regular fa-heart"></i>
-          </button>
-          <span class="post__reactions-counter"> 3.4K Reactions </span>
-        </div>
+        <app-reactions
+          [reactions]="totalReactions"
+          [postID]="post.id"
+        ></app-reactions>
         <button class="post__comments-button" (click)="openModalWithComments()">
           <i class="fa-regular fa-comment icon--md post__comments--icon"></i>
           {{ totalComments }}

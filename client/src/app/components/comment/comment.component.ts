@@ -1,11 +1,14 @@
 import { Component, Input } from '@angular/core';
+import { Observable } from 'rxjs';
 import { DeleteCommentDialogComponent } from 'src/app/dialogs/delete-comment-dialog/delete-comment-dialog.component';
 import Comment from 'src/app/domains/entity/Comment';
+import Reaction from 'src/app/domains/entity/Reaction';
 import User from 'src/app/domains/entity/User';
 import OptionsItem from 'src/app/domains/model/OptionsItem';
 import { UpdateCommentFormComponent } from 'src/app/forms/update-comment-form/update-comment-form.component';
 import { CommentService } from 'src/app/services/comment/comment.service';
 import { ModalService } from 'src/app/services/modal/modal.service';
+import { ReactionService } from 'src/app/services/reaction/reaction.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -17,15 +20,20 @@ export class CommentComponent {
   @Input() comment!: Comment;
   optionsListVisible = false;
   options: OptionsItem[] = [];
+  totalReactions!: Observable<Reaction[]>;
   isReplyVisible: boolean = false;
   constructor(
     private userService: UserService,
     private modalService: ModalService,
-    private commentService: CommentService
+    private commentService: CommentService,
+    private reactionService: ReactionService
   ) {}
 
   ngOnInit() {
     this.initializeOptionList();
+    this.totalReactions = this.reactionService.getAllReactionsForComment(
+      this.comment.id
+    );
   }
 
   toggleOptionsList() {

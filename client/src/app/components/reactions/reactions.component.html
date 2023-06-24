@@ -1,12 +1,35 @@
 <div class="reactions">
-  <button class="reaction like">
+  <button
+    class="reaction like"
+    [ngClass]="{
+      'reaction--bigger':
+        reactionExistance.doesExist && reactionExistance.reactionType === 'LIKE'
+    }"
+    (click)="likeEntity()"
+  >
     <i class="fa-regular fa-thumbs-up"></i>
   </button>
-  <button class="reaction dislike">
+  <button
+    class="reaction dislike"
+    [ngClass]="{
+      'reaction--bigger':
+        reactionExistance.doesExist &&
+        reactionExistance.reactionType === 'DISLIKE'
+    }"
+    (click)="dislikeEntity()"
+  >
     <i class="fa-regular fa-thumbs-down"></i>
   </button>
-  <button class="reaction heart">
+  <button
+    class="reaction heart"
+    [ngClass]="{
+      'reaction--bigger':
+        reactionExistance.doesExist &&
+        reactionExistance.reactionType === 'HEART'
+    }"
+    (click)="heartEntity()"
+  >
     <i class="fa-regular fa-heart"></i>
   </button>
-  <span class="reactions-counter"> 12 Reactions </span>
+  <span class="reactions-counter"> {{ totalReactions }} Reactions </span>
 </div>

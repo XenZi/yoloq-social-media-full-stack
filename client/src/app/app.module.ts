@@ -37,6 +37,9 @@ import { ReactionsComponent } from './components/reactions/reactions.component';
 import { UpdateCommentFormComponent } from './forms/update-comment-form/update-comment-form.component';
 import { DeleteCommentDialogComponent } from './dialogs/delete-comment-dialog/delete-comment-dialog.component';
 import { ReplyComponent } from './components/reply/reply.component';
+import { HeaderComponent } from './components/header/header.component';
+import { NavComponent } from './components/nav/nav.component';
+import { UserDropdownComponent } from './components/user-dropdown/user-dropdown.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,6 +73,9 @@ import { ReplyComponent } from './components/reply/reply.component';
     UpdateCommentFormComponent,
     DeleteCommentDialogComponent,
     ReplyComponent,
+    HeaderComponent,
+    NavComponent,
+    UserDropdownComponent,
   ],
   imports: [
     BrowserModule,
