@@ -1,6 +1,9 @@
 package com.example.yoloq.controller;
 
+import com.example.yoloq.models.GroupAdmin;
+import com.example.yoloq.models.dto.GroupAdminDTO;
 import com.example.yoloq.models.dto.GroupDTO;
+import com.example.yoloq.models.dto.requests.CreateAdminDTO;
 import com.example.yoloq.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,5 +40,15 @@ public class GroupController {
     @DeleteMapping("/{id}")
     public ResponseEntity<GroupDTO> delete(@PathVariable int id) {
         return new ResponseEntity<>(this.groupService.delete(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/admin")
+    public ResponseEntity<GroupAdminDTO> createNewAdmin(@RequestBody CreateAdminDTO createAdminDTO) {
+        return new ResponseEntity<>(this.groupService.createNewAdmin(createAdminDTO.getGroupID(), createAdminDTO.getUserID()), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/admin/{id}")
+    public ResponseEntity<GroupAdminDTO> deleteAdmin(@PathVariable int id) {
+        return new ResponseEntity<>(this.groupService.deleteAdmin(id), HttpStatus.OK);
     }
 }

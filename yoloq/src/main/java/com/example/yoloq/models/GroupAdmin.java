@@ -29,4 +29,7 @@ public class GroupAdmin {
 
     @OneToMany
     private Set<Banned> bans = new HashSet<>();
+
+    @Column
+    private boolean isDeleted;
 }

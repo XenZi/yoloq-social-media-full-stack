@@ -1,6 +1,8 @@
 package com.example.yoloq.service;
 
 import com.example.yoloq.models.Group;
+import com.example.yoloq.models.GroupAdmin;
+import com.example.yoloq.models.dto.GroupAdminDTO;
 import com.example.yoloq.models.dto.GroupDTO;
 
 import java.util.List;
@@ -10,4 +12,6 @@ public interface GroupService {
     GroupDTO save(GroupDTO newGroup);
     GroupDTO update(GroupDTO updatedGroup);
     GroupDTO delete(int id);
+    GroupAdminDTO createNewAdmin(int groupID, int userID);
+    GroupAdminDTO deleteAdmin(int id);
 }

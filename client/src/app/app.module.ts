@@ -40,6 +40,8 @@ import { ReplyComponent } from './components/reply/reply.component';
 import { HeaderComponent } from './components/header/header.component';
 import { NavComponent } from './components/nav/nav.component';
 import { UserDropdownComponent } from './components/user-dropdown/user-dropdown.component';
+import { GroupPageComponent } from './pages/group-page/group-page.component';
+import { ShowUserInGroupComponent } from './components/show-user-in-group/show-user-in-group.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -76,6 +78,8 @@ import { UserDropdownComponent } from './components/user-dropdown/user-dropdown.
     HeaderComponent,
     NavComponent,
     UserDropdownComponent,
+    GroupPageComponent,
+    ShowUserInGroupComponent,
   ],
   imports: [
     BrowserModule,

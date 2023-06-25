@@ -1,0 +1,74 @@
+<div class="group-page">
+  <app-header></app-header>
+  <div class="group-page__container flex-col">
+    <div class="group-page__cover-box">
+      <img
+        src="https://www.facebook.com/images/groups/groups-default-cover-photo-2x.png"
+        alt=""
+        class="group-page__cover"
+      />
+    </div>
+    <div class="group-page__desc">
+      <div class="flex-row items-center justify-between">
+        <h2 class="group-page__title">Test Title</h2>
+        <app-button color="blue" size="md" class="" text="Join group">
+        </app-button>
+      </div>
+      <div class="group-page__options">
+        <ul class="group-page__option-list">
+          <li
+            class="group-page__option-item"
+            [ngClass]="{
+              'group-page__option-item--active': activeNumber == 0
+            }"
+            (click)="changeNumber(0)"
+          >
+            Discussions
+          </li>
+          <li
+            class="group-page__option-item"
+            [ngClass]="{
+              'group-page__option-item--active': activeNumber == 1
+            }"
+            (click)="changeNumber(1)"
+          >
+            Members
+          </li>
+
+          <li
+            class="group-page__option-item"
+            (click)="changeNumber(2)"
+            [ngClass]="{
+              'group-page__option-item--active': activeNumber == 2
+            }"
+          >
+            Group Admins
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="group-page__inner-container flex-row">
+      <div class="group-page__left">
+        <div class="flex flex-col w-100" *ngIf="activeNumber == 0">
+          <app-create-post></app-create-post>
+        </div>
+        <div class="flex flex-col w-100" *ngIf="activeNumber == 1">
+          <h3>test</h3>
+        </div>
+        <div class="flex flex-col w-100" *ngIf="activeNumber == 2">
+          <app-show-user-in-group
+            *ngFor="let admin of groupAdmins"
+            [user]="admin.user"
+            [groupAdmin]="admin"
+            [isOptionsButtonVisible]="isUserAdminOfGroup"
+          ></app-show-user-in-group>
+        </div>
+      </div>
+      <div class="group-page__right">
+        <div class="group-page__right-box">
+          <h3>About group</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

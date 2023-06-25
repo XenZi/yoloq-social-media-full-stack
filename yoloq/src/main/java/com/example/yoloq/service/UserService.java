@@ -14,5 +14,6 @@ public interface UserService {
     User findByEmail(String email);
     User findLoggedUser();
     UserDTO findLoggedUserForDTOResponse();
+    User findById(int id);
 }
 

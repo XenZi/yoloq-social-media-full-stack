@@ -1,0 +1,28 @@
+.show-user-group {
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.show-user-group__container {
+  padding: 16px;
+}
+
+.show-user-group__avatar-box {
+  margin-right: 5px;
+}
+.show-user-group__avatar {
+  height: 30px;
+  width: 30px;
+}
+
+.show-user-group__username {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--light-gray);
+}
+
+.show-user-group__options {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}

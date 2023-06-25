@@ -1,0 +1,18 @@
+<div class="show-user-group">
+  <div class="show-user-group__container flex-row justify-between items-center">
+    <div class="show-user-group__left flex-row items-center">
+      <div class="show-user-group__avatar-box">
+        <img
+          src="http://uitheme.net/sociala/images/user-7.png"
+          alt=""
+          class="show-user-group__avatar"
+        />
+      </div>
+      <h3 class="show-user-group__username">{{ user.username }}</h3>
+    </div>
+    <button class="show-user-group__options" *ngIf="isOptionsButtonVisible">
+      <i class="fa-solid fa-ellipsis-vertical icon--lg"></i>
+      <app-options-menu></app-options-menu>
+    </button>
+  </div>
+</div>

@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 
@@ -84,6 +85,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findLoggedUserForDTOResponse() {
         return this.modelMapper.map(this.findLoggedUser(), UserDTO.class);
+    }
+
+    @Override
+    public User findById(int id) {
+        return this.userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity not found"));
     }
 
     @Override

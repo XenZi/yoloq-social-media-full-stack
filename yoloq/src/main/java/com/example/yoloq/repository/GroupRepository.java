@@ -14,4 +14,5 @@ public interface GroupRepository extends JpaRepository<Group, Integer> {
     @Override
     @Query("SELECT DISTINCT g FROM Group g WHERE g.isDeleted = false")
     List<Group> findAll();
+
 }
