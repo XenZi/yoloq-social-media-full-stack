@@ -12,4 +12,5 @@ public interface GroupAdminService {
     GroupAdmin createEntity(Group group, User user);
     GroupAdmin delete(int id);
     Set<GroupAdminDTO> findAllByGroupID(Integer id);
+    boolean isLoggedUserAdminInGroup(int groupID);
 }

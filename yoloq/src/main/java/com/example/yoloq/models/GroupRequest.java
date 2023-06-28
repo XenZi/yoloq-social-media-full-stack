@@ -21,10 +21,10 @@ public class GroupRequest {
     private Integer id;
 
     @Column
-    private boolean approved;
+    private Boolean approved;
 
     @Column(nullable = false)
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @Column
     private LocalDateTime at;

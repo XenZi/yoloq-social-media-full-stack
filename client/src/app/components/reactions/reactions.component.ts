@@ -30,8 +30,6 @@ export class ReactionsComponent {
 
   likeEntity() {
     if (this.reactionExistance.doesExist) {
-      console.log('test');
-
       if (this.reactionExistance.reactionType === ReactionType.Like) {
         this.reactionService.deleteReaction(
           this.reactionExistance.reactionID as number

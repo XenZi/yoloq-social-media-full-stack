@@ -1,8 +1,9 @@
 package com.example.yoloq.controller;
 
-import com.example.yoloq.models.GroupAdmin;
 import com.example.yoloq.models.dto.GroupAdminDTO;
 import com.example.yoloq.models.dto.GroupDTO;
+import com.example.yoloq.models.dto.GroupRequestDTO;
+import com.example.yoloq.models.dto.requests.GroupJoinDecisionDTO;
 import com.example.yoloq.models.dto.requests.CreateAdminDTO;
 import com.example.yoloq.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("api/groups")
@@ -50,5 +52,25 @@ public class GroupController {
     @DeleteMapping("/admin/{id}")
     public ResponseEntity<GroupAdminDTO> deleteAdmin(@PathVariable int id) {
         return new ResponseEntity<>(this.groupService.deleteAdmin(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/join/{id}")
+    public ResponseEntity<GroupRequestDTO> joinGroup(@PathVariable int id) {
+        return new ResponseEntity<>(this.groupService.joinGroup(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/members/pending/{id}")
+    public ResponseEntity<Set<GroupRequestDTO>> getAllPendingMembersForGroup(@PathVariable int id) {
+        return new ResponseEntity<>(this.groupService.getAllPendingMembersForGroup(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/members/update-join-request")
+    public ResponseEntity<GroupRequestDTO> approveMemberJoin(@RequestBody GroupJoinDecisionDTO approveGroupJoinDTO) {
+        return new ResponseEntity<>(this.groupService.updateGroupJoinRequest(approveGroupJoinDTO), HttpStatus.OK);
+    }
+
+    @GetMapping("/members/{id}")
+    public ResponseEntity<Set<GroupRequestDTO>> findAllMembersForGroup(@PathVariable Integer id) {
+        return new ResponseEntity<>(this.groupService.findAllMembersForGroup(id), HttpStatus.OK);
     }
 }

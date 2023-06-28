@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -72,6 +73,13 @@ public class GroupAdminServiceImpl implements GroupAdminService {
                     return dto;
                 })
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public boolean isLoggedUserAdminInGroup(int groupID) {
+        User user = this.userService.findLoggedUser();
+        Optional<GroupAdmin> foundAdmin = this.groupAdminRepository.findByUserIDAndGroupID(groupID, user.getId());
+        return foundAdmin.isPresent();
     }
 
 
