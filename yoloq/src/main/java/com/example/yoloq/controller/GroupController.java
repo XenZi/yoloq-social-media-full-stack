@@ -3,8 +3,10 @@ package com.example.yoloq.controller;
 import com.example.yoloq.models.dto.GroupAdminDTO;
 import com.example.yoloq.models.dto.GroupDTO;
 import com.example.yoloq.models.dto.GroupRequestDTO;
+import com.example.yoloq.models.dto.PostDTO;
 import com.example.yoloq.models.dto.requests.GroupJoinDecisionDTO;
 import com.example.yoloq.models.dto.requests.CreateAdminDTO;
+import com.example.yoloq.models.dto.requests.SuspendGroupDTO;
 import com.example.yoloq.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,10 @@ public class GroupController {
         return new ResponseEntity<>(this.groupService.save(groupDTO), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<GroupDTO> findOne(@PathVariable int id) {
+        return new ResponseEntity<>(this.groupService.findById(id), HttpStatus.OK);
+    }
     @GetMapping
     public ResponseEntity<List<GroupDTO>> getAll() {
         return new ResponseEntity<>(this.groupService.findAll(), HttpStatus.OK);
@@ -72,5 +78,15 @@ public class GroupController {
     @GetMapping("/members/{id}")
     public ResponseEntity<Set<GroupRequestDTO>> findAllMembersForGroup(@PathVariable Integer id) {
         return new ResponseEntity<>(this.groupService.findAllMembersForGroup(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/suspend")
+    public ResponseEntity<GroupDTO> suspendGroup(@RequestBody SuspendGroupDTO suspendGroupDTO) {
+        return new ResponseEntity<>(this.groupService.suspendGroup(suspendGroupDTO), HttpStatus.OK);
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Set<GroupDTO>> getAllUserGroups(@PathVariable int id) {
+        return new ResponseEntity<>(this.groupService.findAllGroupsForUser(id), HttpStatus.OK);
     }
 }

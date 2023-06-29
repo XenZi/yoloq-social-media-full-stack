@@ -5,6 +5,7 @@ import com.example.yoloq.models.dto.PostDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Set;
 
 public interface PostService {
     PostDTO save(PostDTO newPost, MultipartFile[] images);
@@ -15,5 +16,6 @@ public interface PostService {
     PostDTO delete(int id);
     Post mapPostDTOToEntity(PostDTO postDTO);
     PostDTO mapEntityToPostDTO(Post post);
+    Set<PostDTO> findAllByGroupID(int id);
 
 }

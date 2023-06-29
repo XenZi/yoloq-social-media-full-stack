@@ -49,6 +49,18 @@ public class GroupRequestServiceImpl implements GroupRequestService {
     }
 
     @Override
+    public GroupRequestDTO saveForUser(Group group, int userID) {
+        User user = this.userService.findById(userID);
+        GroupRequest groupRequest = new GroupRequest();
+        groupRequest.setForGroup(group);
+        groupRequest.setRequestFrom(user);
+        groupRequest.setCreatedAt(LocalDateTime.now());
+        groupRequest.setApproved(null);
+        groupRequest = groupRequestRepository.save(groupRequest);
+        return mapToDTO(groupRequest);
+    }
+
+    @Override
     public Set<GroupRequestDTO> findAllMembersByGroupID(int id) {
         return this.groupRequestRepository
                 .findAllByApprovedAndGroupID(id)
@@ -72,6 +84,11 @@ public class GroupRequestServiceImpl implements GroupRequestService {
             .stream()
             .map(this::mapToDTO)
             .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<GroupRequestDTO> findAllGroupsWhereUser(int id) {
+        return this.groupRequestRepository.findAllGroupsWhereUser(id).stream().map(this::mapToDTO).collect(Collectors.toSet());
     }
 
     private GroupRequestDTO mapToDTO(GroupRequest groupRequest) {

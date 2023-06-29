@@ -12,7 +12,7 @@ public interface GroupRepository extends JpaRepository<Group, Integer> {
     Optional<Group> findById(Integer integer);
 
     @Override
-    @Query("SELECT DISTINCT g FROM Group g WHERE g.isDeleted = false")
+    @Query("SELECT DISTINCT g FROM Group g WHERE g.isDeleted = false AND g.isSuspended = false")
     List<Group> findAll();
 
 }

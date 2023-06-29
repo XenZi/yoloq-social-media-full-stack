@@ -4,11 +4,14 @@ import com.example.yoloq.exception.ResourceNotFoundException;
 import com.example.yoloq.exception.UnauthorizedAccessException;
 import com.example.yoloq.models.Group;
 import com.example.yoloq.models.GroupAdmin;
+import com.example.yoloq.models.GroupRequest;
 import com.example.yoloq.models.User;
 import com.example.yoloq.models.dto.GroupAdminDTO;
 import com.example.yoloq.models.dto.GroupDTO;
 import com.example.yoloq.models.dto.GroupRequestDTO;
+import com.example.yoloq.models.dto.PostDTO;
 import com.example.yoloq.models.dto.requests.GroupJoinDecisionDTO;
+import com.example.yoloq.models.dto.requests.SuspendGroupDTO;
 import com.example.yoloq.repository.GroupRepository;
 import com.example.yoloq.service.GroupAdminService;
 import com.example.yoloq.service.GroupRequestService;
@@ -20,10 +23,8 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -67,6 +68,16 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public GroupDTO findById(int id) {
+        return modelMapper.map(this.groupRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Resource not found")), GroupDTO.class);
+    }
+
+    @Override
+    public Group findEntityById(int id) {
+        return this.findOneById(id);
+    }
+
+    @Override
     public GroupDTO update(GroupDTO updatedGroup) {
         Group group = this.findOneById(updatedGroup.getId());
         group.setName(updatedGroup.getName());
@@ -94,6 +105,10 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupAdminDTO deleteAdmin(int id) {
+        GroupAdmin groupAdmin = this.groupAdminService.delete(id);
+        Group group = this.findOneById(groupAdmin.getAdminAt().getId());
+        GroupRequestDTO request = this.groupRequestService.saveForUser(group, groupAdmin.getUser().getId());
+        this.groupRequestService.update(true, request.getId());
         return modelMapper.map(this.groupAdminService.delete(id), GroupAdminDTO.class);
     }
 
@@ -124,6 +139,35 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public Set<GroupRequestDTO> findAllMembersForGroup(int id) {
         return this.groupRequestService.findAllMembersByGroupID(id);
+    }
+
+    @Override
+    public GroupDTO suspendGroup(SuspendGroupDTO suspendGroupDTO) {
+        Group group = this.findOneById(suspendGroupDTO.getGroupID());
+        group.setSuspended(true);
+        group.setSuspendedReason(suspendGroupDTO.getSuspendedReason());
+        groupAdminService.removeAllAdminsByGroupID(group.getId());
+        group = groupRepository.save(group);
+        return modelMapper.map(group, GroupDTO.class);
+    }
+
+    @Override
+    public Set<GroupDTO> findAllGroupsForUser(int id) {
+        List<GroupAdminDTO> allAdminPositions = this.groupAdminService.findAllWhereUserIsAdmin(id);
+        List<GroupDTO> groupDTOS = allAdminPositions.stream().map(groupAdminDTO -> {
+            Group group = this.findEntityById(groupAdminDTO.getGroupID());
+            return modelMapper.map(group, GroupDTO.class);
+        }).toList();
+
+        List<GroupDTO> secondList = this.groupRequestService.findAllGroupsWhereUser(id).stream().map(request -> {
+            Group group = this.findOneById(request.getForGroup().getId());
+            return modelMapper.map(group, GroupDTO.class);
+        }).toList();
+
+        List<GroupDTO> joinedList = new ArrayList<>();
+        joinedList.addAll(secondList);
+        joinedList.addAll(groupDTOS);
+        return new HashSet<>(joinedList);
     }
 
     private Group findOneById(int id) {

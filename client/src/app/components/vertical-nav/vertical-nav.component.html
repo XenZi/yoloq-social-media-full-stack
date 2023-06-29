@@ -1,12 +1,15 @@
 <div class="vertical-nav">
   <div class="vertical-nav__container flex-col">
     <ul class="vertical-nav__list">
-      <li class="vertical-nav__item vertical-nav__item--hoverable">
+      <li
+        class="vertical-nav__item vertical-nav__item--hoverable"
+        (click)="createGroup()"
+      >
         <i class="fa-solid fa-user-group"></i>
         <span class="vertical-nav__item-title"> Create new group </span>
       </li>
       <hr class="vertical-nav__separator" />
-      <li *ngFor="let group of groups | async">
+      <li *ngFor="let group of groups" (click)="navigateToTheGroup(group.id)">
         <app-group-vertical-nav-item [group]="group" />
       </li>
     </ul>

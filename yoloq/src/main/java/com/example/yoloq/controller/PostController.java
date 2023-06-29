@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("api/posts")
@@ -47,5 +48,10 @@ public class PostController {
     @DeleteMapping("/{id}")
     public ResponseEntity<PostDTO> delete(@PathVariable int id) {
         return new ResponseEntity<>(this.postService.delete(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/group/{id}")
+    public ResponseEntity<Set<PostDTO>> getAllPostsByGroupID(@PathVariable Integer id) {
+        return new ResponseEntity<>(this.postService.findAllByGroupID(id), HttpStatus.OK);
     }
 }

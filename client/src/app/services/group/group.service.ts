@@ -143,4 +143,8 @@ export class GroupService {
       },
     });
   }
+
+  public getAllGroupsForUser(userID: number): Observable<Group[]> {
+    return this.http.get<Group[]>(`${this.baseURL}/user/${userID}`);
+  }
 }

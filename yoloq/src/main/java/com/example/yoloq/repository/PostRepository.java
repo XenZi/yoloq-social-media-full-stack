@@ -15,4 +15,6 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     List<Post> findAllWithComments();
     @Query("SELECT DISTINCT p FROM Post p LEFT JOIN FETCH p.comments LEFT JOIN FETCH p.images WHERE p.isDeleted = false AND p.id = ?1")
     Optional<Post> findFirstByIdWithCollections(int id);
+    @Query("SELECT DISTINCT p FROM Post p LEFT JOIN FETCH p.comments LEFT JOIN FETCH p.images WHERE p.isDeleted = false AND p.postedInGroup.id = ?1")
+    List<Post> findAllByGroupID(int id);
 }

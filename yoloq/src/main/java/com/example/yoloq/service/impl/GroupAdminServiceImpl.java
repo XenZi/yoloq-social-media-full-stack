@@ -7,12 +7,14 @@ import com.example.yoloq.models.dto.GroupAdminDTO;
 import com.example.yoloq.models.dto.UserDTO;
 import com.example.yoloq.repository.GroupAdminRepository;
 import com.example.yoloq.service.GroupAdminService;
+import com.example.yoloq.service.GroupRequestService;
 import com.example.yoloq.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,12 +24,14 @@ import java.util.stream.Collectors;
 public class GroupAdminServiceImpl implements GroupAdminService {
 
     private final GroupAdminRepository groupAdminRepository;
+    private final GroupRequestService groupRequestService;
     private final UserService userService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public GroupAdminServiceImpl(GroupAdminRepository groupAdminRepository, UserService userService, ModelMapper modelMapper) {
+    public GroupAdminServiceImpl(GroupAdminRepository groupAdminRepository, GroupRequestService groupRequestService, UserService userService, ModelMapper modelMapper) {
         this.groupAdminRepository = groupAdminRepository;
+        this.groupRequestService = groupRequestService;
         this.userService = userService;
         this.modelMapper = modelMapper;
     }
@@ -80,6 +84,24 @@ public class GroupAdminServiceImpl implements GroupAdminService {
         User user = this.userService.findLoggedUser();
         Optional<GroupAdmin> foundAdmin = this.groupAdminRepository.findByUserIDAndGroupID(groupID, user.getId());
         return foundAdmin.isPresent();
+    }
+
+    @Override
+    public Set<GroupAdminDTO> removeAllAdminsByGroupID(int groupID) {
+        return groupAdminRepository.findAllByGroupID(groupID).stream().map(groupAdmin -> {
+            groupAdmin.setDeleted(true);
+            groupAdmin = groupAdminRepository.save(groupAdmin);
+            return modelMapper.map(groupAdmin, GroupAdminDTO.class);
+        }).collect(Collectors.toSet());
+    }
+
+    @Override
+    public List<GroupAdminDTO> findAllWhereUserIsAdmin(int userID) {
+        return groupAdminRepository.findAllByUserID(userID).stream().map(groupAdmin -> {
+            GroupAdminDTO groupAdminDTO = modelMapper.map(groupAdmin, GroupAdminDTO.class);
+            groupAdminDTO.setGroupID(groupAdmin.getAdminAt().getId());
+            return groupAdminDTO;
+        }).collect(Collectors.toList());
     }
 
 

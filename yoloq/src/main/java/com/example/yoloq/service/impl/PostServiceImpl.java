@@ -4,9 +4,11 @@ package com.example.yoloq.service.impl;
 import com.example.yoloq.exception.IncompleteRequestException;
 import com.example.yoloq.exception.ResourceNotFoundException;
 import com.example.yoloq.exception.UnauthorizedAccessException;
+import com.example.yoloq.models.Group;
 import com.example.yoloq.models.Image;
 import com.example.yoloq.models.Post;
 import com.example.yoloq.models.User;
+import com.example.yoloq.models.dto.GroupDTO;
 import com.example.yoloq.models.dto.PostDTO;
 import com.example.yoloq.models.dto.UserDTO;
 import com.example.yoloq.repository.PostRepository;
@@ -19,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -28,17 +31,19 @@ public class PostServiceImpl implements PostService {
     private final UserService userService;
     private final FileService fileService;
     private final ImageService imageService;
+    private final GroupService groupService;
     @Autowired
     public PostServiceImpl(PostRepository postRepository,
                            ModelMapper modelMapper,
                            UserService userService,
                            FileService fileService,
-                           ImageService imageService) {
+                           ImageService imageService, GroupService groupService) {
         this.postRepository = postRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
         this.fileService = fileService;
         this.imageService = imageService;
+        this.groupService = groupService;
     }
 
     @Override
@@ -51,18 +56,26 @@ public class PostServiceImpl implements PostService {
                 post.getImages().add(fileService.uploadImage(file));
             }
         }
+        if(newPost.getPostedInGroupID() != null) {
+            Group group = this.groupService.findEntityById(newPost.getPostedInGroupID());
+            post.setPostedInGroup(group);
+        }
         post.setPostedBy(user);
         post.setCreationDate(LocalDateTime.now());
         post = postRepository.save(post);
         UserDTO userDTO = modelMapper.map(user, UserDTO.class);
         PostDTO postDTO = modelMapper.map(post, PostDTO.class);
-
         for (Image image :
                 post.getImages()) {
             image.setPostedIn(post);
             postDTO.getImagePaths().add(image.getName());
             imageService.update(image);
         }
+        if (post.getPostedInGroup() != null) {
+            GroupDTO groupDTO = modelMapper.map(post.getPostedInGroup(), GroupDTO.class);
+            postDTO.setPostedInGroup(groupDTO);
+        }
+
         postDTO.setPostedBy(userDTO);
         return postDTO;
     }
@@ -81,6 +94,15 @@ public class PostServiceImpl implements PostService {
         return postDTOs;
     }
 
+    @Override
+    public Set<PostDTO> findAllByGroupID(int id) {
+        return this.postRepository.findAllByGroupID(id).stream().map(post -> {
+            PostDTO postDTO = modelMapper.map(post, PostDTO.class);
+            postDTO.setImagePaths(imageService.findAllPathsForPost(post));
+            postDTO.setPostedBy(modelMapper.map(post.getPostedBy(), UserDTO.class));
+            return postDTO;
+        }).collect(Collectors.toSet());
+    }
     @Override
     public PostDTO update(PostDTO updateDTO, MultipartFile[] images) {
         Post post = this.findOneById(updateDTO.getId());
@@ -158,6 +180,8 @@ public class PostServiceImpl implements PostService {
     public PostDTO mapEntityToPostDTO(Post post) {
         return modelMapper.map(post, PostDTO.class);
     }
+
+
 
     private boolean isTheSameUserLoggedIn(User userFromUpdate) {
         User user = userService.findLoggedUser();

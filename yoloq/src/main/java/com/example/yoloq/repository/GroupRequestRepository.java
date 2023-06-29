@@ -23,4 +23,7 @@ public interface GroupRequestRepository extends JpaRepository<GroupRequest, Inte
 
     @Query("SELECT DISTINCT r FROM GroupRequest r WHERE r.approved = true AND r.forGroup.id = ?1")
     List<GroupRequest> findAllByApprovedAndGroupID(int groupID);
+
+    @Query("SELECT DISTINCT r FROM GroupRequest r WHERE r.approved = true AND r.requestFrom.id = ?1")
+    List<GroupRequest> findAllGroupsWhereUser(int id);
 }

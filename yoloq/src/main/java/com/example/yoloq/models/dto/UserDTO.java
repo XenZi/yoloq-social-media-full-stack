@@ -29,4 +29,5 @@ public class UserDTO {
 
     @NotNull
     private String profileImage;
+    private Role role;
 }
