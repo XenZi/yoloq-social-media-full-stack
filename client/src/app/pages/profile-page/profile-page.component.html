@@ -1,0 +1,38 @@
+<div class="profile">
+  <app-header></app-header>
+  <div class="profile__wrapper">
+    <div class="profile__container flex-col">
+      <div class="profile__base-details">
+        <div class="flex-row justify-between items-center">
+          <div class="flex-row">
+            <img
+              src="http://uitheme.net/sociala/images/user-7.png"
+              alt=""
+              class="profile__avatar"
+            />
+            <div class="flex-col justify-center">
+              <h2 class="profile__username">Username</h2>
+              <h4 class="profile__name">First Last</h4>
+            </div>
+          </div>
+          <app-button
+            size="md"
+            color="blue"
+            text="Add friend"
+            class=""
+          ></app-button>
+        </div>
+      </div>
+      <div class="profile__body flex-row">
+        <div class="profile__left">
+          <div class="profile__box">
+            <h3 class="profile__box-title">Groups</h3>
+          </div>
+        </div>
+        <div class="profile__right">
+          <app-create-post></app-create-post>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

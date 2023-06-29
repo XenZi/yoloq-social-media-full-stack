@@ -83,3 +83,18 @@
   padding: 16px;
   border-radius: 8px;
 }
+
+.group-page__admin-options {
+  height: 100%;
+  position: relative;
+}
+
+.group-page__admin-options-button {
+  padding: 8px;
+  border-radius: 8px;
+  background-color: var(--blue);
+  border: 1px solid var(--blue);
+  color: #fff;
+  margin-left: 5px;
+  cursor: pointer;
+}

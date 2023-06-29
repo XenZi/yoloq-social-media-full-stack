@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import Group from 'src/app/domains/entity/Group';
 import { PostService } from 'src/app/services/post/post.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { PostService } from 'src/app/services/post/post.service';
 })
 export class CreatePostComponent {
   createPostForm: FormGroup;
-
+  @Input() group!: Group | null;
   constructor(
     private formBuilder: FormBuilder,
     private postService: PostService
@@ -35,6 +36,10 @@ export class CreatePostComponent {
   onSubmit() {
     const content = this.createPostForm.get('content');
     const files = this.createPostForm.get('pictures');
+    if (this.group != null) {
+      this.postService.createPost(content?.value, files?.value, this.group.id);
+      return;
+    }
     this.postService.createPost(content?.value, files?.value);
   }
 }

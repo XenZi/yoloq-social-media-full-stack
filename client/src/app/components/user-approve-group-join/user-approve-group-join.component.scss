@@ -1,0 +1,22 @@
+.user-approve-group-join {
+  width: 100%;
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.user-approve-group-join__container {
+  width: 100%;
+}
+
+.user-approve-group-join__box {
+  &:last-of-type > * {
+    margin: 0 5px;
+  }
+}
+
+.user-approve-group-join__avatar {
+  height: 30px;
+  width: 30px;
+  margin-right: 10px;
+}

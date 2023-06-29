@@ -10,11 +10,36 @@
     </div>
     <div class="group-page__desc">
       <div class="flex-row items-center justify-between">
-        <h2 class="group-page__title">Test Title</h2>
-        <app-button color="blue" size="md" class="" text="Join group">
-        </app-button>
+        <h2 class="group-page__title" *ngIf="group">{{ group.name }}</h2>
+        <div class="flex-row items-center">
+          <app-button
+            color="blue"
+            size="md"
+            class=""
+            [text]="
+              isUserInGroup || isUserAdminOfGroup ? 'Leave group' : 'Join group'
+            "
+            (onClick)="groupButtonOperation()"
+          >
+          </app-button>
+          <div class="group-page__admin-options" *ngIf="isUserAdminOfGroup">
+            <button
+              class="group-page__admin-options-button"
+              (click)="toggleAdminOptionListVisible()"
+            >
+              <i class="fa-solid fa-ellipsis-vertical icon--lg"></i>
+            </button>
+            <app-options-menu
+              [isVisible]="isAdminOptionVisible"
+              [optionItems]="adminOptionItems"
+            ></app-options-menu>
+          </div>
+        </div>
       </div>
-      <div class="group-page__options">
+      <div
+        class="group-page__options"
+        *ngIf="isUserAdminOfGroup || isUserInGroup"
+      >
         <ul class="group-page__option-list">
           <li
             class="group-page__option-item"
@@ -44,16 +69,30 @@
           >
             Group Admins
           </li>
+          <li
+            class="group-page__option-item"
+            (click)="changeNumber(3)"
+            [ngClass]="{
+              'group-page__option-item--active': activeNumber == 3
+            }"
+          >
+            Pending Requests
+          </li>
         </ul>
       </div>
     </div>
     <div class="group-page__inner-container flex-row">
       <div class="group-page__left">
         <div class="flex flex-col w-100" *ngIf="activeNumber == 0">
-          <app-create-post></app-create-post>
+          <app-create-post [group]="group"></app-create-post>
+          <app-post *ngFor="let post of groupPosts" [post]="post"></app-post>
         </div>
         <div class="flex flex-col w-100" *ngIf="activeNumber == 1">
-          <h3>test</h3>
+          <app-show-user-in-group
+            *ngFor="let user of groupMembers"
+            [user]="user.requestFrom"
+            [isOptionsButtonVisible]="isUserAdminOfGroup"
+          ></app-show-user-in-group>
         </div>
         <div class="flex flex-col w-100" *ngIf="activeNumber == 2">
           <app-show-user-in-group
@@ -63,10 +102,20 @@
             [isOptionsButtonVisible]="isUserAdminOfGroup"
           ></app-show-user-in-group>
         </div>
+        <div class="flex flex-col w-100" *ngIf="activeNumber == 3">
+          <app-user-approve-group-join
+            *ngFor="let groupUser of groupPendingRequests"
+            [user]="groupUser.requestFrom"
+            [groupMember]="groupUser"
+          ></app-user-approve-group-join>
+        </div>
       </div>
       <div class="group-page__right">
-        <div class="group-page__right-box">
+        <div class="group-page__right-box" *ngIf="group">
           <h3>About group</h3>
+          <p class="group__description">
+            {{ group.description }}
+          </p>
         </div>
       </div>
     </div>

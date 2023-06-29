@@ -10,9 +10,16 @@
       </div>
       <h3 class="show-user-group__username">{{ user.username }}</h3>
     </div>
-    <button class="show-user-group__options" *ngIf="isOptionsButtonVisible">
+    <button
+      class="show-user-group__options"
+      (click)="setOptionItemsVisible()"
+      *ngIf="isOptionsButtonVisible"
+    >
       <i class="fa-solid fa-ellipsis-vertical icon--lg"></i>
-      <app-options-menu></app-options-menu>
+      <app-options-menu
+        [isVisible]="isOptionItemsVisible"
+        [optionItems]="optionItems"
+      ></app-options-menu>
     </button>
   </div>
 </div>

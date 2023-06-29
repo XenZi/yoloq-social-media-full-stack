@@ -1,6 +1,7 @@
 .show-user-group {
   background-color: #fff;
   border-radius: 8px;
+  margin: 5px 0;
 }
 
 .show-user-group__container {
@@ -25,4 +26,5 @@
   background: transparent;
   border: none;
   cursor: pointer;
+  position: relative;
 }

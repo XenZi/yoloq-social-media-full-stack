@@ -42,6 +42,9 @@ import { NavComponent } from './components/nav/nav.component';
 import { UserDropdownComponent } from './components/user-dropdown/user-dropdown.component';
 import { GroupPageComponent } from './pages/group-page/group-page.component';
 import { ShowUserInGroupComponent } from './components/show-user-in-group/show-user-in-group.component';
+import { UserApproveGroupJoinComponent } from './components/user-approve-group-join/user-approve-group-join.component';
+import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
+import { SuspendGroupFormComponent } from './forms/suspend-group-form/suspend-group-form.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -80,6 +83,9 @@ import { ShowUserInGroupComponent } from './components/show-user-in-group/show-u
     UserDropdownComponent,
     GroupPageComponent,
     ShowUserInGroupComponent,
+    UserApproveGroupJoinComponent,
+    ProfilePageComponent,
+    SuspendGroupFormComponent,
   ],
   imports: [
     BrowserModule,

@@ -23,10 +23,16 @@ export class PostService {
     });
   }
 
-  private formateFormData(content: string, files: FormArray): FormData {
+  private formateFormData(
+    content: string,
+    files: FormArray,
+    postedInGroupID: number | null
+  ): FormData {
     let formData: FormData = new FormData();
     formData.append('content', content);
-
+    if (postedInGroupID != null) {
+      formData.append('postedInGroupID', postedInGroupID as unknown as string);
+    }
     if (Array.from(files as unknown as Array<any>).length !== 0) {
       Array.from(files as unknown as Array<any>).forEach((file) => {
         formData.append('images', file);
@@ -46,11 +52,19 @@ export class PostService {
     }
     return formData;
   }
-  public createPost(content: string, files: FormArray): void {
+  public createPost(
+    content: string,
+    files: FormArray,
+    postedInGroupID: number | null = null
+  ): void {
     this.http
-      .post<any>(`${this.baseURL}`, this.formateFormData(content, files), {
-        headers: this.constructHttpHeaders(),
-      })
+      .post<any>(
+        `${this.baseURL}`,
+        this.formateFormData(content, files, postedInGroupID),
+        {
+          headers: this.constructHttpHeaders(),
+        }
+      )
       .subscribe({
         next: (response) => {
           console.log(response);
@@ -107,5 +121,9 @@ export class PostService {
           console.log(error);
         },
       });
+  }
+
+  public getAllPostsForGroup(groupID: number): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.baseURL}/group/${groupID}`);
   }
 }

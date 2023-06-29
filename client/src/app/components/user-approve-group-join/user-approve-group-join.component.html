@@ -1,0 +1,30 @@
+<div class="user-approve-group-join">
+  <div
+    class="user-approve-group-join__container flex-row justify-between items-center"
+  >
+    <div class="user-approve-group-join__box flex-row items-center">
+      <img
+        src="http://uitheme.net/sociala/images/user-7.png"
+        alt=""
+        class="user-approve-group-join__avatar"
+      />
+      <h5 class="user-approve-group-join__username">{{ user.username }}</h5>
+    </div>
+    <div class="user-approve-group-join__box flex-row items-center">
+      <app-button
+        class=""
+        text="Approve"
+        color="success"
+        size="sm"
+        (onClick)="approveUserJoinGroup()"
+      ></app-button>
+      <app-button
+        class=""
+        text="Decline"
+        color="error"
+        size="sm"
+        (onClick)="declineUserJoinGroup()"
+      ></app-button>
+    </div>
+  </div>
+</div>

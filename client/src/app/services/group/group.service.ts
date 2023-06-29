@@ -3,6 +3,8 @@ import { LocalStorageService } from '../localstorage/local-storage.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import Group from 'src/app/domains/entity/Group';
+import { GroupMember } from 'src/app/domains/entity/GroupMember';
+import { GroupAdmin } from 'src/app/domains/entity/GroupAdmin';
 
 @Injectable({
   providedIn: 'root',
@@ -77,6 +79,68 @@ export class GroupService {
   public getAll(): Observable<Group[]> {
     return this.http.get<Group[]>(this.baseURL, {
       headers: this.headers,
+    });
+  }
+
+  public getAllMembersInGroup(groupID: number): Observable<GroupMember[]> {
+    return this.http.get<GroupMember[]>(`${this.baseURL}/members/${groupID}`);
+  }
+
+  public getOne(id: number): Observable<Group> {
+    return this.http.get<Group>(`${this.baseURL}/${id}`);
+  }
+
+  public joinGroup(groupID: number): Observable<GroupMember> {
+    return this.http.post<GroupMember>(`${this.baseURL}/join/${groupID}`, {});
+  }
+
+  public getAllPendingMembersInGroup(
+    groupID: number
+  ): Observable<GroupMember[]> {
+    return this.http.get<GroupMember[]>(
+      `${this.baseURL}/members/pending/${groupID}`
+    );
+  }
+
+  public updateGroupJoin(
+    groupID: number,
+    requestID: number,
+    decision: boolean
+  ): Observable<GroupMember> {
+    return this.http.post<GroupMember>(
+      `${this.baseURL}/members/update-join-request`,
+      {
+        groupID,
+        requestID,
+        decision,
+      }
+    );
+  }
+
+  public suspendGroup(groupID: number, suspendedReason: string) {
+    return this.http
+      .post<Group>(`${this.baseURL}/suspend`, {
+        groupID,
+        suspendedReason,
+      })
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
+
+  public removeAdmin(adminID: number) {
+    return this.http.delete(`${this.baseURL}/admin/${adminID}`).subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+      error: (err) => {
+        console.log(err);
+      },
     });
   }
 }

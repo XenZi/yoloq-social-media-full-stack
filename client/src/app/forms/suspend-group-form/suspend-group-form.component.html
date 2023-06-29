@@ -1,0 +1,18 @@
+<form action="" [formGroup]="suspendGroupForm">
+  <h3 class="suspend-group-form__title">Suspend group</h3>
+  <div class="form__group">
+    <textarea
+      type="text"
+      class="form__textarea"
+      placeholder="Suspend reason.."
+      formControlName="reason"
+    ></textarea>
+    <app-button
+      size="md"
+      color="blue"
+      class=""
+      text="Suspend"
+      (onClick)="onSubmit()"
+    ></app-button>
+  </div>
+</form>
