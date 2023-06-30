@@ -76,4 +76,14 @@ public class UserController {
     public ResponseEntity<UserDTO> whoAmI() {
         return new ResponseEntity<>(this.service.findLoggedUserForDTOResponse(), HttpStatus.OK);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> updateDetails(@RequestBody UserDTO userDTO) {
+        return new ResponseEntity<>(this.service.updateDetails(userDTO), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> getUserDetails(@PathVariable Integer id) {
+        return new ResponseEntity<>(this.service.findUserById(id), HttpStatus.OK);
+    }
 }

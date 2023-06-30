@@ -24,7 +24,7 @@ const routes: Routes = [
     component: GroupPageComponent,
   },
   {
-    path: 'profile',
+    path: 'profile/:id',
     component: ProfilePageComponent,
   },
 ];

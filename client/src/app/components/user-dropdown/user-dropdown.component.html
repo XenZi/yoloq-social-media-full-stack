@@ -2,5 +2,25 @@
   <img
     src="http://uitheme.net/sociala/images/user-7.png"
     class="user-dropdown__avatar"
+    (click)="changeVisibleDropdown()"
   />
+  <div
+    class="user-dropdown__menu"
+    [ngClass]="isVisible ? 'user-dropdown__menu--active' : ''"
+  >
+    <ul class="user-dropdown__list">
+      <li class="user-dropdown__item" (click)="goToProfilePage()">
+        <i class="fa-solid fa-user dropdown__icon"></i>
+        Profile
+      </li>
+      <li class="user-dropdown__item" (click)="openUserUpdateModal()">
+        <i class="fa-solid fa-pen-to-square dropdown__icon"></i>
+        Update Profile
+      </li>
+      <li class="user-dropdown__item" (click)="logout()">
+        <i class="fa-solid fa-right-from-bracket dropdown__icon"></i>
+        Logout
+      </li>
+    </ul>
+  </div>
 </div>

@@ -1,0 +1,28 @@
+.update-user-form__options {
+  margin-bottom: 10px;
+}
+
+.update-user-form__option {
+  margin: 0 10px;
+  padding: 5px 0px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+
+  &:hover {
+    color: var(--blue);
+  }
+}
+
+.update-user-form__option--active {
+  border-bottom: 2px solid var(--blue);
+  color: var(--blue);
+}
+
+.update-user-form__input {
+  margin-bottom: 10px;
+}
+
+.update-user-form__body {
+  width: 100%;
+}

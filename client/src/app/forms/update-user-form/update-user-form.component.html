@@ -1,0 +1,53 @@
+<div class="update-user-form">
+  <div class="update-user-form__container flex-col items-center">
+    <ul class="update-user-form__options flex-row">
+      <li
+        class="update-user-form__option"
+        (click)="changeActiveForm(1)"
+        [ngClass]="active == 1 ? 'update-user-form__option--active' : ''"
+      >
+        Update Details
+      </li>
+      <li
+        class="update-user-form__option"
+        (click)="changeActiveForm(2)"
+        [ngClass]="active == 2 ? 'update-user-form__option--active' : ''"
+      >
+        Update Password
+      </li>
+    </ul>
+    <div class="update-user-form__body">
+      <form action="" *ngIf="active == 1" [formGroup]="updateForm">
+        <input
+          type="text"
+          placeholder="Username..."
+          class="form__input update-user-form__input"
+          formControlName="username"
+        />
+        <input
+          type="text"
+          placeholder="First Name..."
+          class="form__input update-user-form__input"
+          formControlName="firstName"
+        />
+        <input
+          type="text"
+          placeholder="Last Name..."
+          class="form__input update-user-form__input"
+          formControlName="lastName"
+        />
+        <app-button
+          size="md"
+          color="blue"
+          (onClick)="submit()"
+          class=""
+          text="Update"
+        ></app-button>
+      </form>
+      <app-change-password-form
+        class="w-100"
+        *ngIf="active == 2"
+      ></app-change-password-form>
+    </div>
+  </div>
+</div>

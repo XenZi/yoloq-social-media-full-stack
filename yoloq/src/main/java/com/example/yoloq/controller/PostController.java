@@ -54,4 +54,9 @@ public class PostController {
     public ResponseEntity<Set<PostDTO>> getAllPostsByGroupID(@PathVariable Integer id) {
         return new ResponseEntity<>(this.postService.findAllByGroupID(id), HttpStatus.OK);
     }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Set<PostDTO>> getAllPostsByUserID(@PathVariable Integer id) {
+        return new ResponseEntity<>(this.postService.findAllByUserID(id), HttpStatus.OK);
+    }
 }

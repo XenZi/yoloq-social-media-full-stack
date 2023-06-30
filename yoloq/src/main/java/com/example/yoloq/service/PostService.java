@@ -17,5 +17,6 @@ public interface PostService {
     Post mapPostDTOToEntity(PostDTO postDTO);
     PostDTO mapEntityToPostDTO(Post post);
     Set<PostDTO> findAllByGroupID(int id);
+    Set<PostDTO> findAllByUserID(int id);
 
 }

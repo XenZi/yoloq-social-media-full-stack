@@ -1,11 +1,42 @@
 .user-dropdown {
+  height: 100%;
   width: 100%;
   align-items: flex-end;
   justify-content: flex-end;
+  position: relative;
 }
 
 .user-dropdown__avatar {
   height: 35px;
   width: 35px;
   align-self: flex-end;
+  cursor: pointer;
+}
+
+.user-dropdown__menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background-color: #fff;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 8px;
+}
+
+.user-dropdown__menu--active {
+  display: block;
+}
+
+.user-dropdown__item {
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.dropdown__icon {
+  margin-right: 3px;
+  color: var(--blue);
 }

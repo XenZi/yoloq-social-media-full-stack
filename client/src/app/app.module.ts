@@ -45,6 +45,7 @@ import { ShowUserInGroupComponent } from './components/show-user-in-group/show-u
 import { UserApproveGroupJoinComponent } from './components/user-approve-group-join/user-approve-group-join.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { SuspendGroupFormComponent } from './forms/suspend-group-form/suspend-group-form.component';
+import { UpdateUserFormComponent } from './forms/update-user-form/update-user-form.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -86,6 +87,7 @@ import { SuspendGroupFormComponent } from './forms/suspend-group-form/suspend-gr
     UserApproveGroupJoinComponent,
     ProfilePageComponent,
     SuspendGroupFormComponent,
+    UpdateUserFormComponent,
   ],
   imports: [
     BrowserModule,

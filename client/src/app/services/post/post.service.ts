@@ -126,4 +126,8 @@ export class PostService {
   public getAllPostsForGroup(groupID: number): Observable<Post[]> {
     return this.http.get<Post[]>(`${this.baseURL}/group/${groupID}`);
   }
+
+  public getAllPostsForUser(userID: number): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.baseURL}/user/${userID}`);
+  }
 }

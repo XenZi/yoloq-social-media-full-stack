@@ -103,6 +103,17 @@ public class PostServiceImpl implements PostService {
             return postDTO;
         }).collect(Collectors.toSet());
     }
+
+    @Override
+    public Set<PostDTO> findAllByUserID(int id) {
+        return this.postRepository.findAllByUserID(id).stream().map(post -> {
+            PostDTO postDTO = modelMapper.map(post, PostDTO.class);
+            postDTO.setImagePaths(imageService.findAllPathsForPost(post));
+            postDTO.setPostedBy(modelMapper.map(post.getPostedBy(), UserDTO.class));
+            return postDTO;
+        }).collect(Collectors.toSet());
+    }
+
     @Override
     public PostDTO update(PostDTO updateDTO, MultipartFile[] images) {
         Post post = this.findOneById(updateDTO.getId());

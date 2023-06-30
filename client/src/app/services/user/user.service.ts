@@ -4,6 +4,10 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import User from 'src/app/domains/entity/User';
 import { LocalStorageService } from '../localstorage/local-storage.service';
+import { ModalService } from '../modal/modal.service';
+import { ToastService } from '../toast/toast.service';
+import { ToastNotificationType } from 'src/app/domains/enums/ToastNotificationType';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +17,10 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private localStorage: LocalStorageService
+    private localStorage: LocalStorageService,
+    private modalService: ModalService,
+    private toastService: ToastService,
+    private router: Router
   ) {}
 
   public fetchUserDetailsAfterLogin(): void {
@@ -37,5 +44,43 @@ export class UserService {
     }
 
     return JSON.parse(savedLocally) as User;
+  }
+
+  public updateUser(
+    id: number,
+    username: string,
+    firstName: string,
+    lastName: string
+  ) {
+    this.http
+      .put(`${this.baseURL}/${id}`, {
+        id,
+        username,
+        firstName,
+        lastName,
+      })
+      .subscribe({
+        next: (res) => {
+          this.modalService.close();
+          this.toastService.showToast(
+            'Updated',
+            "You've successfully updated your information",
+            ToastNotificationType.Success
+          );
+          this.localStorage.clear();
+          this.router.navigate(['/']);
+        },
+        error: (err) => {
+          this.toastService.showToast(
+            'Error',
+            err.error.message,
+            ToastNotificationType.Error
+          );
+        },
+      });
+  }
+
+  public getUserDetails(userID: number): Observable<User> {
+    return this.http.get<User>(`${this.baseURL}/${userID}`);
   }
 }

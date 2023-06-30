@@ -1,5 +1,6 @@
 package com.example.yoloq.service.impl;
 import com.example.yoloq.exception.ResourceNotFoundException;
+import com.example.yoloq.exception.UnauthorizedAccessException;
 import com.example.yoloq.models.Image;
 import com.example.yoloq.models.User;
 import com.example.yoloq.models.dto.UserDTO;
@@ -70,6 +71,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDTO findUserById(int id) {
+        User user = this.findById(id);
+        UserDTO dto = modelMapper.map(user, UserDTO.class);
+        if (user.getProfileImage() != null) {
+            dto.setProfileImage(user.getProfileImage().getName());
+        } else {
+            dto.setProfileImage("profile");
+        }
+        return dto;
+    }
+
+    @Override
     public User findByEmail(String email) {
         Optional<User> user = userRepository.findFirstByEmail(email);
         return user.orElseThrow(() -> new ResourceNotFoundException("Searching user is not found"));
@@ -90,6 +103,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(int id) {
         return this.userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+    }
+
+    @Override
+    public UserDTO updateDetails(UserDTO userDTO) {
+        User loggedUser = this.findLoggedUser();
+        if (loggedUser.getId() != userDTO.getId()) {
+            throw new UnauthorizedAccessException("You are not authorized to make this change");
+        }
+        User user = this.findById(userDTO.getId());
+        user.setUsername(userDTO.getUsername());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user = userRepository.save(user);
+        UserDTO userReturnDTO = modelMapper.map(user, UserDTO.class);
+        userReturnDTO.setProfileImage("profile");
+        if (user.getProfileImage() != null) {
+            userReturnDTO.setProfileImage(user.getProfileImage().getName());
+        }
+        return modelMapper.map(user, UserDTO.class);
     }
 
     @Override

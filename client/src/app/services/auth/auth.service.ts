@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { ToastService } from '../toast/toast.service';
 import { ToastNotificationType } from 'src/app/domains/enums/ToastNotificationType';
 import { UserService } from '../user/user.service';
+import { ModalService } from '../modal/modal.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,8 @@ export class AuthService {
     private localStorageService: LocalStorageService,
     private router: Router,
     private toastService: ToastService,
-    private userService: UserService
+    private userService: UserService,
+    private modalService: ModalService
   ) {}
 
   public login(email: string, password: string): void {
@@ -125,11 +127,22 @@ export class AuthService {
       )
       .subscribe({
         next: (res) => {
-          this.localStorageService.removeItem('token');
+          this.localStorageService.clear();
+          this.modalService.close();
+          this.toastService.showToast(
+            'Successfully updated password',
+            'You have successfully updated password',
+            ToastNotificationType.Success
+          );
           this.router.navigate(['']);
         },
         error: (err) => {
           console.log(err);
+          this.toastService.showToast(
+            'Error',
+            err.error.message,
+            ToastNotificationType.Error
+          );
         },
       });
   }

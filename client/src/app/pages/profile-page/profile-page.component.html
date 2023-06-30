@@ -6,13 +6,18 @@
         <div class="flex-row justify-between items-center">
           <div class="flex-row">
             <img
-              src="http://uitheme.net/sociala/images/user-7.png"
+              [src]="'http://localhost:8080/api/file/' + user.profileImage"
               alt=""
               class="profile__avatar"
+              *ngIf="user"
             />
             <div class="flex-col justify-center">
-              <h2 class="profile__username">Username</h2>
-              <h4 class="profile__name">First Last</h4>
+              <h2 class="profile__username" *ngIf="user">
+                {{ user.username }}
+              </h2>
+              <h4 class="profile__name" *ngIf="user">
+                {{ user.firstName + " " + user.lastName }}
+              </h4>
             </div>
           </div>
           <app-button
@@ -20,6 +25,7 @@
             color="blue"
             text="Add friend"
             class=""
+            *ngIf="user && user.id != loggedUser.id"
           ></app-button>
         </div>
       </div>
@@ -27,10 +33,15 @@
         <div class="profile__left">
           <div class="profile__box">
             <h3 class="profile__box-title">Groups</h3>
+            <app-group-vertical-nav-item
+              *ngFor="let group of groups"
+              [group]="group"
+            ></app-group-vertical-nav-item>
           </div>
         </div>
         <div class="profile__right">
-          <app-create-post></app-create-post>
+          <app-create-post *ngIf="loggedUser.id == userID"></app-create-post>
+          <app-post *ngFor="let post of posts" [post]="post"></app-post>
         </div>
       </div>
     </div>
