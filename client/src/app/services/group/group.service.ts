@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from '../localstorage/local-storage.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import Group from 'src/app/domains/entity/Group';
 import { GroupMember } from 'src/app/domains/entity/GroupMember';
 import { GroupAdmin } from 'src/app/domains/entity/GroupAdmin';
@@ -14,6 +14,7 @@ export class GroupService {
   private headers: HttpHeaders = new HttpHeaders({
     Authorization: `Bearer ${this.localStorageService.getItem('token')}`,
   });
+  private groupsChanged = new Subject<void>();
   constructor(
     private localStorageService: LocalStorageService,
     private http: HttpClient
@@ -30,7 +31,7 @@ export class GroupService {
       )
       .subscribe({
         next: (res) => {
-          console.log(res);
+          this.groupsChanged.next();
         },
         error: (error) => {
           console.log(error);
@@ -53,7 +54,7 @@ export class GroupService {
       )
       .subscribe({
         next: (res) => {
-          console.log(res);
+          this.groupsChanged.next();
         },
         error: (err) => {
           console.log(err);
@@ -68,7 +69,7 @@ export class GroupService {
       })
       .subscribe({
         next: (res) => {
-          console.log(res);
+          this.groupsChanged.next();
         },
         error: (err) => {
           console.log(err);
@@ -90,8 +91,17 @@ export class GroupService {
     return this.http.get<Group>(`${this.baseURL}/${id}`);
   }
 
-  public joinGroup(groupID: number): Observable<GroupMember> {
-    return this.http.post<GroupMember>(`${this.baseURL}/join/${groupID}`, {});
+  public joinGroup(groupID: number): void {
+    this.http
+      .post<GroupMember>(`${this.baseURL}/join/${groupID}`, {})
+      .subscribe({
+        next: (res) => {
+          this.groupsChanged.next();
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
   public getAllPendingMembersInGroup(
@@ -125,7 +135,7 @@ export class GroupService {
       })
       .subscribe({
         next: (res) => {
-          console.log(res);
+          this.groupsChanged.next();
         },
         error: (err) => {
           console.log(err);
@@ -136,7 +146,7 @@ export class GroupService {
   public removeAdmin(adminID: number) {
     return this.http.delete(`${this.baseURL}/admin/${adminID}`).subscribe({
       next: (res) => {
-        console.log(res);
+        this.groupsChanged.next();
       },
       error: (err) => {
         console.log(err);
@@ -146,5 +156,9 @@ export class GroupService {
 
   public getAllGroupsForUser(userID: number): Observable<Group[]> {
     return this.http.get<Group[]>(`${this.baseURL}/user/${userID}`);
+  }
+
+  public getGroupsChangedObservable(): Observable<void> {
+    return this.groupsChanged.asObservable();
   }
 }

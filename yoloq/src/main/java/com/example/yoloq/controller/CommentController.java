@@ -45,4 +45,9 @@ public class CommentController {
     public ResponseEntity<CommentDTO> delete(@PathVariable Integer id) {
         return new ResponseEntity<>(this.commentService.delete(id), HttpStatus.OK);
     }
+
+    @GetMapping("/{id}/replies")
+    public ResponseEntity<Set<CommentDTO>> getAllReplies(@PathVariable Integer id) {
+        return new ResponseEntity<>(this.commentService.findAllRepliesForComment(id), HttpStatus.OK);
+    }
 }

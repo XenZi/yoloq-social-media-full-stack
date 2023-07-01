@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Post } from 'src/app/domains/entity/Post';
 import { PostService } from 'src/app/services/post/post.service';
 
@@ -10,9 +10,25 @@ import { PostService } from 'src/app/services/post/post.service';
 })
 export class PostListComponent {
   posts!: Observable<Post[]>;
+  private postsChangedSubscription!: Subscription;
+
   constructor(private postService: PostService) {}
 
   ngOnInit() {
+    this.fetchPosts();
+    this.postsChangedSubscription = this.postService
+      .getPostsChangedObservable()
+      .subscribe(() => {
+        this.fetchPosts();
+      });
+  }
+
+  private fetchPosts() {
     this.posts = this.postService.getAll();
+  }
+
+  ngOnDestroy() {
+    // Unsubscribe to prevent memory leaks
+    this.postsChangedSubscription.unsubscribe();
   }
 }

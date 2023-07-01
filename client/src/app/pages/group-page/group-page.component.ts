@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { last } from 'rxjs';
+import { Subscription, last } from 'rxjs';
 import Group from 'src/app/domains/entity/Group';
 import { GroupAdmin } from 'src/app/domains/entity/GroupAdmin';
 import { GroupMember } from 'src/app/domains/entity/GroupMember';
@@ -40,6 +40,8 @@ export class GroupPageComponent {
   group!: Group;
   isUserInGroup: boolean = false;
 
+  private postsChangedSubscription!: Subscription;
+
   constructor(
     private route: ActivatedRoute,
     private groupAdminService: GroupAdminService,
@@ -51,6 +53,11 @@ export class GroupPageComponent {
 
   ngOnInit() {
     this.loggedUser = this.userService.getUser();
+    this.postsChangedSubscription = this.postService
+      .getPostsChangedObservable()
+      .subscribe(() => {
+        this.getAllPosts();
+      });
     this.getGroupID();
     this.getAllPosts();
     this.getGroupData();
@@ -175,16 +182,7 @@ export class GroupPageComponent {
     if (this.isUserAdminOfGroup || this.isUserInGroup) {
       return;
     }
-    console.log('ddd');
-
-    this.groupService.joinGroup(this.groupID as number).subscribe({
-      next: (res) => {
-        console.log(res);
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
+    this.groupService.joinGroup(this.groupID as number);
   }
 
   suspendGroup() {

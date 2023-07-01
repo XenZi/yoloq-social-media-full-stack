@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import Comment from 'src/app/domains/entity/Comment';
 
 @Injectable({
@@ -8,7 +8,9 @@ import Comment from 'src/app/domains/entity/Comment';
 })
 export class CommentService {
   private baseURL: string = 'http://localhost:8080/api/comments';
-  private comments!: Observable<Comment[]>;
+  private commentsChanged = new Subject<number>(); // change to number
+  private repliesChanged = new Subject<number>();
+
   constructor(private http: HttpClient) {}
 
   public createComment(text: string, postId: number): void {
@@ -19,7 +21,7 @@ export class CommentService {
       })
       .subscribe({
         next: (response) => {
-          this.getAllCommentsForPost(postId);
+          this.commentsChanged.next(postId);
         },
         error: (err) => {
           console.log(err);
@@ -28,8 +30,7 @@ export class CommentService {
   }
 
   public getAllCommentsForPost(postID: number): Observable<Comment[]> {
-    this.comments = this.http.get<Comment[]>(`${this.baseURL}/post/${postID}`);
-    return this.comments;
+    return this.http.get<Comment[]>(`${this.baseURL}/post/${postID}`);
   }
 
   public updateComment(comment: Comment) {
@@ -40,6 +41,7 @@ export class CommentService {
       .subscribe({
         next: (res) => {
           console.log(res);
+          this.commentsChanged.next(comment.postId);
         },
         error: (err) => {
           console.log(err);
@@ -55,7 +57,7 @@ export class CommentService {
       })
       .subscribe({
         next: (res) => {
-          console.log(res);
+          this.repliesChanged.next(parentCommentID);
         },
         error: (err) => {
           console.log(err);
@@ -67,10 +69,23 @@ export class CommentService {
     this.http.delete<Comment>(`${this.baseURL}/${id}`).subscribe({
       next: (res) => {
         console.log(res);
+        this.commentsChanged.next(id);
       },
       error: (err) => {
         console.log(err);
       },
     });
+  }
+
+  public getRepliesForComment(commentId: number): Observable<Comment[]> {
+    return this.http.get<Comment[]>(`${this.baseURL}/${commentId}/replies`);
+  }
+
+  public getCommentsChangedObservable(): Observable<number> {
+    return this.commentsChanged.asObservable();
+  }
+
+  public getRepliesChangedObservable(): Observable<number> {
+    return this.repliesChanged.asObservable();
   }
 }

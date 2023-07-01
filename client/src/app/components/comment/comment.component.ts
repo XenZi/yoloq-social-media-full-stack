@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { DeleteCommentDialogComponent } from 'src/app/dialogs/delete-comment-dialog/delete-comment-dialog.component';
 import Comment from 'src/app/domains/entity/Comment';
 import Reaction from 'src/app/domains/entity/Reaction';
@@ -22,6 +22,9 @@ export class CommentComponent {
   options: OptionsItem[] = [];
   totalReactions!: Observable<Reaction[]>;
   isReplyVisible: boolean = false;
+
+  private repliesChangedSubscription!: Subscription;
+
   constructor(
     private userService: UserService,
     private modalService: ModalService,
@@ -34,6 +37,19 @@ export class CommentComponent {
     this.totalReactions = this.reactionService.getAllReactionsForComment(
       this.comment.id
     );
+    this.repliesChangedSubscription = this.commentService
+      .getRepliesChangedObservable()
+      .subscribe(() => {
+        this.fetchReplies();
+      });
+  }
+
+  fetchReplies() {
+    this.commentService
+      .getRepliesForComment(this.comment.id)
+      .subscribe((data) => {
+        this.comment.commentReplies = data;
+      });
   }
 
   toggleOptionsList() {

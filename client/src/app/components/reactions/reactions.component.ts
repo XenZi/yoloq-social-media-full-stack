@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Input } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import Reaction from 'src/app/domains/entity/Reaction';
 import { ReactionType } from 'src/app/domains/enums/ReactionType';
 import { ReactionExistance } from 'src/app/domains/model/ReactionExistance';
@@ -22,11 +22,43 @@ export class ReactionsComponent {
     reactionID: null,
     reactionType: null,
   };
+
+  private reactionsChangedSubscription!: Subscription;
+
   constructor(
     private reactionService: ReactionService,
     private userService: UserService,
     private changeDetectorRef: ChangeDetectorRef
   ) {}
+
+  ngOnInit() {
+    this.reactionsChangedSubscription = this.reactionService
+      .getReactionsChangedObservable()
+      .subscribe(() => {
+        this.fetchReactions();
+      });
+
+    // Initial fetch
+    this.fetchReactions();
+  }
+
+  fetchReactions() {
+    this.reactions.subscribe((data) => {
+      this.totalReactions = data.length;
+      this.allReactions = data;
+      let user = this.userService.getUser();
+      this.allReactions.forEach((reaction) => {
+        if (reaction.reactedBy.id == user?.id) {
+          this.reactionExistance = {
+            doesExist: true,
+            reactionID: reaction.id,
+            reactionType: reaction.type,
+          };
+        }
+      });
+    });
+    this.changeDetectorRef.detectChanges();
+  }
 
   likeEntity() {
     if (this.reactionExistance.doesExist) {
@@ -122,22 +154,5 @@ export class ReactionsComponent {
         this.commentID
       );
     }
-  }
-
-  ngOnInit() {
-    this.reactions.subscribe((data) => {
-      this.totalReactions = data.length;
-      this.allReactions = data;
-      let user = this.userService.getUser();
-      this.allReactions.forEach((reaction) => {
-        if (reaction.reactedBy.id == user?.id) {
-          this.reactionExistance = {
-            doesExist: true,
-            reactionID: reaction.id,
-            reactionType: reaction.type,
-          };
-        }
-      });
-    });
   }
 }

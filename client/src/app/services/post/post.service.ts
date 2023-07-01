@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from '../localstorage/local-storage.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Post } from 'src/app/domains/entity/Post';
 import { FormArray } from '@angular/forms';
 
@@ -10,6 +10,7 @@ import { FormArray } from '@angular/forms';
 })
 export class PostService {
   private baseURL: string = 'http://localhost:8080/api/posts';
+  private postsChanged = new Subject<void>();
 
   constructor(
     private localStorageService: LocalStorageService,
@@ -67,7 +68,7 @@ export class PostService {
       )
       .subscribe({
         next: (response) => {
-          console.log(response);
+          this.postsChanged.next();
         },
         error: (error) => {
           console.error(error);
@@ -98,7 +99,7 @@ export class PostService {
       )
       .subscribe({
         next: (response) => {
-          console.log(response);
+          this.postsChanged.next();
         },
         error: (error) => {
           console.log(error);
@@ -115,7 +116,7 @@ export class PostService {
       })
       .subscribe({
         next: (response) => {
-          console.log(response);
+          this.postsChanged.next();
         },
         error: (error) => {
           console.log(error);
@@ -129,5 +130,9 @@ export class PostService {
 
   public getAllPostsForUser(userID: number): Observable<Post[]> {
     return this.http.get<Post[]>(`${this.baseURL}/user/${userID}`);
+  }
+
+  public getPostsChangedObservable(): Observable<void> {
+    return this.postsChanged.asObservable();
   }
 }

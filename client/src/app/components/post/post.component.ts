@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { DeletePostDialogComponent } from 'src/app/dialogs/delete-post-dialog/delete-post-dialog.component';
 import { UpdatePostFormComponent } from 'src/app/forms/update-post-form/update-post-form.component';
 import { Post } from 'src/app/domains/entity/Post';
@@ -6,12 +6,13 @@ import { ModalService } from 'src/app/services/modal/modal.service';
 import OptionsItem from 'src/app/domains/model/OptionsItem';
 import { UserService } from 'src/app/services/user/user.service';
 import User from 'src/app/domains/entity/User';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ShowPostWithCommentsComponent } from '../show-post-with-comments/show-post-with-comments.component';
 import Comment from 'src/app/domains/entity/Comment';
 import { CommentService } from 'src/app/services/comment/comment.service';
 import Reaction from 'src/app/domains/entity/Reaction';
 import { ReactionService } from 'src/app/services/reaction/reaction.service';
+import { PostService } from 'src/app/services/post/post.service';
 
 @Component({
   selector: 'app-post',
@@ -26,11 +27,17 @@ export class PostComponent {
   options: OptionsItem[] = [];
   totalComments: number | undefined;
   totalReactions!: Observable<Reaction[]>;
+
+  private commentChangedSubscription!: Subscription;
+  private reactionChangedSubscription!: Subscription;
+
   constructor(
     private modalService: ModalService,
     private userService: UserService,
     private commentService: CommentService,
-    private reactionService: ReactionService
+    private reactionService: ReactionService,
+    private postService: PostService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -46,6 +53,35 @@ export class PostComponent {
     this.comments.subscribe((data) => {
       this.totalComments = data.length;
     });
+
+    this.commentChangedSubscription = this.commentService
+      .getCommentsChangedObservable()
+      .subscribe((postId) => {
+        if (postId === this.post.id) {
+          this.fetchComments();
+        }
+      });
+
+    this.reactionChangedSubscription = this.reactionService
+      .getReactionsChangedObservable()
+      .subscribe(() => {
+        this.fetchReactions();
+      });
+  }
+
+  private fetchReactions() {
+    this.totalReactions = this.reactionService.getAllReactionsForPost(
+      this.post.id
+    );
+    console.log(this.totalReactions);
+    this.changeDetectorRef.detectChanges();
+  }
+  private fetchComments() {
+    this.comments = this.commentService.getAllCommentsForPost(this.post.id);
+    this.comments.subscribe((data) => {
+      this.totalComments = data.length;
+    });
+    this.changeDetectorRef.detectChanges();
   }
 
   toggleOptionsList() {

@@ -16,4 +16,7 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
     @Query("SELECT c FROM Comment c LEFT JOIN c.post LEFT JOIN FETCH c.reactions LEFT JOIN FETCH c.replies LEFT JOIN FETCH c.reports WHERE c.post.id = ?1 AND c.isDeleted = false")
     List<Comment> findAllCommentsByPost(int id);
+
+    @Query("SELECT c FROM Comment c LEFT JOIN c.post LEFT JOIN FETCH c.reactions LEFT JOIN FETCH c.replies LEFT JOIN FETCH c.reports WHERE c.id = ?1 AND c.isDeleted = false")
+    Optional<Comment> findById(int id);
 }

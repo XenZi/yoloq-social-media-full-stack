@@ -96,6 +96,12 @@ public class CommentServiceImpl implements CommentService {
         return this.commentRepository.findByIdWithCollections(id).orElseThrow(() -> new EntityNotFoundException("Comment not found"));
     }
 
+    @Override
+    public Set<CommentDTO> findAllRepliesForComment(Integer id) {
+        Comment comment = this.findOneEntity(id);
+        return getReplies(comment.getReplies());
+    }
+
     private void setAdditionalAttributes(Comment comment, CommentDTO newComment) {
         comment.setUser(userService.findLoggedUser());
         comment.setCreatedAt(LocalDateTime.now());

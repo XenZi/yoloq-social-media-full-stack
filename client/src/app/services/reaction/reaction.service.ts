@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import Reaction from 'src/app/domains/entity/Reaction';
 import { ReactionType } from 'src/app/domains/enums/ReactionType';
 
@@ -9,6 +9,9 @@ import { ReactionType } from 'src/app/domains/enums/ReactionType';
 })
 export class ReactionService {
   private baseURL: string = 'http://localhost:8080/api/reactions';
+
+  private reactionsChanged = new Subject<void>();
+
   constructor(private http: HttpClient) {}
 
   public getAll(): Observable<Reaction[]> {
@@ -24,7 +27,7 @@ export class ReactionService {
       .post<Reaction>(this.baseURL, { type, postIdReactedTo })
       .subscribe({
         next: (res) => {
-          console.log(res);
+          this.notifyReactionsChanged();
         },
         error: (err) => {
           console.log(err);
@@ -43,7 +46,7 @@ export class ReactionService {
       })
       .subscribe({
         next: (res) => {
-          console.log(res);
+          this.notifyReactionsChanged();
         },
         error: (err) => {
           console.log(err);
@@ -58,7 +61,7 @@ export class ReactionService {
   public deleteReaction(id: number) {
     this.http.delete<Reaction>(`${this.baseURL}/${id}`).subscribe({
       next: (res) => {
-        console.log(res);
+        this.notifyReactionsChanged();
       },
       error: (err) => {
         console.log(err);
@@ -75,10 +78,19 @@ export class ReactionService {
       .subscribe({
         next: (res) => {
           console.log(res);
+          this.notifyReactionsChanged();
         },
         error: (err) => {
           console.log(err);
         },
       });
+  }
+
+  private notifyReactionsChanged() {
+    this.reactionsChanged.next();
+  }
+
+  public getReactionsChangedObservable(): Observable<void> {
+    return this.reactionsChanged.asObservable();
   }
 }
