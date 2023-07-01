@@ -1,0 +1,19 @@
+<div class="friend-card">
+  <div class="friend-card__container flex-row items-center">
+    <img
+      [src]="
+        user.profileImage
+          ? 'http://localhost:8080/api/file/' + user.profileImage
+          : 'http://localhost:8080/api/file/profile'
+      "
+      alt=""
+      class="friend-card__avatar"
+    />
+    <div class="flex-col">
+      <h3 class="friend-card__username">{{ user.username }}</h3>
+      <h6 class="friend-card__name">
+        {{ user.firstName + " " + user.lastName }}
+      </h6>
+    </div>
+  </div>
+</div>

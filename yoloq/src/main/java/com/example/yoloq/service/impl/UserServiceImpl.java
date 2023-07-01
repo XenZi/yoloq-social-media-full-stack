@@ -20,7 +20,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -121,6 +125,50 @@ public class UserServiceImpl implements UserService {
         if (user.getProfileImage() != null) {
             userReturnDTO.setProfileImage(user.getProfileImage().getName());
         }
+        return modelMapper.map(user, UserDTO.class);
+    }
+
+    @Override
+    @Transactional
+    public Set<UserDTO> updateFriendships(Integer userId, Integer friendId) {
+        User user = userRepository.findByIdWithFriends(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+        User friend = userRepository.findByIdWithFriends(friendId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + friendId));
+        user.getFriends().add(friend);
+        friend.getFriends().add(user);
+        userRepository.save(user);
+        userRepository.save(friend);
+        Set<UserDTO> set = new HashSet<>();
+        set.add(modelMapper.map(user, UserDTO.class));
+        set.add(modelMapper.map(friend, UserDTO.class));
+        return set;
+    }
+
+    @Override
+    @Transactional
+    public Set<UserDTO> getAllFriendsForUser(int id) {
+        return this.userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity not found")).getFriends().stream().map(friend -> {
+            UserDTO userReturnDTO = modelMapper.map(friend, UserDTO.class);
+            userReturnDTO.setProfileImage("profile");
+            if (friend.getProfileImage() != null) {
+                userReturnDTO.setProfileImage(friend.getProfileImage().getName());
+            }
+            return userReturnDTO;
+        }).collect(Collectors.toSet());
+    }
+
+    @Transactional
+    @Override
+    public UserDTO removeFriend(int friendID) {
+        User user = userRepository.findByIdWithFriends(this.findLoggedUser().getId())
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + this.findLoggedUser().getId()));
+        User friend = userRepository.findByIdWithFriends(friendID)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + friendID));
+        user.getFriends().remove(friend);
+        friend.getFriends().remove(user);
+        userRepository.save(user);
+        userRepository.save(friend);
         return modelMapper.map(user, UserDTO.class);
     }
 

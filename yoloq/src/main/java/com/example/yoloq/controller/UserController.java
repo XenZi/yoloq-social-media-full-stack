@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @RestController
 @RequestMapping("api/users")
@@ -85,5 +86,15 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserDetails(@PathVariable Integer id) {
         return new ResponseEntity<>(this.service.findUserById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/friends/{id}")
+    public ResponseEntity<Set<UserDTO>> getAllFriendsForUser(@PathVariable Integer id) {
+        return new ResponseEntity<>(this.service.getAllFriendsForUser(id), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/friends/{id}")
+    public ResponseEntity<UserDTO> removeFriend(@PathVariable Integer id) {
+        return new ResponseEntity<>(this.service.removeFriend(id), HttpStatus.OK);
     }
 }

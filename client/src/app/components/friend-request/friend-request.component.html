@@ -1,0 +1,35 @@
+<div class="friend-request">
+  <div class="friend-request__container flex-row justify-between items-center">
+    <div class="flex-row items-center">
+      <img
+        [src]="
+          request.userFrom.profileImage
+            ? 'http://localhost:8080/api/file/' + request.userFrom.profileImage
+            : 'http://localhost:8080/api/file/profile'
+        "
+        alt=""
+        class="friend-request__avatar"
+        *ngIf="request"
+      />
+      <h4 class="friend-request__username" *ngIf="request">
+        {{ request.userFrom.username }}
+      </h4>
+    </div>
+    <div class="flex-row friend-request__options">
+      <app-button
+        size="md"
+        color="blue"
+        text="Confirm"
+        class=""
+        (onClick)="approveRequest()"
+      ></app-button>
+      <app-button
+        size="md"
+        color="error"
+        text="Reject"
+        class=""
+        (onClick)="declineRequest()"
+      ></app-button>
+    </div>
+  </div>
+</div>

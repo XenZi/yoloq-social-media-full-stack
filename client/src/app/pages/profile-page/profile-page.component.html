@@ -23,20 +23,28 @@
           <app-button
             size="md"
             color="blue"
-            text="Add friend"
+            [text]="isUserFriend ? 'Remove friend' : 'Add friend'"
             class=""
             *ngIf="user && user.id != loggedUser.id"
+            (onClick)="friendButtonClick()"
           ></app-button>
         </div>
       </div>
       <div class="profile__body flex-row">
-        <div class="profile__left">
+        <div class="profile__left flex-col">
           <div class="profile__box">
             <h3 class="profile__box-title">Groups</h3>
             <app-group-vertical-nav-item
               *ngFor="let group of groups"
               [group]="group"
             ></app-group-vertical-nav-item>
+          </div>
+          <div class="profile__box">
+            <h3 class="profile__box-title">Friends</h3>
+            <app-friend-card
+              *ngFor="let friend of friends"
+              [user]="friend"
+            ></app-friend-card>
           </div>
         </div>
         <div class="profile__right">

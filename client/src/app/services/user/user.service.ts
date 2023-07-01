@@ -83,4 +83,12 @@ export class UserService {
   public getUserDetails(userID: number): Observable<User> {
     return this.http.get<User>(`${this.baseURL}/${userID}`);
   }
+
+  public getAllUserFriends(userID: number): Observable<User[]> {
+    return this.http.get<User[]>(`${this.baseURL}/friends/${userID}`);
+  }
+
+  public removeFriend(friendID: number): Observable<User> {
+    return this.http.delete<User>(`${this.baseURL}/friends/${friendID}`);
+  }
 }

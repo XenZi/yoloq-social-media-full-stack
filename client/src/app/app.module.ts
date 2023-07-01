@@ -46,6 +46,8 @@ import { UserApproveGroupJoinComponent } from './components/user-approve-group-j
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { SuspendGroupFormComponent } from './forms/suspend-group-form/suspend-group-form.component';
 import { UpdateUserFormComponent } from './forms/update-user-form/update-user-form.component';
+import { FriendRequestComponent } from './components/friend-request/friend-request.component';
+import { FriendCardComponent } from './components/friend-card/friend-card.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -88,6 +90,8 @@ import { UpdateUserFormComponent } from './forms/update-user-form/update-user-fo
     ProfilePageComponent,
     SuspendGroupFormComponent,
     UpdateUserFormComponent,
+    FriendRequestComponent,
+    FriendCardComponent,
   ],
   imports: [
     BrowserModule,

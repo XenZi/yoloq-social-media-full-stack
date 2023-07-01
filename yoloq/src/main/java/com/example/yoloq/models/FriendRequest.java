@@ -19,8 +19,8 @@ public class FriendRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
-    private boolean approved;
+    @Column
+    private Boolean approved;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;

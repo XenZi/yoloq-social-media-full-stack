@@ -43,7 +43,7 @@ export class AuthService {
           this.userService.fetchUserDetailsAfterLogin();
           setTimeout(() => {
             this.router.navigate(['/home']);
-          }, 3000);
+          }, 1000);
         },
         error: (error) => {
           console.error(error);

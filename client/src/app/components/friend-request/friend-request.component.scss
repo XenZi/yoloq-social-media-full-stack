@@ -1,0 +1,22 @@
+.friend-request {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.friend-request__avatar {
+  height: 30px;
+  width: 30px;
+  margin-right: 10px;
+}
+
+.friend-request__username {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.friend-request__options {
+  & > * {
+    margin: 0px 5px;
+  }
+}
