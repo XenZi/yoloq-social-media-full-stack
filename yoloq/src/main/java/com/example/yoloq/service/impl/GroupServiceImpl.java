@@ -4,12 +4,10 @@ import com.example.yoloq.exception.ResourceNotFoundException;
 import com.example.yoloq.exception.UnauthorizedAccessException;
 import com.example.yoloq.models.Group;
 import com.example.yoloq.models.GroupAdmin;
-import com.example.yoloq.models.GroupRequest;
 import com.example.yoloq.models.User;
 import com.example.yoloq.models.dto.GroupAdminDTO;
 import com.example.yoloq.models.dto.GroupDTO;
 import com.example.yoloq.models.dto.GroupRequestDTO;
-import com.example.yoloq.models.dto.PostDTO;
 import com.example.yoloq.models.dto.requests.GroupJoinDecisionDTO;
 import com.example.yoloq.models.dto.requests.SuspendGroupDTO;
 import com.example.yoloq.repository.GroupRepository;
@@ -18,17 +16,21 @@ import com.example.yoloq.service.GroupRequestService;
 import com.example.yoloq.service.GroupService;
 import com.example.yoloq.service.UserService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 
 @Service
 public class GroupServiceImpl implements GroupService {
+    private static final Logger logger = LoggerFactory.getLogger(GroupServiceImpl.class);
     private final GroupRepository groupRepository;
     private final ModelMapper modelMapper;
     private final UserService userService;
@@ -100,6 +102,7 @@ public class GroupServiceImpl implements GroupService {
         User user = this.userService.findById(userID);
         Group group = this.groupRepository.findById(groupID).orElseThrow(() -> new EntityNotFoundException("Entity not found"));
         GroupAdmin admin = this.groupAdminService.createEntity(group, user);
+        logger.info("New admin with id " + admin.getId() + " created, for group with the id " + groupID);
         return modelMapper.map(admin, GroupAdminDTO.class);
     }
 
@@ -109,6 +112,7 @@ public class GroupServiceImpl implements GroupService {
         Group group = this.findOneById(groupAdmin.getAdminAt().getId());
         GroupRequestDTO request = this.groupRequestService.saveForUser(group, groupAdmin.getUser().getId());
         this.groupRequestService.update(true, request.getId());
+        logger.info("Admin with id " + groupAdmin.getId() + " deleted.");
         return modelMapper.map(this.groupAdminService.delete(id), GroupAdminDTO.class);
     }
 
@@ -148,6 +152,7 @@ public class GroupServiceImpl implements GroupService {
         group.setSuspendedReason(suspendGroupDTO.getSuspendedReason());
         groupAdminService.removeAllAdminsByGroupID(group.getId());
         group = groupRepository.save(group);
+        logger.info("Admin with the id " + this.userService.findLoggedUser().getId() + " just suspended the group with the id " + group.getId() + ". ");
         return modelMapper.map(group, GroupDTO.class);
     }
 

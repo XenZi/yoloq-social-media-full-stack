@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
@@ -90,6 +91,7 @@ public class CommentServiceImpl implements CommentService {
         comment = commentRepository.save(comment);
         return modelMapper.map(comment, CommentDTO.class);
     }
+
 
     @Override
     public Comment findOneEntity(Integer id) {

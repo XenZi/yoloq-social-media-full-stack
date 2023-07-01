@@ -12,6 +12,10 @@ import com.example.yoloq.service.ImageService;
 import com.example.yoloq.service.PasswordService;
 import com.example.yoloq.service.UserService;
 import org.modelmapper.ModelMapper;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -29,12 +33,14 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
-
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final FileService fileService;
     private final PasswordService passwordService;
     private final ImageService imageService;
+
+
     @Autowired
     public UserServiceImpl(
             UserRepository userRepository,
@@ -65,6 +71,7 @@ public class UserServiceImpl implements UserService {
             imageService.update(image);
             userDTO.setProfileImage(image.getName());
         }
+        logger.info("User with the email " + user.getEmail() + " have just registered");
         return userDTO;
     }
 
@@ -125,6 +132,7 @@ public class UserServiceImpl implements UserService {
         if (user.getProfileImage() != null) {
             userReturnDTO.setProfileImage(user.getProfileImage().getName());
         }
+        logger.info("User " + user.getEmail() + " have updated his details.");
         return modelMapper.map(user, UserDTO.class);
     }
 
@@ -174,6 +182,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO login(String email) {
+        logger.info("User with the email " + email + " have just logged in");
+
         return modelMapper.map(this.findByEmail(email), UserDTO.class);
     }
 
@@ -192,6 +202,7 @@ public class UserServiceImpl implements UserService {
         }
         user.setPassword(passwordService.encodePassword(updatePasswordDTO.getNewPassword()));
         this.userRepository.save(user);
+        logger.info("User " + user.getEmail() + " have changed password");
         return "You have successfully updated your password";
     }
 }
