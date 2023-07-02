@@ -13,6 +13,7 @@ import { CommentService } from 'src/app/services/comment/comment.service';
 import Reaction from 'src/app/domains/entity/Reaction';
 import { ReactionService } from 'src/app/services/reaction/reaction.service';
 import { PostService } from 'src/app/services/post/post.service';
+import { ReportFormComponent } from 'src/app/forms/report-form/report-form.component';
 
 @Component({
   selector: 'app-post',
@@ -116,7 +117,9 @@ export class PostComponent {
       {
         icon: 'fa-solid fa-triangle-exclamation',
         text: 'Report post',
-        onClick: this.reportPost,
+        onClick: () => {
+          this.reportPost();
+        },
       },
     ];
   }
@@ -138,6 +141,9 @@ export class PostComponent {
 
   reportPost() {
     console.log('report');
+    this.modalService.open(ReportFormComponent, {
+      postID: this.post.id,
+    });
     this.toggleOptionsList();
   }
 

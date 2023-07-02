@@ -1,0 +1,21 @@
+<div class="report-form">
+  <div class="report-form__container flex-col">
+    <ul class="report-form__list flex-col">
+      <li
+        class="report-form__item"
+        [ngClass]="i == clickedReason ? 'report-form__item--active' : ''"
+        *ngFor="let reportReason of reportReasons; let i = index"
+        (click)="changeReason(i)"
+      >
+        {{ reportReason }}
+      </li>
+    </ul>
+    <app-button
+      text="Submit"
+      color="blue"
+      class=""
+      size="md"
+      (onClick)="submitReport()"
+    ></app-button>
+  </div>
+</div>

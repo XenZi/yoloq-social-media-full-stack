@@ -104,6 +104,15 @@ public class CommentServiceImpl implements CommentService {
         return getReplies(comment.getReplies());
     }
 
+    @Override
+    public Comment findTopLevelParent(Integer id) {
+        Comment comment = this.findOneEntity(id);
+        while (comment.getParent() != null) {
+            comment = comment.getParent();
+        }
+        return comment;
+    }
+
     private void setAdditionalAttributes(Comment comment, CommentDTO newComment) {
         comment.setUser(userService.findLoggedUser());
         comment.setCreatedAt(LocalDateTime.now());

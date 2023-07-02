@@ -48,6 +48,7 @@ import { SuspendGroupFormComponent } from './forms/suspend-group-form/suspend-gr
 import { UpdateUserFormComponent } from './forms/update-user-form/update-user-form.component';
 import { FriendRequestComponent } from './components/friend-request/friend-request.component';
 import { FriendCardComponent } from './components/friend-card/friend-card.component';
+import { ReportFormComponent } from './forms/report-form/report-form.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -92,6 +93,7 @@ import { FriendCardComponent } from './components/friend-card/friend-card.compon
     UpdateUserFormComponent,
     FriendRequestComponent,
     FriendCardComponent,
+    ReportFormComponent,
   ],
   imports: [
     BrowserModule,

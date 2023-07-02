@@ -34,5 +34,7 @@ public class Report {
     @ManyToOne
     private Post reportedPost;
 
+    @ManyToOne
+    private User byUser;
 
 }

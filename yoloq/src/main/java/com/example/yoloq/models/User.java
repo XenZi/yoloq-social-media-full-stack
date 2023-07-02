@@ -83,6 +83,9 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "id")
     private Set<Banned> bans = new HashSet<>();
 
+    @OneToMany
+    private Set<Report> reports = new HashSet<>();
+
     @OneToOne
     private Image profileImage;
 }

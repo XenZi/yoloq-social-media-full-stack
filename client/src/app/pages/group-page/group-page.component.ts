@@ -111,6 +111,7 @@ export class GroupPageComponent {
         this.groupPendingRequests = data;
       });
   }
+
   getAllMembers() {
     this.groupService
       .getAllMembersInGroup(this.groupID as number)
@@ -123,6 +124,7 @@ export class GroupPageComponent {
         });
       });
   }
+
   formatPageOptionsForGroupAdmin() {
     if (this.isUserAdminOfGroup) {
       this.adminOptionItems = [

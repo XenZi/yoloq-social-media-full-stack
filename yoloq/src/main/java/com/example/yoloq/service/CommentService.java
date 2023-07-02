@@ -14,4 +14,5 @@ public interface CommentService {
     CommentDTO delete(Integer id);
     Comment findOneEntity(Integer id);
     Set<CommentDTO> findAllRepliesForComment(Integer id);
+    Comment findTopLevelParent(Integer id);
 }

@@ -1,7 +1,7 @@
 package com.example.yoloq.enums;
 
 public enum ReportReason {
-    BREAKES_RULES,
+    BREAKS_RULES,
     HARASSMENT,
     HATE,
     SHARING_PERSONAL_INFORMATION,
