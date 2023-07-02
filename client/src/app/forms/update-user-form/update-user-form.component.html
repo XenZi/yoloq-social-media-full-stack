@@ -15,6 +15,13 @@
       >
         Update Password
       </li>
+      <li
+        class="update-user-form__option"
+        (click)="changeActiveForm(3)"
+        [ngClass]="active == 3 ? 'update-user-form__option--active' : ''"
+      >
+        Update Image
+      </li>
     </ul>
     <div class="update-user-form__body">
       <form action="" *ngIf="active == 1" [formGroup]="updateForm">
@@ -48,6 +55,20 @@
         class="w-100"
         *ngIf="active == 2"
       ></app-change-password-form>
+      <form action="" *ngIf="active == 3" [formGroup]="updateImage">
+        <input
+          type="file"
+          class="update-user__image-input"
+          (change)="onFileSelected($event)"
+        />
+        <app-button
+          class=""
+          text="Submit"
+          color="blue"
+          size="md"
+          (onClick)="submitImageUpload()"
+        ></app-button>
+      </form>
     </div>
   </div>
 </div>

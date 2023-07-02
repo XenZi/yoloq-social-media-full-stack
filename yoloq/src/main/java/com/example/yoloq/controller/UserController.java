@@ -102,4 +102,9 @@ public class UserController {
     public ResponseEntity<Set<UserDTO>> searchUsers(@RequestParam("firstName") String firstName, @RequestParam(required = false, value = "lastName") String lastName) {
         return new ResponseEntity<>(this.service.searchUsers(firstName, lastName), HttpStatus.OK);
     }
+
+    @PutMapping(value = "/profile-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<UserDTO> updateImage(@RequestParam MultipartFile profileImage) {
+        return new ResponseEntity<>(this.service.updateProfileImage(profileImage), HttpStatus.OK);
+    }
 }

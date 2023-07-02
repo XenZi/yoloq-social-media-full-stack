@@ -97,4 +97,15 @@ export class UserService {
       `${this.baseURL}/search?firstName=${firstName}&lastName=${lastName}`
     );
   }
+
+  public uploadImage(form: FormData) {
+    this.http.put<User>(`${this.baseURL}/profile-image`, form).subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
 }

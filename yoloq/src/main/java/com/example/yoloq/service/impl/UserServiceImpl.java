@@ -108,7 +108,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO findLoggedUserForDTOResponse() {
-        return this.modelMapper.map(this.findLoggedUser(), UserDTO.class);
+        User user = this.findLoggedUser();
+        UserDTO dto = modelMapper.map(user, UserDTO.class);
+        if (user.getProfileImage() != null) {
+            dto.setProfileImage(user.getProfileImage().getName());
+        } else {
+            dto.setProfileImage("profile");
+        }
+        return dto;
     }
 
     @Override
@@ -190,6 +197,23 @@ public class UserServiceImpl implements UserService {
             }
             return userReturnDTO;
         }).collect(Collectors.toSet());
+    }
+
+    @Override
+    public UserDTO updateProfileImage(MultipartFile file) {
+        User user = this.findLoggedUser();
+        if (user.getProfileImage() != null) {
+            user.getProfileImage().setProfileImageOf(null);
+            imageService.update(user.getProfileImage());
+        }
+        Image image = fileService.uploadImage(file);
+        image.setProfileImageOf(user);
+        imageService.update(image);
+        user.setProfileImage(image);
+        userRepository.save(user);
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+        userDTO.setProfileImage(user.getProfileImage().getName());
+        return userDTO;
     }
 
     @Override

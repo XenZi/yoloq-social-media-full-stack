@@ -149,7 +149,9 @@ public class CommentServiceImpl implements CommentService {
         if (comment.getPost() != null) {
             commentDTO.setPostId(comment.getPost().getId());
         }
-        commentDTO.setPostedBy(modelMapper.map(comment.getUser(), UserDTO.class));
+        UserDTO userDTO = modelMapper.map(comment.getUser(), UserDTO.class);
+        userDTO.setProfileImage(comment.getUser().getProfileImage() != null ? comment.getUser().getProfileImage().getName() : "profile");
+        commentDTO.setPostedBy(userDTO);
         return commentDTO;
     }
 }

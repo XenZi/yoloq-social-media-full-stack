@@ -12,6 +12,7 @@ export class UpdateUserFormComponent {
   active: number = 1;
   loggedUser!: User;
   updateForm: FormGroup;
+  updateImage: FormGroup;
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder
@@ -20,6 +21,9 @@ export class UpdateUserFormComponent {
       username: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
+    });
+    this.updateImage = this.formBuilder.group({
+      profileImage: [],
     });
   }
 
@@ -47,5 +51,26 @@ export class UpdateUserFormComponent {
       enteredFirstName,
       enteredLastName
     );
+  }
+
+  onFileSelected(event: Event): void {
+    const inputElement: HTMLInputElement = event.target as HTMLInputElement;
+    const file = inputElement?.files?.[0];
+
+    this.updateImage.patchValue({
+      profileImage: file,
+    });
+  }
+
+  submitImageUpload() {
+    console.log(this.updateImage.get('profileImage'));
+
+    let formData: FormData = new FormData();
+    formData.append(
+      'profileImage',
+      this.updateImage.get('profileImage')?.value
+    );
+    console.log(this.updateImage.get('profileImage')?.value);
+    this.userService.uploadImage(formData);
   }
 }

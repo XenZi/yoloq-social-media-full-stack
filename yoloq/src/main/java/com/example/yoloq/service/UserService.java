@@ -23,5 +23,6 @@ public interface UserService {
     Set<UserDTO> getAllFriendsForUser(int id);
     UserDTO removeFriend(int friendID);
     Set<UserDTO> searchUsers(String firstName, String lastName);
+    UserDTO updateProfileImage(MultipartFile file);
 }
 

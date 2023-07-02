@@ -89,7 +89,12 @@ public class PostServiceImpl implements PostService {
              posts) {
             PostDTO postDTO = modelMapper.map(post, PostDTO.class);
             postDTO.setImagePaths(imageService.findAllPathsForPost(post));
-            postDTO.setPostedBy(modelMapper.map(post.getPostedBy(), UserDTO.class));
+            UserDTO userDTO = modelMapper.map(post.getPostedBy(), UserDTO.class);
+            userDTO.setProfileImage("profile");
+            if (post.getPostedBy().getProfileImage() != null) {
+                userDTO.setProfileImage(post.getPostedBy().getProfileImage().getName());
+            }
+            postDTO.setPostedBy(userDTO);
             postDTOs.add(postDTO);
         }
         return postDTOs;
@@ -100,7 +105,12 @@ public class PostServiceImpl implements PostService {
         return this.postRepository.findAllByGroupID(id).stream().map(post -> {
             PostDTO postDTO = modelMapper.map(post, PostDTO.class);
             postDTO.setImagePaths(imageService.findAllPathsForPost(post));
-            postDTO.setPostedBy(modelMapper.map(post.getPostedBy(), UserDTO.class));
+            UserDTO userDTO = modelMapper.map(post.getPostedBy(), UserDTO.class);
+            userDTO.setProfileImage("profile");
+            if (post.getPostedBy().getProfileImage() != null) {
+                userDTO.setProfileImage(post.getPostedBy().getProfileImage().getName());
+            }
+            postDTO.setPostedBy(userDTO);
             return postDTO;
         }).collect(Collectors.toSet());
     }
@@ -110,7 +120,12 @@ public class PostServiceImpl implements PostService {
         return this.postRepository.findAllByUserID(id).stream().map(post -> {
             PostDTO postDTO = modelMapper.map(post, PostDTO.class);
             postDTO.setImagePaths(imageService.findAllPathsForPost(post));
-            postDTO.setPostedBy(modelMapper.map(post.getPostedBy(), UserDTO.class));
+            UserDTO userDTO = modelMapper.map(post.getPostedBy(), UserDTO.class);
+            userDTO.setProfileImage("profile");
+            if (post.getPostedBy().getProfileImage() != null) {
+                userDTO.setProfileImage(post.getPostedBy().getProfileImage().getName());
+            }
+            postDTO.setPostedBy(userDTO);
             return postDTO;
         }).collect(Collectors.toSet());
     }

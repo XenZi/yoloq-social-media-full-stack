@@ -3,7 +3,7 @@
     <div class="flex flex-row justify-between items-center">
       <div class="flex flex-row">
         <img
-          src="http://uitheme.net/sociala/images/user-7.png"
+          [src]="'http://localhost:8080/api/file/' + post.postedBy.profileImage"
           class="post__profile-image"
           alt=""
         />
