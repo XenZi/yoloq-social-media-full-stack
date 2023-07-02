@@ -22,5 +22,6 @@ public interface UserService {
     Set<UserDTO> updateFriendships(Integer userId, Integer friendId);
     Set<UserDTO> getAllFriendsForUser(int id);
     UserDTO removeFriend(int friendID);
+    Set<UserDTO> searchUsers(String firstName, String lastName);
 }
 

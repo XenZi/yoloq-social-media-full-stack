@@ -97,4 +97,9 @@ public class UserController {
     public ResponseEntity<UserDTO> removeFriend(@PathVariable Integer id) {
         return new ResponseEntity<>(this.service.removeFriend(id), HttpStatus.OK);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<Set<UserDTO>> searchUsers(@RequestParam("firstName") String firstName, @RequestParam(required = false, value = "lastName") String lastName) {
+        return new ResponseEntity<>(this.service.searchUsers(firstName, lastName), HttpStatus.OK);
+    }
 }

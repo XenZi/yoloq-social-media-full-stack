@@ -52,6 +52,8 @@ import { ReportFormComponent } from './forms/report-form/report-form.component';
 import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
 import { ReportCardComponent } from './components/report-card/report-card.component';
 import { UpdateReportFormComponent } from './forms/update-report-form/update-report-form.component';
+import { SearchComponent } from './components/search/search.component';
+import { SearchUserBoxComponent } from './components/search-user-box/search-user-box.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -100,6 +102,8 @@ import { UpdateReportFormComponent } from './forms/update-report-form/update-rep
     AdminPanelComponent,
     ReportCardComponent,
     UpdateReportFormComponent,
+    SearchComponent,
+    SearchUserBoxComponent,
   ],
   imports: [
     BrowserModule,

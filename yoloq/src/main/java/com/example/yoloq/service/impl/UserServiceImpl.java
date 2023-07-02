@@ -181,6 +181,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Set<UserDTO> searchUsers(String firstName, String lastName) {
+        return userRepository.findByFirstNameAndLastName(firstName, lastName).stream().map((user) -> {
+            UserDTO userReturnDTO = modelMapper.map(user, UserDTO.class);
+            userReturnDTO.setProfileImage("profile");
+            if (user.getProfileImage() != null) {
+                userReturnDTO.setProfileImage(user.getProfileImage().getName());
+            }
+            return userReturnDTO;
+        }).collect(Collectors.toSet());
+    }
+
+    @Override
     public UserDTO login(String email) {
         logger.info("User with the email " + email + " have just logged in");
 

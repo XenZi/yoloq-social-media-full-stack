@@ -91,4 +91,10 @@ export class UserService {
   public removeFriend(friendID: number): Observable<User> {
     return this.http.delete<User>(`${this.baseURL}/friends/${friendID}`);
   }
+
+  public search(firstName: string, lastName: string): Observable<User[]> {
+    return this.http.get<User[]>(
+      `${this.baseURL}/search?firstName=${firstName}&lastName=${lastName}`
+    );
+  }
 }

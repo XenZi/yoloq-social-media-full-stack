@@ -1,0 +1,12 @@
+<div class="search-user-box" (click)="navigateToProfile()">
+  <div class="search-user-box__container flex-row items-center">
+    <img
+      [src]="'http://localhost:8080/api/file/' + user.profileImage"
+      class="search-user-box__avatar"
+      alt=""
+    />
+    <h3 class="search-user-box__name">
+      {{ user.firstName }} {{ user.lastName }}
+    </h3>
+  </div>
+</div>
