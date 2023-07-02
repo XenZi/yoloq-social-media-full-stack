@@ -5,6 +5,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
 import { GroupPageComponent } from './pages/group-page/group-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
+import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
   {
     path: 'profile/:id',
     component: ProfilePageComponent,
+  },
+  {
+    path: 'admin',
+    component: AdminPanelComponent,
   },
 ];
 

@@ -175,6 +175,24 @@ public class GroupServiceImpl implements GroupService {
         return new HashSet<>(joinedList);
     }
 
+    @Override
+    public boolean isUserAdminOfGroup(int groupID) {
+        List<GroupAdminDTO> allAdminPositions = this.groupAdminService.findAllWhereUserIsAdmin(this.userService.findLoggedUser().getId());
+        List<GroupDTO> groupDTOS = allAdminPositions.stream().map(groupAdminDTO -> {
+            Group group = this.findEntityById(groupAdminDTO.getGroupID());
+            return modelMapper.map(group, GroupDTO.class);
+        }).toList();
+        Optional<GroupDTO> groupOptional = groupDTOS.stream()
+                .filter(groupDTO -> groupDTO.getId() == groupID)
+                .findFirst();
+
+        if (groupOptional.isPresent()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private Group findOneById(int id) {
         Optional<Group> group = this.groupRepository.findById(id);
         if (group.isEmpty()) {

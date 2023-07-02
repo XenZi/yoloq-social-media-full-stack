@@ -5,6 +5,7 @@ import Group from 'src/app/domains/entity/Group';
 import { GroupAdmin } from 'src/app/domains/entity/GroupAdmin';
 import { GroupMember } from 'src/app/domains/entity/GroupMember';
 import { Post } from 'src/app/domains/entity/Post';
+import Report from 'src/app/domains/entity/Report';
 import User from 'src/app/domains/entity/User';
 import OptionsItem from 'src/app/domains/model/OptionsItem';
 import { SuspendGroupFormComponent } from 'src/app/forms/suspend-group-form/suspend-group-form.component';
@@ -13,6 +14,7 @@ import { GroupAdminService } from 'src/app/services/group-admin/group-admin.serv
 import { GroupService } from 'src/app/services/group/group.service';
 import { ModalService } from 'src/app/services/modal/modal.service';
 import { PostService } from 'src/app/services/post/post.service';
+import { ReportService } from 'src/app/services/report/report.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -27,6 +29,7 @@ export class GroupPageComponent {
   groupAdmins: GroupAdmin[] | undefined;
   groupMembers!: GroupMember[];
   groupPendingRequests!: GroupMember[];
+  groupReports!: Report[];
   groupPosts!: Post[];
 
   adminOptionItems: OptionsItem[] = [];
@@ -48,7 +51,8 @@ export class GroupPageComponent {
     private userService: UserService,
     private groupService: GroupService,
     private modalService: ModalService,
-    private postService: PostService
+    private postService: PostService,
+    private reportService: ReportService
   ) {}
 
   ngOnInit() {
@@ -64,10 +68,18 @@ export class GroupPageComponent {
     this.getAllGroupAdmins();
     this.getAllPendingRequests();
     this.getAllMembers();
+    this.getAllGroupReports();
     this.formatPageOptionsForGroupAdmin();
     this.formatUserOptionsForGroupAdmin();
   }
 
+  getAllGroupReports() {
+    this.reportService
+      .getAllReportsForGroup(this.groupID as number)
+      .subscribe((data) => {
+        this.groupReports = data;
+      });
+  }
   changeNumber(newActive: number) {
     this.activeNumber = newActive;
   }

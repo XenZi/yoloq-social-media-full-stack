@@ -1,6 +1,7 @@
 package com.example.yoloq.service.impl;
 
 
+import com.example.yoloq.enums.Role;
 import com.example.yoloq.exception.IncompleteRequestException;
 import com.example.yoloq.exception.ResourceNotFoundException;
 import com.example.yoloq.exception.UnauthorizedAccessException;
@@ -172,11 +173,17 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDTO delete(int id) {
         Post post = this.findOneById(id);
-
-        if (!isTheSameUserLoggedIn(post.getPostedBy())) {
+        User user = this.userService.findLoggedUser();
+        if (post.getPostedInGroup() != null) {
+            if (this.groupService.isUserAdminOfGroup(post.getPostedInGroup().getId())) {
+                post.setDeleted(true);
+                postRepository.save(post);
+                return mapEntityToPostDTO(post);
+            }
+        }
+        if (isTheSameUserLoggedIn(post.getPostedBy()) || !user.getRole().equals(Role.ADMIN)) {
             throw new UnauthorizedAccessException("You are not authorized");
         }
-
         post.setDeleted(true);
         postRepository.save(post);
         return mapEntityToPostDTO(post);

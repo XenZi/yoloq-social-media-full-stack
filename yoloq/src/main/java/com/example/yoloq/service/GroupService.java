@@ -26,5 +26,5 @@ public interface GroupService {
     Set<GroupRequestDTO> findAllMembersForGroup(int id);
     GroupDTO suspendGroup(SuspendGroupDTO suspendGroupDTO);
     Set<GroupDTO> findAllGroupsForUser(int id);
-
+    boolean isUserAdminOfGroup(int groupID);
 }

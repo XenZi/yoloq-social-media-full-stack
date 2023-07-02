@@ -1,0 +1,32 @@
+<form action="" class="form flex-col items-center">
+  <h3 class="update-report-form__title">Report Decision Panel</h3>
+  <div class="update-report-user__details flex-row">
+    <h3 class="update-report-user__details-title">Posted By:</h3>
+    <h3 class="update-report-user__name">{{ report.byUser.username }}</h3>
+  </div>
+  <div class="update-report-user__details flex-row">
+    <h3 class="update-report-user__details-title">Report Reason:</h3>
+    <h3 class="update-report-user__name">{{ report.reportReason }}</h3>
+  </div>
+  <textarea
+    class="form__textarea"
+    [value]="valueToShow"
+    placeholder="Content..."
+  ></textarea>
+  <div class="flex-row update-report__actions">
+    <app-button
+      text="Delete"
+      color="error"
+      size="md"
+      class=""
+      (onClick)="approve()"
+    ></app-button>
+    <app-button
+      text="Ignore"
+      color="blue"
+      size="md"
+      class=""
+      (onClick)="reject()"
+    ></app-button>
+  </div>
+</form>

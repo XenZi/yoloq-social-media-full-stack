@@ -1,0 +1,14 @@
+<div class="admin-panel">
+  <app-header></app-header>
+  <div class="admin-panel__container flex-col">
+    <div class="admin-panel__box flex-col">
+      <h3>Reports</h3>
+      <div class="flex-row">
+        <app-report-card
+          *ngFor="let report of reports"
+          [report]="report"
+        ></app-report-card>
+      </div>
+    </div>
+  </div>
+</div>

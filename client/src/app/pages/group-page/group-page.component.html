@@ -78,6 +78,16 @@
           >
             Pending Requests
           </li>
+          <li
+            class="group-page__option-item"
+            (click)="changeNumber(4)"
+            [ngClass]="{
+              'group-page__option-item--active': activeNumber == 4
+            }"
+            *ngIf="isUserAdminOfGroup"
+          >
+            Group Reports
+          </li>
         </ul>
       </div>
     </div>
@@ -108,6 +118,12 @@
             [user]="groupUser.requestFrom"
             [groupMember]="groupUser"
           ></app-user-approve-group-join>
+        </div>
+        <div class="flex flex-row w-100" *ngIf="activeNumber == 4">
+          <app-report-card
+            *ngFor="let report of groupReports"
+            [report]="report"
+          ></app-report-card>
         </div>
       </div>
       <div class="group-page__right">

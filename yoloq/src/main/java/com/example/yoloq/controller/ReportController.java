@@ -40,4 +40,9 @@ public class ReportController {
     private ResponseEntity<Set<ReportDTO>> getAllByGroupID(@PathVariable Integer id) {
         return new ResponseEntity<>(this.service.getAllReportsForGroup(id), HttpStatus.OK);
     }
+
+    @GetMapping("/admin")
+    private ResponseEntity<Set<ReportDTO>> getAllForAdmin() {
+        return new ResponseEntity<>(this.service.getAllReportsForAdmin(), HttpStatus.OK);
+    }
 }

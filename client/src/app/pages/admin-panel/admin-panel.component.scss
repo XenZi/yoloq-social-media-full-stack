@@ -1,0 +1,13 @@
+@import "../../../styles/abstracts//variables";
+.admin-panel {
+  width: 100%;
+}
+
+.admin-panel__container {
+  max-width: 1200px;
+  background-color: #fff;
+  width: 1200px;
+  min-width: 1200px;
+  margin: 0 auto;
+  padding: 10px;
+}

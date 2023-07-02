@@ -1,0 +1,29 @@
+.update-report-form__title {
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.update-report__actions {
+  margin: 10px 0;
+
+  & > * {
+    margin: 0px 5px;
+  }
+}
+
+.update-report-user__details {
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.update-report-user__details-title {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.update-report-user__name {
+  font-size: 14px;
+  font-weight: 600;
+}

@@ -1,0 +1,21 @@
+<div class="report-card" (click)="openModal()">
+  <div class="report-card__container flex-col">
+    <div class="flex-row justify-between w-100 report-card__details">
+      <p class="report-card__type">
+        {{ report.reportedComment ? "Comment" : "Post" }}
+      </p>
+      <p class="report-card__at" *ngIf="report">
+        {{ report.timestamp.split("T")[0] }}
+      </p>
+    </div>
+    <div class="flex-row items-center">
+      <img
+        src="http://uitheme.net/sociala/images/user-7.png"
+        class="report-card__avatar"
+      />
+      <h3 class="report-card__title" *ngIf="report">
+        By {{ report.byUser.username }}
+      </h3>
+    </div>
+  </div>
+</div>

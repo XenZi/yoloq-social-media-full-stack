@@ -99,6 +99,22 @@ public class ReportServiceImpl implements ReportService {
         return this.repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity not found"));
     }
 
+    @Override
+    public Set<ReportDTO> getAllReportsForAdmin() {
+        return this.repository.findAll().stream()
+                .filter(report -> {
+                    if (report.getReportedComment() != null) {
+                        Comment topLevelComment = this.commentService.findTopLevelParent(report.getReportedComment().getId());
+                        Post post = topLevelComment.getPost();
+                        return post.getPostedInGroup() == null;
+                    } else {
+                        return report.getReportedPost().getPostedInGroup() == null;
+                    }
+                })
+                .map(this::mapToDto)
+                .collect(Collectors.toSet());
+    }
+
     private ReportDTO mapToDto(Report report) {
         ReportDTO reportDTO = modelMapper.map(report, ReportDTO.class);
         if (report.getReportedComment() != null) {

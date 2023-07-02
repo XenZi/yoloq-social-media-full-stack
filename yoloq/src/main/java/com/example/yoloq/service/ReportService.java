@@ -13,4 +13,5 @@ public interface ReportService {
     Set<ReportDTO> getAllReportsForGroup(int groupID);
     ReportDTO updateReport(UpdateReportDTO updateReportDTO);
     Report findOneEntityById(int id);
+    Set<ReportDTO>getAllReportsForAdmin();
 }

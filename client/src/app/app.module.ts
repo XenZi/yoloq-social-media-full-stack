@@ -49,6 +49,9 @@ import { UpdateUserFormComponent } from './forms/update-user-form/update-user-fo
 import { FriendRequestComponent } from './components/friend-request/friend-request.component';
 import { FriendCardComponent } from './components/friend-card/friend-card.component';
 import { ReportFormComponent } from './forms/report-form/report-form.component';
+import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
+import { ReportCardComponent } from './components/report-card/report-card.component';
+import { UpdateReportFormComponent } from './forms/update-report-form/update-report-form.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -94,6 +97,9 @@ import { ReportFormComponent } from './forms/report-form/report-form.component';
     FriendRequestComponent,
     FriendCardComponent,
     ReportFormComponent,
+    AdminPanelComponent,
+    ReportCardComponent,
+    UpdateReportFormComponent,
   ],
   imports: [
     BrowserModule,
