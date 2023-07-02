@@ -18,5 +18,6 @@ public interface PostService {
     PostDTO mapEntityToPostDTO(Post post);
     Set<PostDTO> findAllByGroupID(int id);
     Set<PostDTO> findAllByUserID(int id);
+    Set<PostDTO> findAllByOrder(String order);
 
 }

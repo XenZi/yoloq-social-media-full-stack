@@ -1,4 +1,16 @@
 <ul class="posts__list">
+  <div class="posts__order flex-row justify-end">
+    <p class="posts__order--current" (click)="changeSortListOpenState()">
+      Sort by
+    </p>
+    <ul
+      class="posts__order-list"
+      [ngClass]="isSortListOpen ? 'posts__order-list--active' : ''"
+    >
+      <li class="posts__order-item" (click)="changeCurrentSort(1)">Date ASC</li>
+      <li class="posts__order-item" (click)="changeCurrentSort(2)">Date DSC</li>
+    </ul>
+  </div>
   <li class="posts__item" *ngFor="let post of posts | async">
     <app-post [post]="post"></app-post>
   </li>

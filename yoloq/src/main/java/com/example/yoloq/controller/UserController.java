@@ -107,4 +107,5 @@ public class UserController {
     public ResponseEntity<UserDTO> updateImage(@RequestParam MultipartFile profileImage) {
         return new ResponseEntity<>(this.service.updateProfileImage(profileImage), HttpStatus.OK);
     }
+
 }

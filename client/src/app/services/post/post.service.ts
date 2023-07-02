@@ -135,4 +135,8 @@ export class PostService {
   public getPostsChangedObservable(): Observable<void> {
     return this.postsChanged.asObservable();
   }
+
+  public getAllPostsInOrder(order: string): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.baseURL}/order-by/${order}`);
+  }
 }

@@ -1,0 +1,32 @@
+.posts__order {
+  position: relative;
+  margin: 10px 0;
+}
+
+.posts__order-list {
+  position: absolute;
+  top: 100%;
+  background-color: #fff;
+  z-index: 6;
+  display: none;
+}
+
+.posts__order-list--active {
+  display: block;
+}
+
+.posts__order-item {
+  padding: 10px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #fafafafa;
+  }
+}
+
+.posts__order--current {
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}

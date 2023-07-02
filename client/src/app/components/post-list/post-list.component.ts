@@ -10,6 +10,8 @@ import { PostService } from 'src/app/services/post/post.service';
 })
 export class PostListComponent {
   posts!: Observable<Post[]>;
+  isSortListOpen: boolean = false;
+  currentSort: number = -1;
   private postsChangedSubscription!: Subscription;
 
   constructor(private postService: PostService) {}
@@ -30,5 +32,18 @@ export class PostListComponent {
   ngOnDestroy() {
     // Unsubscribe to prevent memory leaks
     this.postsChangedSubscription.unsubscribe();
+  }
+
+  changeSortListOpenState() {
+    this.isSortListOpen = !this.isSortListOpen;
+  }
+
+  changeCurrentSort(newSortNumber: number) {
+    console.log('test');
+
+    this.currentSort = newSortNumber;
+    this.posts = this.postService.getAllPostsInOrder(
+      this.currentSort == 1 ? 'asc' : 'dsc'
+    );
   }
 }

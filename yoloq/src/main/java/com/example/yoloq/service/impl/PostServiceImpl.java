@@ -131,6 +131,34 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public Set<PostDTO> findAllByOrder(String order) {
+        if (order.equals("asc")) {
+            return this.postRepository.findAllByCreationDateAscending().stream().map(post -> {
+                PostDTO postDTO = modelMapper.map(post, PostDTO.class);
+                postDTO.setImagePaths(imageService.findAllPathsForPost(post));
+                UserDTO userDTO = modelMapper.map(post.getPostedBy(), UserDTO.class);
+                userDTO.setProfileImage("profile");
+                if (post.getPostedBy().getProfileImage() != null) {
+                    userDTO.setProfileImage(post.getPostedBy().getProfileImage().getName());
+                }
+                postDTO.setPostedBy(userDTO);
+                return postDTO;
+            }).collect(Collectors.toSet());
+        }
+        return this.postRepository.findAllByCreationDateDescending().stream().map(post -> {
+            PostDTO postDTO = modelMapper.map(post, PostDTO.class);
+            postDTO.setImagePaths(imageService.findAllPathsForPost(post));
+            UserDTO userDTO = modelMapper.map(post.getPostedBy(), UserDTO.class);
+            userDTO.setProfileImage("profile");
+            if (post.getPostedBy().getProfileImage() != null) {
+                userDTO.setProfileImage(post.getPostedBy().getProfileImage().getName());
+            }
+            postDTO.setPostedBy(userDTO);
+            return postDTO;
+        }).collect(Collectors.toSet());
+    }
+
+    @Override
     public PostDTO update(PostDTO updateDTO, MultipartFile[] images) {
         Post post = this.findOneById(updateDTO.getId());
 
