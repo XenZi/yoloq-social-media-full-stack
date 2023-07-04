@@ -47,7 +47,7 @@ public class UserController {
         this.userDetailsService = userDetailsService;
     }
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<UserDTO> create(@ModelAttribute RegisterRequestDTO newUser, @RequestParam MultipartFile profileImage) {
+    public ResponseEntity<UserDTO> create(@ModelAttribute RegisterRequestDTO newUser, @RequestParam(required = false) MultipartFile profileImage) {
         return new ResponseEntity<>(this.service.save(newUser, profileImage), HttpStatus.CREATED);
     }
 

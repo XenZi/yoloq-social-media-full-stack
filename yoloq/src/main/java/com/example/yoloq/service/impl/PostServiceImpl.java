@@ -83,10 +83,28 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostDTO> getAll() {
-        List<Post> posts = this.postRepository.findAllWithComments();
-        List<PostDTO> postDTOs = new ArrayList<>();
-        for (Post post:
-             posts) {
+//        List<Post> posts = this.postRepository.findAllWithComments();
+//        List<PostDTO> postDTOs = new ArrayList<>();
+//        for (Post post:
+//             posts) {
+//            PostDTO postDTO = modelMapper.map(post, PostDTO.class);
+//            postDTO.setImagePaths(imageService.findAllPathsForPost(post));
+//            UserDTO userDTO = modelMapper.map(post.getPostedBy(), UserDTO.class);
+//            userDTO.setProfileImage("profile");
+//            if (post.getPostedBy().getProfileImage() != null) {
+//                userDTO.setProfileImage(post.getPostedBy().getProfileImage().getName());
+//            }
+//            postDTO.setPostedBy(userDTO);
+//            postDTOs.add(postDTO);
+//        }
+//        return postDTOs;
+        Set<UserDTO> friends = userService.getAllFriendsForUser(this.userService.findLoggedUser().getId());
+        Set<Integer> friendsIDs = friends.stream().map(UserDTO::getId).collect(Collectors.toSet());
+        friendsIDs.add(this.userService.findLoggedUser().getId());
+        Set<GroupDTO> groupDTOS = groupService.findAllGroupsForUser(this.userService.findLoggedUser().getId());
+        Set<Integer> groupIDs = groupDTOS.stream().map(GroupDTO::getId).collect(Collectors.toSet());
+        Set<Post> posts = this.postRepository.findPostsByFriendsAndGroups(friendsIDs, groupIDs, this.userService.findLoggedUser().getId());
+        return posts.stream().map(post -> {
             PostDTO postDTO = modelMapper.map(post, PostDTO.class);
             postDTO.setImagePaths(imageService.findAllPathsForPost(post));
             UserDTO userDTO = modelMapper.map(post.getPostedBy(), UserDTO.class);
@@ -95,9 +113,8 @@ public class PostServiceImpl implements PostService {
                 userDTO.setProfileImage(post.getPostedBy().getProfileImage().getName());
             }
             postDTO.setPostedBy(userDTO);
-            postDTOs.add(postDTO);
-        }
-        return postDTOs;
+            return postDTO;
+        }).collect(Collectors.toList());
     }
 
     @Override

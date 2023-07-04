@@ -9,6 +9,8 @@ import java.util.List;
 
 @Repository
 public interface ReactionRepository extends JpaRepository<Reaction, Integer> {
+
+
     @Query("SELECT r FROM Reaction r WHERE r.postReactedTo.id = ?1 AND r.isDeleted = false")
     List<Reaction> findByPostId(int id);
 

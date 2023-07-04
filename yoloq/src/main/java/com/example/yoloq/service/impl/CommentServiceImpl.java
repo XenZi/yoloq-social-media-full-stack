@@ -13,10 +13,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.Query;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,13 +27,14 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final UserService userService;
     private final PostService postService;
-
+    private final EntityManager entityManager;
     @Autowired
-    public CommentServiceImpl(ModelMapper modelMapper, CommentRepository commentRepository, UserService userService, PostService postService) {
+    public CommentServiceImpl(ModelMapper modelMapper, CommentRepository commentRepository, UserService userService, PostService postService, EntityManager entityManager) {
         this.modelMapper = modelMapper;
         this.commentRepository = commentRepository;
         this.userService = userService;
         this.postService = postService;
+        this.entityManager = entityManager;
     }
 
     @Override

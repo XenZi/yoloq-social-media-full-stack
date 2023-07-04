@@ -9,4 +9,5 @@ public interface FriendRequestService {
     FriendRequestDTO save(FriendRequestDTO dto);
     Set<FriendRequestDTO> findAllPendingForUser();
     FriendRequestDTO update(UpdateFriendRequestDTO updateFriendRequestDTO);
+    Set<FriendRequestDTO> findAllAcceptedForUser();
 }

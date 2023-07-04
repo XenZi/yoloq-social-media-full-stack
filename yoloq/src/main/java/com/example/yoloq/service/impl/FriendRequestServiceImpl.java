@@ -73,6 +73,11 @@ public class FriendRequestServiceImpl implements FriendRequestService {
         return mapToDTO(friendRequest);
     }
 
+    @Override
+    public Set<FriendRequestDTO> findAllAcceptedForUser() {
+        return null;
+    }
+
     private FriendRequestDTO mapToDTO(FriendRequest friendRequest) {
         FriendRequestDTO returnableDTO = modelMapper.map(friendRequest, FriendRequestDTO.class);
         returnableDTO.setUserFrom(modelMapper.map(friendRequest.getUserFrom(), UserDTO.class));

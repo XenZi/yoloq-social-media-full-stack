@@ -50,4 +50,5 @@ public class CommentController {
     public ResponseEntity<Set<CommentDTO>> getAllReplies(@PathVariable Integer id) {
         return new ResponseEntity<>(this.commentService.findAllRepliesForComment(id), HttpStatus.OK);
     }
+
 }

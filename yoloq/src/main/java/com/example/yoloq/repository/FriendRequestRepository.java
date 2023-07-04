@@ -14,4 +14,5 @@ public interface FriendRequestRepository extends JpaRepository<FriendRequest, In
 
     @Query("SELECT DISTINCT f FROM FriendRequest f LEFT JOIN f.userTo LEFT JOIN f.userFrom WHERE f.id = ?1")
     Optional<FriendRequest> findById(int id);
+
 }
