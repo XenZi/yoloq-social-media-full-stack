@@ -1,0 +1,65 @@
+version: "3.7"
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.4.3
+    container_name: yoloq-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    networks:
+      - yoloq-network
+    #    command: >
+    #      bash -c '
+    #      if ! elasticsearch-plugin list | grep -q "analysis-icu"; then
+    #        elasticsearch-plugin install analysis-icu
+    #      else
+    #        tail -f /dev/null &
+    #      fi'
+    restart: always
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.4.3
+    container_name: yoloq-logstash
+    ports:
+      - "5044:5044"
+    volumes:
+      - "./logstash-ingest-data/:/usr/share/logstash/ingest_data/"
+      - "./logstash-config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf"
+    restart: always
+    networks:
+      - yoloq-network
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.4.3
+    container_name: yoloq-kibana
+    ports:
+      - "5601:5601"
+    networks:
+      - yoloq-network
+    restart: always
+
+  minio:
+    image: quay.io/minio/minio
+    container_name: yoloq-minio
+    ports:
+      - 9000:9000
+      - 9090:9090
+    environment:
+      - MINIO_ROOT_USER=ROOTUSER
+      - MINIO_ROOT_PASSWORD=CHANGEME123
+    command: server /data --console-address ":9090"
+    volumes:
+      - minio-data:/data
+    restart: always
+    networks:
+      - yoloq-network
+
+networks:
+  yoloq-network:
+    name: yoloq-network
+
+volumes:
+  minio-data:
