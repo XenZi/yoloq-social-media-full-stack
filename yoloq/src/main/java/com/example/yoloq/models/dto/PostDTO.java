@@ -17,6 +17,7 @@ import java.util.Set;
 @Setter
 public class PostDTO {
     private Integer id;
+    private String title;
     private String content;
     private String creationDate;
     private Set<String> imagePaths = new HashSet<>();

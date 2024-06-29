@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface PostService {
-    PostDTO save(PostDTO newPost, MultipartFile[] images);
+    PostDTO save(PostDTO newPost, MultipartFile[] images, MultipartFile attachedPDF);
     List<PostDTO> getAll();
     PostDTO update(PostDTO updateDTO, MultipartFile[] images);
     PostDTO findOne(int id);

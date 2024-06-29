@@ -25,11 +25,14 @@ export class PostService {
   }
 
   private formateFormData(
+    title: string,
     content: string,
     files: FormArray,
+    attachedPDF: File,
     postedInGroupID: number | null
   ): FormData {
     let formData: FormData = new FormData();
+    formData.append('title', title)
     formData.append('content', content);
     if (postedInGroupID != null) {
       formData.append('postedInGroupID', postedInGroupID as unknown as string);
@@ -39,6 +42,7 @@ export class PostService {
         formData.append('images', file);
       });
     }
+    formData.append('attachedPDF', attachedPDF);
     return formData;
   }
 
@@ -53,15 +57,18 @@ export class PostService {
     }
     return formData;
   }
+
   public createPost(
+    title: string,
     content: string,
     files: FormArray,
+    attachedPDF: File,
     postedInGroupID: number | null = null
   ): void {
     this.http
       .post<any>(
         `${this.baseURL}`,
-        this.formateFormData(content, files, postedInGroupID),
+        this.formateFormData(title,content, files, attachedPDF, postedInGroupID),
         {
           headers: this.constructHttpHeaders(),
         }

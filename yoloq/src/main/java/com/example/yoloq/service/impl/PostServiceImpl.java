@@ -1,6 +1,8 @@
 package com.example.yoloq.service.impl;
 
 
+import com.example.yoloq.elastic_models.PostDocument;
+import com.example.yoloq.elastic_services.PostIndexingService;
 import com.example.yoloq.enums.Role;
 import com.example.yoloq.exception.IncompleteRequestException;
 import com.example.yoloq.exception.ResourceNotFoundException;
@@ -33,22 +35,24 @@ public class PostServiceImpl implements PostService {
     private final FileService fileService;
     private final ImageService imageService;
     private final GroupService groupService;
+    private final PostIndexingService postIndexingService;
     @Autowired
     public PostServiceImpl(PostRepository postRepository,
                            ModelMapper modelMapper,
                            UserService userService,
                            FileService fileService,
-                           ImageService imageService, GroupService groupService) {
+                           ImageService imageService, GroupService groupService, PostIndexingService postIndexingService) {
         this.postRepository = postRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
         this.fileService = fileService;
         this.imageService = imageService;
         this.groupService = groupService;
+        this.postIndexingService = postIndexingService;
     }
 
     @Override
-    public PostDTO save(PostDTO newPost, MultipartFile[] images) {
+    public PostDTO save(PostDTO newPost, MultipartFile[] images, MultipartFile attachedPDF) {
         Post post =  mapPostDTOToEntity(newPost);
         User user = userService.findLoggedUser();
         if (images != null) {
@@ -61,6 +65,7 @@ public class PostServiceImpl implements PostService {
             Group group = this.groupService.findEntityById(newPost.getPostedInGroupID());
             post.setPostedInGroup(group);
         }
+
         post.setPostedBy(user);
         post.setCreationDate(LocalDateTime.now());
         post = postRepository.save(post);
@@ -76,7 +81,11 @@ public class PostServiceImpl implements PostService {
             GroupDTO groupDTO = modelMapper.map(post.getPostedInGroup(), GroupDTO.class);
             postDTO.setPostedInGroup(groupDTO);
         }
-
+        System.out.println(newPost.getTitle());
+        System.out.println(newPost.getContent());
+        System.out.println(post.getTitle());
+        System.out.println(post.getContent());
+        PostDocument postDocument = postIndexingService.indexDocument(post, attachedPDF);
         postDTO.setPostedBy(userDTO);
         return postDTO;
     }

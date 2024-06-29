@@ -16,9 +16,21 @@ export class CreatePostComponent {
     private postService: PostService
   ) {
     this.createPostForm = this.formBuilder.group({
+      title: ['', [Validators.required]],
       content: ['', [Validators.required]],
       pictures: this.formBuilder.array([]),
+      attachedPDF: [''],
     });
+  }
+
+  onPDFFileChange(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.createPostForm.patchValue({
+        attachedPDF: file
+      });
+      this.createPostForm.get('attachedPDF')?.updateValueAndValidity();
+    }
   }
 
   onFileChange(event: any) {
@@ -34,12 +46,14 @@ export class CreatePostComponent {
   }
 
   onSubmit() {
+    const title = this.createPostForm.get('title');
     const content = this.createPostForm.get('content');
     const files = this.createPostForm.get('pictures');
+    const attachedPDF = this.createPostForm.get('attachedPDF');
     if (this.group != null) {
-      this.postService.createPost(content?.value, files?.value, this.group.id);
+      this.postService.createPost(title?.value, content?.value, files?.value, attachedPDF?.value, this.group.id);
       return;
     }
-    this.postService.createPost(content?.value, files?.value);
+    this.postService.createPost(title?.value, content?.value, files?.value, attachedPDF?.value);
   }
 }

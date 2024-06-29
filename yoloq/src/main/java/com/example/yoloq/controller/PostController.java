@@ -1,6 +1,9 @@
 package com.example.yoloq.controller;
 
 
+import com.example.yoloq.elastic_models.PostDocument;
+import com.example.yoloq.elastic_services.PostIndexingService;
+import com.example.yoloq.elastic_services.PostSearchService;
 import com.example.yoloq.models.dto.PostDTO;
 import com.example.yoloq.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +22,17 @@ import java.util.Set;
 public class PostController {
 
     private final PostService postService;
+    private final PostSearchService postSearchService;
 
     @Autowired
-    public PostController(PostService postService) {
+    public PostController(PostService postService, PostSearchService postSearchService) {
         this.postService = postService;
+        this.postSearchService = postSearchService;
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<PostDTO> save(@ModelAttribute PostDTO postDTO, @RequestParam(required = false) MultipartFile[] images) {
-        return new ResponseEntity<>(this.postService.save(postDTO, images), HttpStatus.OK);
+    public ResponseEntity<PostDTO> save(@ModelAttribute PostDTO postDTO, @RequestParam(required = false) MultipartFile[] images, @RequestParam(required = false) MultipartFile attachedPDF) {
+        return new ResponseEntity<>(this.postService.save(postDTO, images, attachedPDF), HttpStatus.OK);
     }
 
     @GetMapping
@@ -63,5 +68,20 @@ public class PostController {
     @GetMapping("/order-by/{value}")
     public ResponseEntity<Set<PostDTO>> getAllByOrder(@PathVariable String value) {
         return new ResponseEntity<>(this.postService.findAllByOrder(value), HttpStatus.OK);
+    }
+
+    @GetMapping("/title/{title}")
+    public ResponseEntity<List<PostDocument>> findPostsByTitle(@PathVariable String title) {
+        return new ResponseEntity<>(this.postSearchService.getPostsByPostName(title), HttpStatus.OK);
+    }
+
+    @GetMapping("/content/{content}")
+    public ResponseEntity<List<PostDocument>> findPostsByContent(@PathVariable String content) {
+        return new ResponseEntity<>(this.postSearchService.getPostsByPostContent(content), HttpStatus.OK);
+    }
+
+    @GetMapping("/pdf-content/{content}")
+    public ResponseEntity<List<PostDocument>> findPostsByPDFContent(@PathVariable String content) {
+        return new ResponseEntity<>(this.postSearchService.getPostsByPDFContent(content), HttpStatus.OK);
     }
 }

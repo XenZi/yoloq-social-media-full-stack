@@ -5,6 +5,14 @@
       <h4 class="create-post__title text--light-gray">Create post</h4>
     </div>
     <form class="form" [formGroup]="createPostForm" (ngSubmit)="onSubmit()">
+      <div class="form__group">
+        <input
+          type="text"
+          class="form__input"
+          formControlName="title"
+          placeholder="Post title..."
+        />
+      </div>
       <textarea
         class="form__textarea create-post__textarea"
         placeholder="What's on your mind?"
@@ -12,6 +20,8 @@
       ></textarea>
       <div class="flex-row justify-between items-center">
         <input type="file" (change)="onFileChange($event)" multiple />
+        <input type="file" (change)="onPDFFileChange($event)" />
+
         <app-button
           size="sm"
           color="blue"

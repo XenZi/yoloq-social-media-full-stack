@@ -9,5 +9,4 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public interface GroupIndexingService {
     GroupDocument indexDocument(Group group, MultipartFile documentFile);
-
 }
