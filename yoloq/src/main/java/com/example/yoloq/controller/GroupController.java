@@ -103,4 +103,15 @@ public class GroupController {
     public ResponseEntity<List<GroupDocument>> findByName(@PathVariable String name) {
         return new ResponseEntity<>(this.groupSearchService.searchGroupsByName(name), HttpStatus.OK);
     }
+
+    @GetMapping("/description/{description}")
+    public ResponseEntity<List<GroupDocument>> findByDescription(@PathVariable String description) {
+        return new ResponseEntity<>(this.groupSearchService.searchGroupsByDescription(description), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/pdf-content/{content}")
+    public ResponseEntity<List<GroupDocument>> findByPDFContent(@PathVariable String content) {
+        return new ResponseEntity<>(this.groupSearchService.searchGroupsByPDFContent(content), HttpStatus.OK);
+    }
 }

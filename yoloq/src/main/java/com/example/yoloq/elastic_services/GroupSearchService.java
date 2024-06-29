@@ -11,4 +11,5 @@ public interface GroupSearchService {
 
     List<GroupDocument> searchGroupsByName(String name);
     List<GroupDocument> searchGroupsByDescription(String description);
+    List<GroupDocument> searchGroupsByPDFContent(String content);
 }

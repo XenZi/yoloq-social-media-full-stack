@@ -25,10 +25,10 @@ public class GroupDocument {
     @Id
     private String id;
 
-    @Field(type = FieldType.Text, store=true, name = "name")
+    @Field(type = FieldType.Text, store=true, name = "name", analyzer = "serbian_simple", searchAnalyzer = "serbian_simple")
     private String name;
 
-    @Field(type = FieldType.Text, store = true, name = "description")
+    @Field(type = FieldType.Text, store = true, name = "description", analyzer = "serbian_simple", searchAnalyzer = "serbian_simple")
     private String description;
 
     @Field(type = FieldType.Text, store = true, name = "pdfDescription")
