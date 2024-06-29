@@ -81,10 +81,6 @@ public class PostServiceImpl implements PostService {
             GroupDTO groupDTO = modelMapper.map(post.getPostedInGroup(), GroupDTO.class);
             postDTO.setPostedInGroup(groupDTO);
         }
-        System.out.println(newPost.getTitle());
-        System.out.println(newPost.getContent());
-        System.out.println(post.getTitle());
-        System.out.println(post.getContent());
         PostDocument postDocument = postIndexingService.indexDocument(post, attachedPDF);
         postDTO.setPostedBy(userDTO);
         return postDTO;

@@ -24,28 +24,28 @@ public class PostSearchServiceImpl implements PostSearchService {
     @Override
     public List<PostDocument> getPostsByPostName(String postName) {
         var searchQueryBuilder =
-                new NativeQueryBuilder().withQuery(buildSimpleSearchQuery(List.of(postName)));
+                new NativeQueryBuilder().withQuery(simpleSearchForTitle(postName));
         return runQuery(searchQueryBuilder.build());
     }
 
     @Override
     public List<PostDocument> getPostsByPostContent(String content) {
         var searchQueryBuilder =
-                new NativeQueryBuilder().withQuery(buildSimpleSearchQuery(List.of(content)));
+                new NativeQueryBuilder().withQuery(simpleSearchForContent(content));
         return runQuery(searchQueryBuilder.build());
     }
 
     @Override
     public List<PostDocument> getPostsByPDFContent(String content) {
         var searchQueryBuilder =
-                new NativeQueryBuilder().withQuery(buildSimpleSearchQuery(List.of(content)));
+                new NativeQueryBuilder().withQuery(simpleSearchForPDFContent(content));
         return runQuery(searchQueryBuilder.build());
     }
 
 
     private List<PostDocument> runQuery(NativeQuery searchQuery) {
         SearchHits<PostDocument> searchHits = elasticsearchTemplate.search(searchQuery, PostDocument.class,
-                IndexCoordinates.of("groups"));
+                IndexCoordinates.of("posts"));
         return searchHits.get().map(SearchHit::getContent).collect(Collectors.toList());
     }
 
@@ -61,4 +61,25 @@ public class PostSearchServiceImpl implements PostSearchService {
         })))._toQuery();
     }
 
+    private Query simpleSearchForTitle(String title) {
+        return BoolQuery.of(q -> q.must(mb -> mb.bool(b -> {
+            b.should(sb -> sb.match(m -> m.field("title").query(title).analyzer("serbian_simple")));
+            return b;
+        })))._toQuery();
+    }
+
+    private Query simpleSearchForContent(String content) {
+        return BoolQuery.of(q -> q.must(mb -> mb.bool(b -> {
+            b.should(sb -> sb.match(m -> m.field("content").query(content).analyzer("serbian_simple")));
+            return b;
+        })))._toQuery();
+    }
+
+    private Query simpleSearchForPDFContent(String content) {
+        return BoolQuery.of(q -> q.must(mb -> mb.bool(b -> {
+            b.should(sb -> sb.match(m -> m.field("content_sr").query(content).analyzer("serbian_simple")));
+            b.should(sb -> sb.match(m -> m.field("content_en").query(content).analyzer("english")));
+            return b;
+        })))._toQuery();
+    }
 }

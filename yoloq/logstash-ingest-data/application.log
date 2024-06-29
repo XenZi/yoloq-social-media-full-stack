@@ -643,3 +643,33 @@ Caused by: java.lang.ClassNotFoundException: com.example.yoloq.models.dto.PostDT
 	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:525) ~[na:na]
 	... 55 common frames omitted
 
+2024-06-29 19:59:36.312 ERROR 10840 --- [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 1 of constructor in com.example.yoloq.controller.PostController required a bean of type 'com.example.yoloq.elastic_services.PostSearchService' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.example.yoloq.elastic_services.PostSearchService' in your configuration.
+
+2024-06-29 20:03:33.872 ERROR 10840 --- [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 1 of constructor in com.example.yoloq.controller.PostController required a bean of type 'com.example.yoloq.elastic_services.PostSearchService' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.example.yoloq.elastic_services.PostSearchService' in your configuration.
+
