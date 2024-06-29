@@ -17,12 +17,26 @@ export class CreateGroupFormComponent {
     this.createGroupForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
+      attachedPDF: [''],
     });
   }
+
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.createGroupForm.patchValue({
+        attachedPDF: file
+      });
+      this.createGroupForm.get('attachedPDF')?.updateValueAndValidity();
+    }
+    console.log(this.createGroupForm.get('attachedPDF')?.value);
+  }
+  
 
   onSubmit() {
     const name = this.createGroupForm.get('name');
     const description = this.createGroupForm.get('description');
-    this.groupService.createGroup(name?.value, description?.value);
+    const attachedPDF = this.createGroupForm.get('attachedPDF')?.value;
+    this.groupService.createGroup(name?.value, description?.value, attachedPDF);
   }
 }

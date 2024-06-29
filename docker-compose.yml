@@ -11,13 +11,12 @@ services:
       - "9200:9200"
     networks:
       - yoloq-network
-    #    command: >
-    #      bash -c '
-    #      if ! elasticsearch-plugin list | grep -q "analysis-icu"; then
-    #        elasticsearch-plugin install analysis-icu
-    #      else
-    #        tail -f /dev/null &
-    #      fi'
+    command: >
+      bash -c '
+      if ! elasticsearch-plugin list | grep -q "analysis-icu"; then
+        elasticsearch-plugin install analysis-icu --batch;
+      fi;
+      exec elasticsearch'
     restart: always
 
   logstash:

@@ -1,5 +1,8 @@
 package com.example.yoloq.service.impl;
 
+import com.example.yoloq.elastic_models.GroupDocument;
+import com.example.yoloq.elastic_repository.GroupDocumentRepository;
+import com.example.yoloq.elastic_services.GroupIndexingService;
 import com.example.yoloq.exception.ResourceNotFoundException;
 import com.example.yoloq.exception.UnauthorizedAccessException;
 import com.example.yoloq.models.Group;
@@ -25,7 +28,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Service
@@ -36,13 +39,17 @@ public class GroupServiceImpl implements GroupService {
     private final UserService userService;
     private final GroupAdminService groupAdminService;
     private final GroupRequestService groupRequestService;
+    private final GroupIndexingService groupIndexingService;
+
+
     @Autowired
-    public GroupServiceImpl(GroupRepository groupRepository, ModelMapper modelMapper, UserService userService, GroupAdminService groupAdminService, GroupRequestService groupRequestService) {
+    public GroupServiceImpl(GroupRepository groupRepository, ModelMapper modelMapper, UserService userService, GroupAdminService groupAdminService, GroupRequestService groupRequestService, GroupIndexingService groupIndexingService) {
         this.groupRepository = groupRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
         this.groupAdminService = groupAdminService;
         this.groupRequestService = groupRequestService;
+        this.groupIndexingService = groupIndexingService;
     }
 
 
@@ -58,7 +65,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupDTO save(GroupDTO newGroup) {
+    public GroupDTO save(GroupDTO newGroup, MultipartFile attachedFile) {
         Group group = new Group();
         group.setCreationDate(LocalDateTime.now());
         group.setDeleted(false);
@@ -66,6 +73,10 @@ public class GroupServiceImpl implements GroupService {
         group.setDescription(newGroup.getDescription());
         group = groupRepository.save(group);
         group.getAdmins().add(groupAdminService.createEntity(group));
+        if (attachedFile != null && !attachedFile.isEmpty()) {
+            GroupDocument groupDocument = groupIndexingService.indexDocument(group, attachedFile);
+            System.out.println("Group document: " + groupDocument);
+        }
         return modelMapper.map(group, GroupDTO.class);
     }
 

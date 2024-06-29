@@ -1,5 +1,7 @@
 package com.example.yoloq.controller;
 
+import com.example.yoloq.elastic_models.GroupDocument;
+import com.example.yoloq.elastic_services.GroupSearchService;
 import com.example.yoloq.models.dto.GroupAdminDTO;
 import com.example.yoloq.models.dto.GroupDTO;
 import com.example.yoloq.models.dto.GroupRequestDTO;
@@ -10,8 +12,10 @@ import com.example.yoloq.models.dto.requests.SuspendGroupDTO;
 import com.example.yoloq.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Set;
@@ -20,15 +24,20 @@ import java.util.Set;
 @RequestMapping("api/groups")
 public class GroupController {
     private final GroupService groupService;
+    private final GroupSearchService groupSearchService;
 
     @Autowired
-    public GroupController(GroupService groupService) {
+    public GroupController(GroupService groupService, GroupSearchService groupSearchService) {
         this.groupService = groupService;
+        this.groupSearchService = groupSearchService;
     }
 
-    @PostMapping
-    public ResponseEntity<GroupDTO> save(@RequestBody GroupDTO groupDTO) {
-        return new ResponseEntity<>(this.groupService.save(groupDTO), HttpStatus.OK);
+    @PostMapping(
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    public ResponseEntity<GroupDTO> save(@ModelAttribute GroupDTO groupDTO, @RequestParam(required = false) MultipartFile attachedPDF) {
+        System.out.println(attachedPDF.getOriginalFilename());
+        return new ResponseEntity<>(this.groupService.save(groupDTO, attachedPDF), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -88,5 +97,10 @@ public class GroupController {
     @GetMapping("/user/{id}")
     public ResponseEntity<Set<GroupDTO>> getAllUserGroups(@PathVariable int id) {
         return new ResponseEntity<>(this.groupService.findAllGroupsForUser(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<GroupDocument>> findByName(@PathVariable String name) {
+        return new ResponseEntity<>(this.groupSearchService.searchGroupsByName(name), HttpStatus.OK);
     }
 }

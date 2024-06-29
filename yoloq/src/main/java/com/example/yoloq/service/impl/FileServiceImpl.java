@@ -1,12 +1,17 @@
 package com.example.yoloq.service.impl;
 
 
+import com.example.yoloq.exception.ResourceNotFoundException;
+import com.example.yoloq.exception.StorageException;
 import com.example.yoloq.models.Image;
 import com.example.yoloq.models.Post;
 import com.example.yoloq.models.User;
 import com.example.yoloq.repository.ImageRepository;
 import com.example.yoloq.service.FileService;
+import io.minio.*;
+import io.minio.http.Method;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -17,6 +22,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -69,4 +76,5 @@ public class FileServiceImpl implements FileService {
             throw new RuntimeException("Error while reading resource from the server");
         }
     }
+
 }

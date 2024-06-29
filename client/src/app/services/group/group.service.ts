@@ -20,11 +20,22 @@ export class GroupService {
     private http: HttpClient
   ) {}
 
-  public createGroup(name: string, description: string): void {
+  private formatFormData(name: string, description: string, attachedPDF: File): FormData {
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('description', description);
+    if (attachedPDF) {
+      formData.append('attachedPDF', attachedPDF);
+    }
+    return formData;
+  }
+  public createGroup(name: string, description: string, attachedPDF: File): void {
+    let createdFormData = this.formatFormData(name, description, attachedPDF);
+    console.log(createdFormData)
     this.http
       .post<any>(
         `${this.baseURL}`,
-        { name, description },
+        createdFormData,
         {
           headers: this.headers,
         }

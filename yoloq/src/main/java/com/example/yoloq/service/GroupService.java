@@ -7,13 +7,14 @@ import com.example.yoloq.models.dto.GroupRequestDTO;
 import com.example.yoloq.models.dto.PostDTO;
 import com.example.yoloq.models.dto.requests.GroupJoinDecisionDTO;
 import com.example.yoloq.models.dto.requests.SuspendGroupDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Set;
 
 public interface GroupService {
     List<GroupDTO> findAll();
-    GroupDTO save(GroupDTO newGroup);
+    GroupDTO save(GroupDTO newGroup, MultipartFile attachedFile);
     GroupDTO findById(int id);
     Group findEntityById(int id);
     GroupDTO update(GroupDTO updatedGroup);

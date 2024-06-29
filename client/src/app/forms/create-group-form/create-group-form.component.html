@@ -15,5 +15,8 @@
       placeholder="Group description..."
     />
   </div>
+  <div class="form__group">
+    <input type="file" (change)="onFileChange($event)" />
+  </div>
   <app-button size="md" color="blue" text="Create group" class=""></app-button>
 </form>
