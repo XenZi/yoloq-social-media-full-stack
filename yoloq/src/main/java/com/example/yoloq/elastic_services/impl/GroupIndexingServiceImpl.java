@@ -50,7 +50,7 @@ public class GroupIndexingServiceImpl implements GroupIndexingService {
         var serverFilename = minioFileService.store(documentFile, UUID.randomUUID().toString());
         newGroupDocument.setServerFilename(serverFilename);
 
-
+        newGroupDocument.setNumPosts(0);
         newGroupDocument.setDatabaseId(group.getId());
         groupDocumentRepository.save(newGroupDocument);
         return newGroupDocument;

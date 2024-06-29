@@ -8,6 +8,7 @@ import com.example.yoloq.models.dto.GroupRequestDTO;
 import com.example.yoloq.models.dto.PostDTO;
 import com.example.yoloq.models.dto.requests.GroupJoinDecisionDTO;
 import com.example.yoloq.models.dto.requests.CreateAdminDTO;
+import com.example.yoloq.models.dto.requests.SearchGroupsBasedOnNumberOfPostsDTO;
 import com.example.yoloq.models.dto.requests.SuspendGroupDTO;
 import com.example.yoloq.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,9 +110,13 @@ public class GroupController {
         return new ResponseEntity<>(this.groupSearchService.searchGroupsByDescription(description), HttpStatus.OK);
     }
 
-
     @GetMapping("/pdf-content/{content}")
     public ResponseEntity<List<GroupDocument>> findByPDFContent(@PathVariable String content) {
         return new ResponseEntity<>(this.groupSearchService.searchGroupsByPDFContent(content), HttpStatus.OK);
+    }
+
+    @GetMapping("/based-on-posts")
+    public ResponseEntity<List<GroupDocument>> findByPostsInGroups(@RequestBody SearchGroupsBasedOnNumberOfPostsDTO data) {
+        return new ResponseEntity<>(this.groupSearchService.searchGroupsByPosts(data), HttpStatus.OK);
     }
 }

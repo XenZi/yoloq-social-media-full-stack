@@ -1,7 +1,9 @@
 package com.example.yoloq.service.impl;
 
 
+import com.example.yoloq.elastic_models.GroupDocument;
 import com.example.yoloq.elastic_models.PostDocument;
+import com.example.yoloq.elastic_repository.GroupDocumentRepository;
 import com.example.yoloq.elastic_services.PostIndexingService;
 import com.example.yoloq.enums.Role;
 import com.example.yoloq.exception.IncompleteRequestException;
@@ -14,6 +16,7 @@ import com.example.yoloq.models.User;
 import com.example.yoloq.models.dto.GroupDTO;
 import com.example.yoloq.models.dto.PostDTO;
 import com.example.yoloq.models.dto.UserDTO;
+import com.example.yoloq.repository.GroupRepository;
 import com.example.yoloq.repository.PostRepository;
 import com.example.yoloq.service.*;
 import org.modelmapper.ModelMapper;
@@ -36,12 +39,14 @@ public class PostServiceImpl implements PostService {
     private final ImageService imageService;
     private final GroupService groupService;
     private final PostIndexingService postIndexingService;
+    private final GroupDocumentRepository groupDocumentRepository;
+
     @Autowired
     public PostServiceImpl(PostRepository postRepository,
                            ModelMapper modelMapper,
                            UserService userService,
                            FileService fileService,
-                           ImageService imageService, GroupService groupService, PostIndexingService postIndexingService) {
+                           ImageService imageService, GroupService groupService, PostIndexingService postIndexingService, GroupDocumentRepository groupDocumentRepository) {
         this.postRepository = postRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
@@ -49,6 +54,7 @@ public class PostServiceImpl implements PostService {
         this.imageService = imageService;
         this.groupService = groupService;
         this.postIndexingService = postIndexingService;
+        this.groupDocumentRepository = groupDocumentRepository;
     }
 
     @Override
@@ -80,6 +86,11 @@ public class PostServiceImpl implements PostService {
         if (post.getPostedInGroup() != null) {
             GroupDTO groupDTO = modelMapper.map(post.getPostedInGroup(), GroupDTO.class);
             postDTO.setPostedInGroup(groupDTO);
+            GroupDocument group = groupDocumentRepository.findByDatabaseId(post.getPostedInGroup().getId()).orElse(null);
+            if (group != null) {
+                group.setNumPosts(group.getNumPosts() + 1);
+                groupDocumentRepository.save(group);
+            }
         }
         PostDocument postDocument = postIndexingService.indexDocument(post, attachedPDF);
         postDTO.setPostedBy(userDTO);

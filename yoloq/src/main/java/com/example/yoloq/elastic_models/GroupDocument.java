@@ -46,4 +46,7 @@ public class GroupDocument {
     @Field(type = FieldType.Integer, store = true, name = "database_id")
     private Integer databaseId;
 
+    @Field(type = FieldType.Integer, store = true, name = "numPosts")
+    private Integer numPosts;
+
 }
