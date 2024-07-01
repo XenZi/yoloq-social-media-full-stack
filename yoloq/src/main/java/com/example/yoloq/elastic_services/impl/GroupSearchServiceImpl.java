@@ -1,14 +1,13 @@
 package com.example.yoloq.elastic_services.impl;
 
-import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
-import co.elastic.clients.elasticsearch._types.query_dsl.RangeQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import co.elastic.clients.json.JsonData;
 import com.example.yoloq.elastic_models.GroupDocument;
 import com.example.yoloq.elastic_services.GroupSearchService;
 import com.example.yoloq.models.dto.requests.SearchGroupsBasedOnNumberOfPostsDTO;
 import lombok.RequiredArgsConstructor;
 
+import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
@@ -70,10 +69,55 @@ public class GroupSearchServiceImpl implements GroupSearchService {
         return runQuery(searchQueryBuilder.build());
     }
 
+    @Override
+    public List<GroupDocument> searchGroupsByNamePhrase(String phrase) {
+        var searchQueryBuilder =
+                new NativeQueryBuilder().withQuery(phraseSearchForName(phrase));
+        return runQuery(searchQueryBuilder.build());
+    }
+
+    @Override
+    public List<GroupDocument> searchGroupsByDescriptionPhrase(String phrase) {
+        var searchQueryBuilder =
+                new NativeQueryBuilder().withQuery(phraseSearchForDescription(phrase));
+        return runQuery(searchQueryBuilder.build());
+    }
+
+    @Override
+    public List<GroupDocument> searchGroupsByNameFuzzy(String name) {
+        var searchQueryBuilder =
+                new NativeQueryBuilder().withQuery(fuzzySearchForName(name));
+        return runQuery(searchQueryBuilder.build());
+    }
+
+    @Override
+    public List<GroupDocument> searchGroupsByDescriptionFuzzy(String description) {
+        var searchQueryBuilder =
+                new NativeQueryBuilder().withQuery(fuzzySearchForDescription(description));
+        return runQuery(searchQueryBuilder.build());
+
+    }
+
     private List<GroupDocument> runQuery(NativeQuery searchQuery) {
         SearchHits<GroupDocument> searchHits = elasticsearchTemplate.search(searchQuery, GroupDocument.class,
                 IndexCoordinates.of("groups"));
         return searchHits.get().map(SearchHit::getContent).collect(Collectors.toList());
+    }
+
+    private Query phraseSearchForName(String phrase) {
+        return MatchPhraseQuery.of(q -> q.field("name").query(phrase).analyzer("serbian_simple"))._toQuery();
+    }
+
+    private Query phraseSearchForDescription(String phrase) {
+        return MatchPhraseQuery.of(q -> q.field("description").query(phrase).analyzer("serbian_simple"))._toQuery();
+    }
+
+    private Query fuzzySearchForName(String name) {
+        return MatchQuery.of(q -> q.field("name").query(name).fuzziness(Fuzziness.ONE.asString()).analyzer("serbian_simple"))._toQuery();
+    }
+
+    private Query fuzzySearchForDescription(String description) {
+        return MatchQuery.of(q -> q.field("description").query(description).fuzziness(Fuzziness.ONE.asString()).analyzer("serbian_simple"))._toQuery();
     }
 
 

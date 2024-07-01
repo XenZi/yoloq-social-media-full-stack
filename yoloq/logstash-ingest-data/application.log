@@ -889,3 +889,78 @@ Caused by: org.apache.http.ConnectionClosedException: Connection is closed
 	at org.apache.http.impl.nio.reactor.AbstractMultiworkerIOReactor$Worker.run(AbstractMultiworkerIOReactor.java:591) ~[httpcore-nio-4.4.16.jar:4.4.16]
 	at java.base/java.lang.Thread.run(Thread.java:1570) ~[na:na]
 
+2024-07-01 15:23:32.017 ERROR 6040 --- [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 1 of constructor in com.example.yoloq.controller.GroupController required a bean of type 'com.example.yoloq.elastic_services.GroupSearchService' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.example.yoloq.elastic_services.GroupSearchService' in your configuration.
+
+2024-07-01 15:26:03.509 ERROR 6040 --- [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 1 of constructor in com.example.yoloq.controller.GroupController required a bean of type 'com.example.yoloq.elastic_services.GroupSearchService' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.example.yoloq.elastic_services.GroupSearchService' in your configuration.
+
+2024-07-01 15:26:39.653 ERROR 6040 --- [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 1 of constructor in com.example.yoloq.controller.GroupController required a bean of type 'com.example.yoloq.elastic_services.GroupSearchService' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.example.yoloq.elastic_services.GroupSearchService' in your configuration.
+
+2024-07-01 15:38:08.421 ERROR 6040 --- [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 1 of constructor in com.example.yoloq.controller.GroupController required a bean of type 'com.example.yoloq.elastic_services.GroupSearchService' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.example.yoloq.elastic_services.GroupSearchService' in your configuration.
+
+2024-07-01 15:42:00.402 ERROR 6040 --- [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 1 of constructor in com.example.yoloq.controller.GroupController required a bean of type 'com.example.yoloq.elastic_services.GroupSearchService' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.example.yoloq.elastic_services.GroupSearchService' in your configuration.
+

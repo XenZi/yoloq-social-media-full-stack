@@ -15,4 +15,9 @@ public interface GroupSearchService {
     List<GroupDocument> searchGroupsByPDFContent(String content);
     List<GroupDocument> searchGroupsByPosts(SearchGroupsBasedOnNumberOfPostsDTO data);
     List<GroupDocument> searchGroupsCombined(String name, String description, String pdfContent, Boolean useAndOperator);
+    List<GroupDocument> searchGroupsByNamePhrase(String phrase);
+    List<GroupDocument> searchGroupsByDescriptionPhrase(String phrase);
+    List<GroupDocument> searchGroupsByNameFuzzy(String name);
+    List<GroupDocument> searchGroupsByDescriptionFuzzy(String description);
+
 }
