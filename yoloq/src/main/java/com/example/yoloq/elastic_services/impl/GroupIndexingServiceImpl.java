@@ -51,7 +51,9 @@ public class GroupIndexingServiceImpl implements GroupIndexingService {
         newGroupDocument.setServerFilename(serverFilename);
 
         newGroupDocument.setNumPosts(0);
+        newGroupDocument.setAvgNumberOfLikes(0.0F);
         newGroupDocument.setDatabaseId(group.getId());
+        newGroupDocument.setTotalLikes(0);
         groupDocumentRepository.save(newGroupDocument);
         return newGroupDocument;
     }

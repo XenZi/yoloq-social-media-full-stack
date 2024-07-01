@@ -5,6 +5,7 @@ import com.example.yoloq.elastic_models.PostDocument;
 import com.example.yoloq.elastic_services.PostIndexingService;
 import com.example.yoloq.elastic_services.PostSearchService;
 import com.example.yoloq.models.dto.PostDTO;
+import com.example.yoloq.models.dto.requests.SearchPostsBasedOnNumberOfLikesDTO;
 import com.example.yoloq.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -83,5 +84,11 @@ public class PostController {
     @GetMapping("/pdf-content/{content}")
     public ResponseEntity<List<PostDocument>> findPostsByPDFContent(@PathVariable String content) {
         return new ResponseEntity<>(this.postSearchService.getPostsByPDFContent(content), HttpStatus.OK);
+    }
+
+    @GetMapping("/search-by-likes")
+    public ResponseEntity<List<PostDocument>> findPostsByLikes(@RequestBody SearchPostsBasedOnNumberOfLikesDTO criteria) {
+        return new ResponseEntity<>(this.postSearchService.getPostsByNumberOfLikes(criteria), HttpStatus.OK);
+
     }
 }

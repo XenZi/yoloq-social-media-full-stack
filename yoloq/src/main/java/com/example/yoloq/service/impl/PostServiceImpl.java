@@ -89,6 +89,7 @@ public class PostServiceImpl implements PostService {
             GroupDocument group = groupDocumentRepository.findByDatabaseId(post.getPostedInGroup().getId()).orElse(null);
             if (group != null) {
                 group.setNumPosts(group.getNumPosts() + 1);
+                group.setAvgNumberOfLikes((float) (group.getTotalLikes() / group.getNumPosts()));
                 groupDocumentRepository.save(group);
             }
         }

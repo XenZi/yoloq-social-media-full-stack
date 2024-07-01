@@ -94,15 +94,22 @@ public class GroupSearchServiceImpl implements GroupSearchService {
         return BoolQuery.of(q -> {
             if (useAndOperator) {
                 q.must(mb -> mb.bool(b -> {
-                    b.must(sb -> sb.match(m -> m.field("name").query(name).analyzer("serbian_simple")));
-                    b.must(sb -> sb.match(m -> m.field("description").query(description).analyzer("serbian_simple")));
-                    b.must(sb -> sb.match(m -> m.field("content_sr").query(pdfContent).analyzer("serbian_simple")));
+                    if (name != null && !name.isEmpty()) {
+                        b.must(sb -> sb.match(m -> m.field("name").query(name).analyzer("serbian_simple")));
+                    }
+                    if (description != null && !description.isEmpty()) {
+                        b.must(sb -> sb.match(m -> m.field("description").query(description).analyzer("serbian_simple")));
+                    }
+                    if (pdfContent != null && !pdfContent.isEmpty()) {
+                        b.should(sb -> sb.match(m -> m.field("content_sr").query(pdfContent).analyzer("serbian_simple")));
+                        b.should(sb -> sb.match(m -> m.field("content_en").query(pdfContent).analyzer("english")));
+                    }
                     return b;
                 }));
             } else {
                 q.should(mb -> mb.bool(b -> {
                     if (name != null && !name.isEmpty()) {
-                        b.must(sb -> sb.match(m -> m.field("name").query(name).analyzer("serbian_simple")));
+                        b.should(sb -> sb.match(m -> m.field("name").query(name).analyzer("serbian_simple")));
                     }
                     if (description != null && !description.isEmpty()) {
                         b.should(sb -> sb.match(m -> m.field("description").query(description).analyzer("serbian_simple")));

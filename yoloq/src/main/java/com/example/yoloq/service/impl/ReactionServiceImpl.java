@@ -1,5 +1,9 @@
 package com.example.yoloq.service.impl;
 
+import com.example.yoloq.elastic_models.GroupDocument;
+import com.example.yoloq.elastic_models.PostDocument;
+import com.example.yoloq.elastic_repository.GroupDocumentRepository;
+import com.example.yoloq.elastic_repository.PostDocumentRepository;
 import com.example.yoloq.models.Comment;
 import com.example.yoloq.models.Post;
 import com.example.yoloq.models.Reaction;
@@ -27,16 +31,20 @@ public class ReactionServiceImpl implements ReactionService {
     private final UserService userService;
     private final PostService postService;
     private final ModelMapper modelMapper;
+    private final PostDocumentRepository postDocumentRepository;
+    private final GroupDocumentRepository groupDocumentRepository;
     @Autowired
     public ReactionServiceImpl(ReactionRepository reactionRepository,
                                CommentService commentService,
                                UserService userService,
-                               PostService postService, ModelMapper modelMapper) {
+                               PostService postService, ModelMapper modelMapper, PostDocumentRepository postDocumentRepository, GroupDocumentRepository groupDocumentRepository) {
         this.reactionRepository = reactionRepository;
         this.commentService = commentService;
         this.userService = userService;
         this.postService = postService;
         this.modelMapper = modelMapper;
+        this.postDocumentRepository = postDocumentRepository;
+        this.groupDocumentRepository = groupDocumentRepository;
     }
 
     @Override
@@ -48,10 +56,32 @@ public class ReactionServiceImpl implements ReactionService {
         if (reactionDTO.getCommentIdReactedTo() != null) {
             Comment comment = commentService.findOneEntity( reactionDTO.getCommentIdReactedTo());
             reaction.setReactedTo(comment);
+            if (comment.getPost() != null) {
+                Post post = comment.getPost();
+                PostDocument postDocument = postDocumentRepository.findByDatabaseId(post.getId()).orElse(null);
+                if (postDocument != null) {
+                    postDocument.setTotalLikes(postDocument.getTotalLikes() + 1);
+                    this.postDocumentRepository.save(postDocument);
+                }
+            }
         }
         if (reactionDTO.getPostIdReactedTo() != null) {
             Post post = postService.findOnePost(reactionDTO.getPostIdReactedTo());
             reaction.setPostReactedTo(post);
+            PostDocument postDocument = postDocumentRepository.findByDatabaseId(post.getId()).orElse(null);
+            if (postDocument != null) {
+                postDocument.setTotalLikes(postDocument.getTotalLikes() + 1);
+                this.postDocumentRepository.save(postDocument);
+                if (postDocument.getGroupID() != null) {
+                    GroupDocument groupDocument = groupDocumentRepository.findByDatabaseId(postDocument.getGroupID()).orElse(null);
+                    System.out.println(postDocument.getGroupID());
+                    if (groupDocument != null) {
+                        groupDocument.setTotalLikes(groupDocument.getTotalLikes() + 1);
+                        groupDocument.setAvgNumberOfLikes((float) (groupDocument.getTotalLikes() / groupDocument.getNumPosts()));
+                        this.groupDocumentRepository.save(groupDocument);
+                    }
+                }
+            }
         }
         reaction = reactionRepository.save(reaction);
         return modelMapper.map(reaction, ReactionDTO.class);

@@ -49,4 +49,10 @@ public class GroupDocument {
     @Field(type = FieldType.Integer, store = true, name = "numPosts")
     private Integer numPosts;
 
+    @Field(type = FieldType.Integer, store = true, name = "totalLikes")
+    private Integer totalLikes;
+
+
+    @Field(type = FieldType.Float, store = true, name = "avgNumberOfLikes")
+    private Float avgNumberOfLikes;
 }

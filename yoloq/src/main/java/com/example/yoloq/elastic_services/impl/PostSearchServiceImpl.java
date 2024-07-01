@@ -2,9 +2,12 @@ package com.example.yoloq.elastic_services.impl;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.query_dsl.RangeQuery;
+import co.elastic.clients.json.JsonData;
 import com.example.yoloq.elastic_models.GroupDocument;
 import com.example.yoloq.elastic_models.PostDocument;
 import com.example.yoloq.elastic_services.PostSearchService;
+import com.example.yoloq.models.dto.requests.SearchPostsBasedOnNumberOfLikesDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
@@ -42,6 +45,25 @@ public class PostSearchServiceImpl implements PostSearchService {
         return runQuery(searchQueryBuilder.build());
     }
 
+    @Override
+    public List<PostDocument> getPostsByNumberOfLikes(SearchPostsBasedOnNumberOfLikesDTO criteria) {
+        var searchQueryBuilder =
+                new NativeQueryBuilder().withQuery(searchByNumOfLikesRange(criteria.getGreaterThan(), criteria.getLessThan()));
+        return runQuery(searchQueryBuilder.build());
+
+    }
+
+    public Query searchByNumOfLikesRange(Integer minLikes, Integer maxLikes) {
+        return RangeQuery.of(q -> {
+            if (minLikes != null) {
+                q.field("total_likes").gte(JsonData.of(minLikes));
+            }
+            if (maxLikes != null) {
+                q.field("total_likes").lte(JsonData.of(maxLikes));
+            }
+            return q;
+        })._toQuery();
+    }
 
     private List<PostDocument> runQuery(NativeQuery searchQuery) {
         SearchHits<PostDocument> searchHits = elasticsearchTemplate.search(searchQuery, PostDocument.class,
