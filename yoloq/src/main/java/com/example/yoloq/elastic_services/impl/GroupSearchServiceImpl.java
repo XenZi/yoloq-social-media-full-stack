@@ -63,6 +63,13 @@ public class GroupSearchServiceImpl implements GroupSearchService {
 
     }
 
+    @Override
+    public List<GroupDocument> searchGroupsCombined(String name, String description, String pdfContent, Boolean useAndOperator) {
+        var searchQueryBuilder =
+                new NativeQueryBuilder().withQuery(buildComplexSearchQuery(name, description, pdfContent, useAndOperator));
+        return runQuery(searchQueryBuilder.build());
+    }
+
     private List<GroupDocument> runQuery(NativeQuery searchQuery) {
         SearchHits<GroupDocument> searchHits = elasticsearchTemplate.search(searchQuery, GroupDocument.class,
                 IndexCoordinates.of("groups"));
@@ -83,28 +90,32 @@ public class GroupSearchServiceImpl implements GroupSearchService {
     }
 
 
-    private Query buildSimpleSearchQuery(List<String> tokens) {
-        return BoolQuery.of(q -> q.must(mb -> mb.bool(b -> {
-            tokens.forEach(token -> {
-                b.should(sb -> sb.match(m -> m.field("name").query(token).analyzer("serbian_simple")));
-                b.should(sb -> sb.match(m -> m.field("content_sr").query(token).analyzer("serbian_simple")));
-                b.should(sb -> sb.match(m -> m.field("content_en").query(token).analyzer("english")));
-                b.should(sb -> sb.match(m -> m.field("description").query(token).analyzer("serbian_simple")));
-            });
-            return b;
-        })))._toQuery();
-    }
-
-    private Query buildSimpleSearchQueryWithMust(List<String> tokens) {
-        return BoolQuery.of(q -> q.must(mb -> mb.bool(b -> {
-            tokens.forEach(token -> {
-                b.must(sb -> sb.match(m -> m.field("name").query(token).analyzer("serbian_simple")));
-                b.must(sb -> sb.match(m -> m.field("content_sr").query(token).analyzer("serbian_simple")));
-                b.must(sb -> sb.match(m -> m.field("content_en").query(token).analyzer("english")));
-                b.must(sb -> sb.match(m -> m.field("description").query(token).analyzer("serbian_simple")));
-            });
-            return b;
-        })))._toQuery();
+    private Query buildComplexSearchQuery(String name, String description, String pdfContent, Boolean useAndOperator) {
+        return BoolQuery.of(q -> {
+            if (useAndOperator) {
+                q.must(mb -> mb.bool(b -> {
+                    b.must(sb -> sb.match(m -> m.field("name").query(name).analyzer("serbian_simple")));
+                    b.must(sb -> sb.match(m -> m.field("description").query(description).analyzer("serbian_simple")));
+                    b.must(sb -> sb.match(m -> m.field("content_sr").query(pdfContent).analyzer("serbian_simple")));
+                    return b;
+                }));
+            } else {
+                q.should(mb -> mb.bool(b -> {
+                    if (name != null && !name.isEmpty()) {
+                        b.must(sb -> sb.match(m -> m.field("name").query(name).analyzer("serbian_simple")));
+                    }
+                    if (description != null && !description.isEmpty()) {
+                        b.should(sb -> sb.match(m -> m.field("description").query(description).analyzer("serbian_simple")));
+                    }
+                    if (pdfContent != null && !pdfContent.isEmpty()) {
+                        b.should(sb -> sb.match(m -> m.field("content_sr").query(pdfContent).analyzer("serbian_simple")));
+                        b.should(sb -> sb.match(m -> m.field("content_en").query(pdfContent).analyzer("english")));
+                    }
+                    return b;
+                }));
+            }
+            return q;
+        })._toQuery();
     }
 
 

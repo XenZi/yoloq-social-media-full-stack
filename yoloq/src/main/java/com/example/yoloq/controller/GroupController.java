@@ -115,8 +115,19 @@ public class GroupController {
         return new ResponseEntity<>(this.groupSearchService.searchGroupsByPDFContent(content), HttpStatus.OK);
     }
 
-    @GetMapping("/based-on-posts")
+    @GetMapping("/based-on-posts-number")
     public ResponseEntity<List<GroupDocument>> findByPostsInGroups(@RequestBody SearchGroupsBasedOnNumberOfPostsDTO data) {
         return new ResponseEntity<>(this.groupSearchService.searchGroupsByPosts(data), HttpStatus.OK);
+    }
+
+    //http://your-api-url/groups/search?name=exampleName&description=exampleDescription&pdfContent=examplePDFContent&useAndOperator=true
+    //http://your-api-url/groups/search?name=exampleName&description=exampleDescription&pdfContent=examplePDFContent&useAndOperator=false
+    @GetMapping("/search")
+    public ResponseEntity<List<GroupDocument>> searchGroups(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) String pdfContent,
+            @RequestParam(required = false, defaultValue = "false") Boolean useAndOperator) {
+        return new ResponseEntity<>(this.groupSearchService.searchGroupsCombined(name, description, pdfContent, useAndOperator), HttpStatus.OK);
     }
 }
