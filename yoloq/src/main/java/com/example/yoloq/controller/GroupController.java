@@ -130,4 +130,29 @@ public class GroupController {
             @RequestParam(required = false, defaultValue = "false") Boolean useAndOperator) {
         return new ResponseEntity<>(this.groupSearchService.searchGroupsCombined(name, description, pdfContent, useAndOperator), HttpStatus.OK);
     }
+
+
+    @GetMapping("/search/name/fuzzy")
+    public ResponseEntity<List<GroupDocument>> searchByNameFuzzy(@RequestParam String name) {
+        List<GroupDocument> results = groupSearchService.searchGroupsByNameFuzzy(name);
+        return ResponseEntity.ok(results);
+    }
+
+    @GetMapping("/search/description/fuzzy")
+    public ResponseEntity<List<GroupDocument>> searchByDescriptionFuzzy(@RequestParam String description) {
+        List<GroupDocument> results = groupSearchService.searchGroupsByDescriptionFuzzy(description);
+        return ResponseEntity.ok(results);
+    }
+
+    @GetMapping("/search/name/phrase")
+    public ResponseEntity<List<GroupDocument>> searchByNamePhrase(@RequestParam String phrase) {
+        List<GroupDocument> results = groupSearchService.searchGroupsByNamePhrase(phrase);
+        return ResponseEntity.ok(results);
+    }
+
+    @GetMapping("/search/description/phrase")
+    public ResponseEntity<List<GroupDocument>> searchByDescriptionPhrase(@RequestParam String phrase) {
+        List<GroupDocument> results = groupSearchService.searchGroupsByDescriptionPhrase(phrase);
+        return ResponseEntity.ok(results);
+    }
 }
