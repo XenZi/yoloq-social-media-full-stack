@@ -1,0 +1,93 @@
+<form
+  [formGroup]="searchPosts"
+  (ngSubmit)="onSubmit()"
+  class="form flex-col form__login"
+>
+  <div class="form__group">
+    <input
+      type="text"
+      class="form__input"
+      formControlName="title"
+      placeholder="Post title"
+    />
+  </div>
+  <div class="form__group">
+    <input
+      type="text"
+      class="form__input"
+      formControlName="content"
+      placeholder="Post content"
+    />
+  </div>
+  <div class="form__group">
+    <input
+      type="text"
+      class="form__input"
+      formControlName="pdfContent"
+      placeholder="Post pdf content"
+    />
+  </div>
+
+  <div class="form__group">
+    <input
+      type="number"
+      class="form__input"
+      formControlName="minNumberOfLikes"
+      placeholder="Post min number of likes"
+    />
+  </div>
+  <div class="form__group">
+    <input
+      type="number"
+      class="form__input"
+      formControlName="maxNumberOfLikes"
+      placeholder="Post max number of likes"
+    />
+  </div>
+  <div class="form__group">
+    <input
+      type="number"
+      class="form__input"
+      formControlName="minNumberOfComments"
+      placeholder="Post min number of comments"
+    />
+  </div>
+  <div class="form__group">
+    <input
+      type="number"
+      class="form__input"
+      formControlName="maxNumberOfComments"
+      placeholder="Post max number of comments"
+    />
+  </div>
+  <div class="form__group">
+    <input
+      type="checkbox"
+      class="form__input"
+      formControlName="fuzzy"
+    />
+    fuzzy
+  </div>
+  <div class="form__group">
+    <input
+      type="checkbox"
+      class="form__input"
+      formControlName="useAndQuery"
+    />
+    useAndQuery
+  </div>
+  <div class="form__group">
+    <input
+      type="checkbox"
+      class="form__input"
+      formControlName="phraze"
+    />
+    Phraze
+  </div>
+  <app-button
+    size="md"
+    color="blue"
+    text="Login"
+    class="login__button"
+  ></app-button>
+</form>

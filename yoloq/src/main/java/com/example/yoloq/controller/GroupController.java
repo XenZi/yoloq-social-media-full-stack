@@ -6,10 +6,7 @@ import com.example.yoloq.models.dto.GroupAdminDTO;
 import com.example.yoloq.models.dto.GroupDTO;
 import com.example.yoloq.models.dto.GroupRequestDTO;
 import com.example.yoloq.models.dto.PostDTO;
-import com.example.yoloq.models.dto.requests.GroupJoinDecisionDTO;
-import com.example.yoloq.models.dto.requests.CreateAdminDTO;
-import com.example.yoloq.models.dto.requests.SearchGroupsBasedOnNumberOfPostsDTO;
-import com.example.yoloq.models.dto.requests.SuspendGroupDTO;
+import com.example.yoloq.models.dto.requests.*;
 import com.example.yoloq.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -120,8 +117,6 @@ public class GroupController {
         return new ResponseEntity<>(this.groupSearchService.searchGroupsByPosts(data), HttpStatus.OK);
     }
 
-    //http://your-api-url/groups/search?name=exampleName&description=exampleDescription&pdfContent=examplePDFContent&useAndOperator=true
-    //http://your-api-url/groups/search?name=exampleName&description=exampleDescription&pdfContent=examplePDFContent&useAndOperator=false
     @GetMapping("/search")
     public ResponseEntity<List<GroupDocument>> searchGroups(
             @RequestParam(required = false) String name,

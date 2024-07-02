@@ -151,16 +151,18 @@ public class GroupSearchServiceImpl implements GroupSearchService {
                     return b;
                 }));
             } else {
-                q.should(mb -> mb.bool(b -> {
+                q.must(mb -> mb.bool(b -> {
                     if (name != null && !name.isEmpty()) {
-                        b.should(sb -> sb.match(m -> m.field("name").query(name).analyzer("serbian_simple")));
+                        b.should(sb -> sb.bool(subBool -> subBool
+                                .should(subShould -> subShould.matchPhrase(m -> m.field("name").query(name)))));
                     }
                     if (description != null && !description.isEmpty()) {
-                        b.should(sb -> sb.match(m -> m.field("description").query(description).analyzer("serbian_simple")));
+                        b.should(sb -> sb.bool(subBool -> subBool
+                                .should(subShould -> subShould.matchPhrase(m -> m.field("description").query(description)))));
                     }
                     if (pdfContent != null && !pdfContent.isEmpty()) {
-                        b.should(sb -> sb.match(m -> m.field("content_sr").query(pdfContent).analyzer("serbian_simple")));
-                        b.should(sb -> sb.match(m -> m.field("content_en").query(pdfContent).analyzer("english")));
+                        b.should(sb -> sb.matchPhrase(m -> m.field("content_sr").query(pdfContent)));
+                        b.should(sb -> sb.matchPhrase(m -> m.field("content_en").query(pdfContent)));
                     }
                     return b;
                 }));

@@ -1,10 +1,12 @@
 package com.example.yoloq.controller;
 
 
+import com.example.yoloq.elastic_models.GroupDocument;
 import com.example.yoloq.elastic_models.PostDocument;
 import com.example.yoloq.elastic_services.PostIndexingService;
 import com.example.yoloq.elastic_services.PostSearchService;
 import com.example.yoloq.models.dto.PostDTO;
+import com.example.yoloq.models.dto.requests.SearchPostsBasedOnNumberOfCommentsDTO;
 import com.example.yoloq.models.dto.requests.SearchPostsBasedOnNumberOfLikesDTO;
 import com.example.yoloq.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +91,43 @@ public class PostController {
     @GetMapping("/search-by-likes")
     public ResponseEntity<List<PostDocument>> findPostsByLikes(@RequestBody SearchPostsBasedOnNumberOfLikesDTO criteria) {
         return new ResponseEntity<>(this.postSearchService.getPostsByNumberOfLikes(criteria), HttpStatus.OK);
+    }
 
+    @GetMapping("/search/search-by-comments")
+    public ResponseEntity<List<PostDocument>> findPostsByComments(@RequestBody SearchPostsBasedOnNumberOfCommentsDTO criteria) {
+        return new ResponseEntity<>(this.postSearchService.getPostsByNumberOfComments(criteria), HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<PostDocument>> SearchPosts(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String content,
+            @RequestParam(required = false) String pdfContent,
+            @RequestParam(required = false, defaultValue = "false") Boolean useAndOperator) {
+        return new ResponseEntity<>(this.postSearchService.getPostsCombined(title, content, pdfContent, useAndOperator), HttpStatus.OK);
+    }
+
+    @GetMapping("/search/title/fuzzy")
+    public ResponseEntity<List<PostDocument>> searchByNameFuzzy(@RequestParam String name) {
+        List<PostDocument> results = postSearchService.getPostsByNameFuzzy(name);
+        return ResponseEntity.ok(results);
+    }
+
+    @GetMapping("/search/content/fuzzy")
+    public ResponseEntity<List<PostDocument>> searchByContentFuzzy(@RequestParam String content) {
+        List<PostDocument> results = postSearchService.getPostsByDescriptionFuzzy(content);
+        return ResponseEntity.ok(results);
+    }
+
+    @GetMapping("/search/title/phrase")
+    public ResponseEntity<List<PostDocument>> searchByNamePhrase(@RequestParam String title) {
+        List<PostDocument> results = postSearchService.getPostsByTitlePhrase(title);
+        return ResponseEntity.ok(results);
+    }
+
+    @GetMapping("/search/content/phrase")
+    public ResponseEntity<List<PostDocument>> searchByContentPhrase(@RequestParam String content) {
+        List<PostDocument> results = postSearchService.getPostsByDescriptionPhrase(content);
+        return ResponseEntity.ok(results);
     }
 }

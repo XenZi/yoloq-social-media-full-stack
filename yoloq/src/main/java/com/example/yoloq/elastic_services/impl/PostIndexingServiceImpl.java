@@ -50,6 +50,7 @@ public class PostIndexingServiceImpl implements PostIndexingService {
 
         newPostDocument.setDatabaseId(post.getId());
         newPostDocument.setTotalLikes(0);
+        newPostDocument.setTotalComments(0);
         if (post.getPostedInGroup() != null) {
             newPostDocument.setGroupID(post.getPostedInGroup().getId());
         }

@@ -54,6 +54,8 @@ import { ReportCardComponent } from './components/report-card/report-card.compon
 import { UpdateReportFormComponent } from './forms/update-report-form/update-report-form.component';
 import { SearchComponent } from './components/search/search.component';
 import { SearchUserBoxComponent } from './components/search-user-box/search-user-box.component';
+import { SearchPostsElasticComponent } from './components/search-posts-elastic/search-posts-elastic.component';
+import { SearchPostsComponent } from './forms/search-posts/search-posts.component';
 @NgModule({ declarations: [
         AppComponent,
         LoginComponent,
@@ -103,6 +105,8 @@ import { SearchUserBoxComponent } from './components/search-user-box/search-user
         UpdateReportFormComponent,
         SearchComponent,
         SearchUserBoxComponent,
+        SearchPostsElasticComponent,
+        SearchPostsComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,

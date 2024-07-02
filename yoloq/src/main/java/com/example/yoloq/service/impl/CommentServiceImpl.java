@@ -1,5 +1,7 @@
 package com.example.yoloq.service.impl;
 
+import com.example.yoloq.elastic_models.PostDocument;
+import com.example.yoloq.elastic_repository.PostDocumentRepository;
 import com.example.yoloq.exception.ResourceNotFoundException;
 import com.example.yoloq.models.Comment;
 import com.example.yoloq.models.Post;
@@ -27,14 +29,14 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final UserService userService;
     private final PostService postService;
-    private final EntityManager entityManager;
+    private final PostDocumentRepository postDocumentRepository;
     @Autowired
-    public CommentServiceImpl(ModelMapper modelMapper, CommentRepository commentRepository, UserService userService, PostService postService, EntityManager entityManager) {
+    public CommentServiceImpl(ModelMapper modelMapper, CommentRepository commentRepository, UserService userService, PostService postService, PostDocumentRepository postDocumentRepository) {
         this.modelMapper = modelMapper;
         this.commentRepository = commentRepository;
         this.userService = userService;
         this.postService = postService;
-        this.entityManager = entityManager;
+        this.postDocumentRepository = postDocumentRepository;
     }
 
     @Override
@@ -42,6 +44,13 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = convertToEntity(newComment);
         setAdditionalAttributes(comment, newComment);
         comment = commentRepository.save(comment);
+        if (comment.getPost() != null) {
+            PostDocument postDocument = postDocumentRepository.findByDatabaseId(comment.getPost().getId()).orElse(null);
+            if (postDocument != null) {
+                postDocument.setTotalComments(postDocument.getTotalComments() + 1);
+                postDocumentRepository.save(postDocument);
+            }
+        }
         CommentDTO commentDTO = convertToDTO(comment);
         setAdditionalDTOAttributes(commentDTO, newComment);
         return commentDTO;
