@@ -1,0 +1,58 @@
+<form
+  [formGroup]="searchGroups"
+  (ngSubmit)="onSubmit()"
+  class="form flex-col form__login"
+>
+  <div class="form__group">
+    <input
+      type="text"
+      class="form__input"
+      formControlName="name"
+      placeholder="Group name"
+    />
+  </div>
+  <div class="form__group">
+    <input
+      type="text"
+      class="form__input"
+      formControlName="description"
+      placeholder="Group description"
+    />
+  </div>
+  <div class="form__group">
+    <input
+      type="text"
+      class="form__input"
+      formControlName="pdfContent"
+      placeholder="Group pdf content"
+    />
+  </div>
+  <div class="form__group">
+    <input type="checkbox" class="form__input" formControlName="fuzzy" />
+    fuzzy
+  </div>
+  <div class="form__group">
+    <input type="checkbox" class="form__input" formControlName="useAndQuery" />
+    useAndQuery
+  </div>
+  <div class="form__group">
+    <input type="checkbox" class="form__input" formControlName="phraze" />
+    Phraze
+  </div>
+  <app-button
+    size="md"
+    color="blue"
+    text="Login"
+    class="login__button"
+  ></app-button>
+</form>
+<div *ngIf="this.groups.length">
+  <h3>Search Results:</h3>
+  <ul>
+    <li *ngFor="let group of this.groups">
+      <h4>{{ group.name }}</h4>
+      <p>{{ group.numPosts }}</p>
+      <p>{{ group.avgNumberOfLikes }}</p>
+    </li>
+  </ul>
+</div>

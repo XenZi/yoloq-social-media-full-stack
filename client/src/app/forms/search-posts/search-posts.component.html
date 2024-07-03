@@ -61,27 +61,15 @@
     />
   </div>
   <div class="form__group">
-    <input
-      type="checkbox"
-      class="form__input"
-      formControlName="fuzzy"
-    />
+    <input type="checkbox" class="form__input" formControlName="fuzzy" />
     fuzzy
   </div>
   <div class="form__group">
-    <input
-      type="checkbox"
-      class="form__input"
-      formControlName="useAndQuery"
-    />
+    <input type="checkbox" class="form__input" formControlName="useAndQuery" />
     useAndQuery
   </div>
   <div class="form__group">
-    <input
-      type="checkbox"
-      class="form__input"
-      formControlName="phraze"
-    />
+    <input type="checkbox" class="form__input" formControlName="phraze" />
     Phraze
   </div>
   <app-button
@@ -91,3 +79,12 @@
     class="login__button"
   ></app-button>
 </form>
+<div *ngIf="this.posts.length">
+  <h3>Search Results:</h3>
+  <ul>
+    <li *ngFor="let post of this.posts">
+      <h4>{{ post.title }}</h4>
+      <p>{{ post.content }}</p>
+    </li>
+  </ul>
+</div>
